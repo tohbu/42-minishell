@@ -112,6 +112,8 @@ t_bool lexer(char * one_line, token_all * all)
 			break;
 		if(check_meta_word(*one_line))
 		{
+			if(*one_line == '|')
+				all->pipe_n++;
 			if (*one_line == '<' && *(one_line + 1) == '<') 
 			{
 				all->cur->next = add_list(ft_strndup(one_line, 2)); // << を処理
