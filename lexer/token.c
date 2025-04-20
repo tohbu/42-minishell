@@ -40,7 +40,14 @@ t_bool check_meta_word(char c)
 t_bool check_space(char c)
 {
 	if(c == ' ' || c == '\t')
-	return 1;
+		return 1;
+	return 0;
+}
+
+t_bool check_quote(char c)
+{
+	if(c == '\'' || c == '\"')
+		return 1;
 	return 0;
 }
 
@@ -105,6 +112,8 @@ t_bool lexer(char * one_line, token_all * all)
 			break;
 		if(check_meta_word(*one_line))
 		{
+			if(*one_line == '|')
+				all->pipe_n++;
 			if (*one_line == '<' && *(one_line + 1) == '<') 
 			{
 				all->cur->next = add_list(ft_strndup(one_line, 2)); // << を処理
@@ -144,7 +153,7 @@ t_bool lexer(char * one_line, token_all * all)
 		else
 		{
 			char *start = one_line;
-			while(*one_line && !check_space(*one_line) && !check_meta_word(*one_line))
+			while(*one_line && !check_space(*one_line) && !check_meta_word(*one_line) && !check_quote(*one_line))
 				one_line++;
 			all->cur->next = add_list(ft_strndup(start, one_line-start));
 		}

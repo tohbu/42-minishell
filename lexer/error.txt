@@ -1,0 +1,3 @@
+Enter a command: "oavhdsoahdfo"vaosdfoasno""
+Token_type: 2 Token: "oavhdsoahdfo"
+Token_type: 2 Token: vaosdfoasno""

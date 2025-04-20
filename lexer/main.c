@@ -12,6 +12,7 @@ token_all* init_token_all(token_all *all)
 {
 	all->head =(token_list*)malloc(sizeof(token_list));
 	all->cur  = all->head;
+	all->pipe_n = 0;
 }
 
 int main() {
