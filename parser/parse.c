@@ -8,7 +8,7 @@ command_list	*new_command_list(char *s)
 	if (!new)
 		return (NULL);
 	new->next = NULL;
-	new->s = ft_strdup(s);
+	new->s = s;
 	return (new);
 }
 
@@ -115,15 +115,3 @@ command_list	*string(token_all *all)
 		return (NULL);
 	return (result);
 }
-
-// t->com = t->com->next;
-// all->cur = all->cur->next;
-// while (all->cur && is_token_word(all->cur))
-// {
-// 	t->com->next = new_command_list(all->cur->token);
-// 	if (t->com->next)
-// 		return (NULL);
-// 	t->com = t->com->next;
-// 	all->cur = all->cur->next;
-// }
-// return (t);
