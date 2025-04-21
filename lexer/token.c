@@ -30,28 +30,28 @@
 // } token_all;
 #include "lexer.h"
 
-t_bool check_meta_word(char c)
+t_bool	check_meta_word(char c)
 {
-	if(c=='|' || c=='<' || c== '>')
-		return 1;
-	return 0;
+	if (c == '|' || c == '<' || c == '>')
+		return (1);
+	return (0);
 }
 
-t_bool check_space(char c)
+t_bool	check_space(char c)
 {
-	if(c == ' ' || c == '\t')
-		return 1;
-	return 0;
+	if (c == ' ' || c == '\t')
+		return (1);
+	return (0);
 }
 
-t_bool check_quote(char c)
+t_bool	check_quote(char c)
 {
-	if(c == '\'' || c == '\"')
-		return 1;
-	return 0;
+	if (c == '\'' || c == '\"')
+		return (1);
+	return (0);
 }
 
-static char	*ft_strndup(char *s, size_t n)
+char	*ft_strndup(char *s, size_t n)
 {
 	char	*ret;
 	size_t	i;
@@ -69,99 +69,100 @@ static char	*ft_strndup(char *s, size_t n)
 	return (ret);
 }
 
-int get_token_type(char *s)
+int	get_token_type(char *s)
 {
-	if(ft_strchr(s,'\''))
-		return WORD_IN_SINGLE_QOUTE;
-	else if(ft_strchr(s,'\"'))
-		return WORD_IN_DOUBLE_QOUTE;
-	else if (strcmp(s, "|") == 0) 
-		return PIPE;
-	else if (strcmp(s, "<") == 0 || strcmp(s, ">") == 0) 
-		return REDIRECT;
-	else if (strcmp(s, "<<") == 0) 
-		return HEARDOC;
-	else if (strcmp(s, ">>") == 0) 
-		return REDIRECT;
-	return WORD;
+	if (ft_strchr(s, '\''))
+		return (WORD_IN_SINGLE_QOUTE);
+	else if (ft_strchr(s, '\"'))
+		return (WORD_IN_DOUBLE_QOUTE);
+	else if (strcmp(s, "|") == 0)
+		return (PIPE);
+	else if (strcmp(s, "<") == 0 || strcmp(s, ">") == 0)
+		return (REDIRECT);
+	else if (strcmp(s, "<<") == 0)
+		return (HEARDOC);
+	else if (strcmp(s, ">>") == 0)
+		return (REDIRECT);
+	return (WORD);
 }
 
-
-token_list* add_list(char *s)
+token_list	*add_list(char *s)
 {
-	token_list *new;
-	new = (token_list*)malloc(sizeof(token_list));
-	if(!new)
-		return NULL;
+	token_list	*new;
+
+	new = (token_list *)malloc(sizeof(token_list));
+	if (!new)
+		return (NULL);
 	new->token = s;
 	new->token_type = get_token_type(s);
+	new->syntax_error = 0;
 	new->next = NULL;
-	return new;
+	return (new);
 }
 
-
-
-
-t_bool lexer(char * one_line, token_all * all)
+t_bool	lexer(char *one_line, token_all *all)
 {
-	while(*one_line)
+	char	*start;
+	char	*start;
+	char	*start;
+
+	while (*one_line)
 	{
-		while(*one_line && check_space(*one_line))
+		while (*one_line && check_space(*one_line))
 			one_line++;
-		if(!*one_line)
-			break;
-		if(check_meta_word(*one_line))
+		if (!*one_line)
+			break ;
+		if (check_meta_word(*one_line))
 		{
-			if(*one_line == '|')
+			if (*one_line == '|')
 				all->pipe_n++;
-			if (*one_line == '<' && *(one_line + 1) == '<') 
+			if (*one_line == '<' && *(one_line + 1) == '<')
 			{
 				all->cur->next = add_list(ft_strndup(one_line, 2)); // << を処理
 				one_line++;
 			}
-			else if (*one_line == '>' && *(one_line + 1) == '>') 
+			else if (*one_line == '>' && *(one_line + 1) == '>')
 			{
 				all->cur->next = add_list(ft_strndup(one_line, 2)); // >> を処理
 				one_line++;
 			}
 			else
-				all->cur->next = add_list(ft_strndup(one_line,1));
+				all->cur->next = add_list(ft_strndup(one_line, 1));
 			one_line++;
 		}
-		else if(*one_line == '\'')
+		else if (*one_line == '\'')
 		{
-			char *start = one_line;
+			start = one_line;
 			one_line++;
-			while(*one_line && *one_line != '\'')
+			while (*one_line && *one_line != '\'')
 				one_line++;
-			if(!*one_line)
-				return ERROR;
-			all->cur->next = add_list(ft_strndup(start, one_line-start+1));
+			if (!*one_line)
+				return (ERROR);
+			all->cur->next = add_list(ft_strndup(start, one_line - start + 1));
 			one_line++;
 		}
-		else if(*one_line == '\"')
-		{	char *start = one_line;
+		else if (*one_line == '\"')
+		{
+			start = one_line;
 			one_line++;
-			while(*one_line && *one_line != '\"')
+			while (*one_line && *one_line != '\"')
 				one_line++;
-			if(!*one_line)
-				return ERROR;
-			all->cur->next = add_list(ft_strndup(start, one_line-start+1));
+			if (!*one_line)
+				return (ERROR);
+			all->cur->next = add_list(ft_strndup(start, one_line - start + 1));
 			one_line++;
-
 		}
 		else
 		{
-			char *start = one_line;
-			while(*one_line && !check_space(*one_line) && !check_meta_word(*one_line) && !check_quote(*one_line))
+			start = one_line;
+			while (*one_line && !check_space(*one_line)
+				&& !check_meta_word(*one_line) && !check_quote(*one_line))
 				one_line++;
-			all->cur->next = add_list(ft_strndup(start, one_line-start));
+			all->cur->next = add_list(ft_strndup(start, one_line - start));
 		}
-		if(!all->cur->next)
-			return ERROR;
+		if (!all->cur->next)
+			return (ERROR);
 		all->cur = all->cur->next;
 	}
+	all->cur = all->head->next;
 }
-
-
-

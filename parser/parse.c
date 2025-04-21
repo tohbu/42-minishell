@@ -1,52 +1,117 @@
 #include "parse.h"
 
-
-
-tree* new_node(tree* l, tree*r, int t_type, char *s)
+command_list	*new_command_list(char *s)
 {
-	tree* new = (tree*)malloc(sizeof(tree));
-		if(!new)
-			return NULL;
-	new->token_type =t_type;
+	command_list	*new;
+
+	new = (command_list *)malloc(sizeof(command_list));
+	if (!new)
+		return (NULL);
+	new->next = NULL;
+	new->s = s;
+	return (new);
+}
+
+t_bool	is_token_word(token_list *t)
+{
+	if (t->token_type == WORD || t->token_type == WORD_IN_DOUBLE_QOUTE
+		|| t->token_type == WORD_IN_SINGLE_QOUTE)
+		return (1);
+	else
+		return (0);
+}
+
+tree	*new_node(tree *l, tree *r, int t_type, char *s)
+{
+	tree	*new;
+
+	new = (tree *)malloc(sizeof(tree));
+	if (!new)
+		return (NULL);
+	new->token_type = t_type;
 	new->left = l;
 	new->right = r;
-	new->s = ft_strdup(s);
-	return new;
+	new->com = new_command_list(ft_strdup(s));
+	new->head = new->com;
+	return (new);
 }
 
-
-tree* piped_commands(token_all *all, tree* t)
+int	token_type_check_and_next(token_all *all)
 {
-	if(all->pipe_n > 0)
+	int	result;
+
+	if (!all)
+		return (ERROR);
+	if (!all->cur)
+		return (TOKEN_END);
+	result = all->cur->token_type;
+	all->cur = all->cur->next;
+	return (result);
+}
+
+tree	*piped_commands(token_all *all)
+{
+	tree	*new;
+
+	if (!all)
+		return (NULL);
+	new = command(all);
+	while (1)
 	{
-		command(all,t->left);
-		piped_commands(all,t->right);
+		if (token_type_check_and_next(all) == PIPE)
+			new = new_node(new, piped_commands(all), PIPE, "|");
+		else
+			return (new);
 	}
-	else
+}
+
+tree	*command(token_all *all)
+{
+	tree	*new;
+
+	if (!all || !all->cur)
+		return (NULL);
+	new = (tree *)malloc(sizeof(tree));
+	if (!new)
+		return (NULL);
+	new->head = (command_list *)malloc(sizeof(command_list));
+	if (!new)
+		return (NULL);
+	new->com = new->head;
+	while (all->cur != NULL && all->cur->token_type != PIPE)
 	{
-		command(all,t);
+		if (all->cur->token_type == REDIRECT || all->cur->token_type == HEARDOC)
+			new->com = redirect(all);
+		else
+			new->com = string(all);
+		new->com = new->com->next;
+		all->cur = all->cur->next;
 	}
+	return (new);
 }
 
-
-void command(token_all *all,tree* t)
+command_list	*redirect(token_all *all)
 {
+	command_list	*result;
 
-
+	if (!all || !all->cur || !all->cur->token)
+		return (NULL);
+	result = new_command_list(all->cur->token);
+	if (!result)
+		return (NULL);
+	if (!all->cur->next || !is_token_word(all->cur->next))
+		all->cur->syntax_error = SYNTAX_ERROR;
+	return (result);
 }
 
-void argumetes(token_all *all,tree* t)
+command_list	*string(token_all *all)
 {
+	command_list	*result;
 
-}
-
-
-void redirect(token_all *all,tree* t)
-{
-
-}
-
-void strinf(token_all *all,tree *t)
-{
-
+	if (!all || !all->cur || !all->cur->token)
+		return (NULL);
+	result = new_command_list(all->cur->token);
+	if (!result)
+		return (NULL);
+	return (result);
 }
