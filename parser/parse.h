@@ -26,15 +26,25 @@ typedef struct node
 	command_list		*head;
 }						tree;
 
-
-tree	*piped_commands(token_all *all);
-tree	*command(token_all *all);
+void p_command_list(command_list *com);
 int	token_type_check_and_next(token_all *all);
 tree	*new_node(tree *l, tree *r, int t_type, char *s);
 t_bool	is_token_word(token_list *t);
 command_list	*new_command_list(char *s);
+t_bool syntax_check(token_all *all,tree*t);
+
 void 	redirect(token_all *all,command_list *com);
 void	string(token_all *all, command_list *com);
-t_bool syntax_check(token_all *all);
+tree	*command(token_all *all);
+tree	*piped_commands(token_all *all);
+
+void free_command_list(command_list *com);
+void free_tree(tree* t);
+void free_token_list(token_list* tok);
+void free_token_all(token_all* all);
+void free_all(token_all *all, tree*t);
+
+
+
 
 #endif
