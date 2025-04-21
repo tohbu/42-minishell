@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 17:32:54 by tohbu             #+#    #+#             */
-/*   Updated: 2024/10/29 21:15:50 by tohbu            ###   ########.fr       */
+/*   Created: 2024/10/27 13:39:38 by tohbu             #+#    #+#             */
+/*   Updated: 2024/11/02 13:18:45 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	unsigned char	*tmps1;
-	unsigned char	*tmps2;
+	char	*result;
+	size_t	i;
 
-	tmps1 = (unsigned char *)s1;
-	tmps2 = (unsigned char *)s2;
-	while (n > 0)
+	if (s == NULL || f == NULL)
+		return (NULL);
+	result = (char *)malloc(ft_strlen((const char *)s) + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (s[i])
 	{
-		if (*tmps1 > *tmps2)
-			return (1);
-		if (*tmps1 < *tmps2)
-			return (-1);
-		tmps1++;
-		tmps2++;
-		n--;
+		result[i] = (*f)(i, s[i]);
+		i++;
 	}
-	return (0);
+	result[i] = '\0';
+	return (result);
 }

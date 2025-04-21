@@ -1,33 +1,4 @@
-// #include "../libft/libft.h"
 
-// typedef int t_bool;
-
-// #define ERROR -1
-
-// enum Token_type
-// {
-// 	WORD,
-// 	WORD_IN_SINGLE_QOUTE,
-// 	WORD_IN_DOUBLE_QOUTE,
-// 	PIPE,
-// 	REDIRECT,
-// 	HEARDOC
-
-// };
-
-// typedef struct token_list
-// {
-// 	struct  token_list* next;
-// 	char *token;
-// 	int token_type;
-// } token_list;
-
-// typedef struct  token_all
-// {
-// 	token_list* head;
-// 	token_list* cur;
-// 	int pipe_n;
-// } token_all;
 #include "lexer.h"
 
 t_bool	check_meta_word(char c)
@@ -86,6 +57,17 @@ int	get_token_type(char *s)
 	return (WORD);
 }
 
+token_all* init_token_all(token_all *all)
+{
+	all->head =(token_list*)malloc(sizeof(token_list));
+	all->cur  = all->head;
+	all->pipe_n = 0;
+	return all;
+}
+
+
+
+
 token_list	*add_list(char *s)
 {
 	token_list	*new;
@@ -102,8 +84,6 @@ token_list	*add_list(char *s)
 
 t_bool	lexer(char *one_line, token_all *all)
 {
-	char	*start;
-	char	*start;
 	char	*start;
 
 	while (*one_line)
@@ -165,4 +145,5 @@ t_bool	lexer(char *one_line, token_all *all)
 		all->cur = all->cur->next;
 	}
 	all->cur = all->head->next;
+	return 1;
 }

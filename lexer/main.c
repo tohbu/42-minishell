@@ -8,13 +8,6 @@ void print_token_list(token_list *head) {
     }
 }
 
-token_all* init_token_all(token_all *all)
-{
-	all->head =(token_list*)malloc(sizeof(token_list));
-	all->cur  = all->head;
-	all->pipe_n = 0;
-}
-
 int main() {
     // 入力を格納するためのバッファ
     char input[1024];

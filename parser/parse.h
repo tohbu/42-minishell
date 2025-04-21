@@ -1,3 +1,5 @@
+#ifndef PARSE_H
+#define PARSE_H 
 #include "../lexer/lexer.h"
 
 #define SYNTAX_ERROR 1
@@ -23,3 +25,16 @@ typedef struct node
 	command_list		*com;
 	command_list		*head;
 }						tree;
+
+
+tree	*piped_commands(token_all *all);
+tree	*command(token_all *all);
+int	token_type_check_and_next(token_all *all);
+tree	*new_node(tree *l, tree *r, int t_type, char *s);
+t_bool	is_token_word(token_list *t);
+command_list	*new_command_list(char *s);
+void 	redirect(token_all *all,command_list *com);
+void	string(token_all *all, command_list *com);
+t_bool syntax_check(token_all *all);
+
+#endif

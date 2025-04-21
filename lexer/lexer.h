@@ -1,7 +1,10 @@
+#ifndef LEXER_H
+#define LEXER_H
 #include "../libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 typedef int				t_bool;
 
@@ -38,3 +41,6 @@ t_bool					lexer(char *one_line, token_all *all);
 token_list				*add_list(char *s);
 char					*ft_strndup(char *s, size_t n);
 int						get_token_type(char *s);
+token_all* init_token_all(token_all *all);
+
+#endif
