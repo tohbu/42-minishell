@@ -38,6 +38,8 @@ typedef struct token_all
 	int					pipe_n;
 }						token_all;
 
+
+
 t_bool					lexer(char *one_line, token_all *all);
 token_list				*add_list(char *s);
 token_all* init_token_all(token_all *all);

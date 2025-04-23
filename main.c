@@ -37,8 +37,7 @@ void print_ast(tree *t)
 	printf("\n");
 }
 
-int main(int argc, char *argv[]) {
-    // 入力を格納するためのバッファ
+int main(int argc, char *argv[], char *envp[]) {
     char input[1024];
 	argc++;
 	argc--;
