@@ -3,80 +3,129 @@
 #include "./lexer/lexer.h"
 #include "./parser/parse.h"
 
-// 再帰的にノードを出力する関数
-void print_dot_tree(tree *t, int *node_id) {
-    if (!t) return;
+void print_tab(int n)
+{
+	while (n-- > 0)
+		printf("     ");
+}
 
-    // ノードIDを一意に管理
-    int current_node_id = (*node_id)++;
-    const char *node_type;
-
-    // ノードタイプを文字列に変換
-    if (t->token_type == PIPE)
-        node_type = "PIPE";
-    else
-        node_type = "COMMAND";
-    // ノードのラベル（トークンも含めると視覚的にわかりやすい）
-    printf("    node%d [label=\"%s\"];\n", current_node_id, node_type);
-    if (t->left) 
+void print_token(int t, command_list *head)
+{
+	command_list* tmp = head->next;
+	if(t == PIPE)
+		printf("(PIPE)");
+	else 
+		printf("COMMAND");
+	while (tmp)
 	{
-        int left_node_id = (*node_id)++;
-        printf("    node%d -> node%d;\n", current_node_id, left_node_id);
-        print_dot_tree(t->left, node_id);  // 再帰的に左の子ノードを出力
-    }
-    // 右の子ノードがあれば、再帰的に処理
-    if (t->right) {
-        int right_node_id = (*node_id)++;
-        printf("    node%d -> node%d;\n", current_node_id, right_node_id);
-        print_dot_tree(t->right, node_id);  // 再帰的に右の子ノードを出力
+		printf("[%s]",tmp->s);
+		tmp = tmp->next;
+	}
+	
+}
+
+
+void tree_visualize(tree *t, int deep)
+{
+	if(!t)
+		return;
+	print_token(t->token_type,t->head);
+	if(t->right)
+		printf("--↓--");
+	tree_visualize(t->right,deep+1);
+	printf("\n");
+	print_tab(deep+1);
+	tree_visualize(t->left,deep+1);
+}
+
+
+
+#include "./lexer/lexer.h"
+#include "./parser/parse.h"
+#include <string.h>
+
+char * print_type(int token_type)
+{
+    if (token_type == PIPE)
+        return "PIPE";
+    else if (token_type == REDIRECT)
+        return "REDIRECT";
+    else if (token_type == HEARDOC)
+        return "HEARDOC";
+    else if (token_type == WORD_IN_SINGLE_QOUTE)
+        return "WORD_IN_SINGLE_QOUTE";
+    else if (token_type == WORD_IN_DOUBLE_QOUTE)
+        return "WORD_IN_DOUBLE_QOUTE";
+    else if (token_type == FILENAME)
+        return "FILENAME";
+    else if (token_type == LIMITER)
+        return "LIMITER";
+    else 
+        return "WORD";
+}
+
+
+void print_token_list(token_list *head) {
+    token_list *temp = head;
+    while (temp) {
+        printf("Token_type: %s Token: %s\n",print_type(temp->token_type),temp->token);
+        temp = temp->next;
     }
 }
 
-// dot形式でASTを出力する関数
-void output_dot(tree *t) {
-    int node_id = 0;  // node_idの初期化
-    printf("digraph AST {\n");
-    print_dot_tree(t, &node_id);  // 再帰的にASTを出力
-    printf("}\n");
+void print_command_list(command_list *com)
+{
+	int i = 0;
+	if(!com)
+	{
+		printf("com = NULL\n");
+		return;
+	}
+	command_list* tmp = com;
+	while(tmp)
+	{
+		printf("%d:%s	",i++,tmp->s);
+		tmp = tmp->next;
+	}	
 }
 
-// メイン関数
+void print_ast(tree *t)
+{
+	if(!t)
+		return;
+	print_ast(t->left);
+	print_ast(t->right);
+	print_command_list(t->head->next);
+	printf("\n");
+}
+
 int main(int argc, char *argv[]) {
     // 入力を格納するためのバッファ
     char input[1024];
-    
-    argc++;
-    argc--; // この部分は不要ですが、スタイルに合わせてそのまま
+	argc++;
+	argc--;
+	while (1)
+	{
+		printf("%s> ",argv[0]);
 
-    while (1) {
-        printf("%s> ", argv[0]);
-
-        if (fgets(input, sizeof(input), stdin) == NULL) {
-            printf("Error reading input.\n");
-            return 1;
-        }
-        input[strcspn(input, "\n")] = 0;  // 改行を取り除く
-        
-        // トークンリストの初期化
-        token_all *all = (token_all*)malloc(sizeof(*all));
-        if (!all) {
-            printf("Memory allocation error\n");
-            return 1;
-        }
-        init_token_all(all);
-
-        // レキサー関数を呼び出して入力文字列をトークン化
-        if (lexer(input, all) == ERROR) {
-            printf("Error in lexer\n");
-            return 1;
-        }
-
-        // 構文解析
-        tree* ast = piped_commands(all);
-        
-        // dot形式でASTを出力
-        output_dot(ast);
-    }
-
-    return 0;
+		if (fgets(input, sizeof(input), stdin) == NULL) {
+			printf("Error reading input.\n");
+			return 1;
+		}
+		input[strcspn(input, "\n")] = 0;
+		token_all *all = (token_all*)malloc(sizeof(token_all));
+		if(!all)
+			return 1;
+		init_token_all(all);
+		if (lexer(input, all) == ERROR) {
+			printf("Error in lexer\n");
+			return 1;
+		}
+		print_token_list(all->head->next);
+		//parse;
+		tree* ast = piped_commands(all);
+		tree_visualize(ast,0);
+		printf("\n");
+		syntax_check(all,ast);
+	}
 }
