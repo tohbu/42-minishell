@@ -1,99 +1,33 @@
-// #include "../libft/libft.h"
 
-// typedef int t_bool;
-
-// #define ERROR -1
-
-// enum Token_type
-// {
-// 	WORD,
-// 	WORD_IN_SINGLE_QOUTE,
-// 	WORD_IN_DOUBLE_QOUTE,
-// 	PIPE,
-// 	REDIRECT,
-// 	HEARDOC
-
-// };
-
-// typedef struct token_list
-// {
-// 	struct  token_list* next;
-// 	char *token;
-// 	int token_type;
-// } token_list;
-
-// typedef struct  token_all
-// {
-// 	token_list* head;
-// 	token_list* cur;
-// 	int pipe_n;
-// } token_all;
 #include "lexer.h"
 
-t_bool	check_meta_word(char c)
-{
-	if (c == '|' || c == '<' || c == '>')
-		return (1);
-	return (0);
-}
 
-t_bool	check_space(char c)
+token_all* init_token_all(token_all *all)
 {
-	if (c == ' ' || c == '\t')
-		return (1);
-	return (0);
-}
-
-t_bool	check_quote(char c)
-{
-	if (c == '\'' || c == '\"')
-		return (1);
-	return (0);
-}
-
-char	*ft_strndup(char *s, size_t n)
-{
-	char	*ret;
-	size_t	i;
-
-	i = 0;
-	ret = (char *)malloc(n + 1);
-	if (!ret)
-		return (NULL);
-	while (i < n && s[i] != '\0')
-	{
-		ret[i] = s[i];
-		i++;
-	}
-	ret[i] = '\0';
-	return (ret);
-}
-
-int	get_token_type(char *s)
-{
-	if (ft_strchr(s, '\''))
-		return (WORD_IN_SINGLE_QOUTE);
-	else if (ft_strchr(s, '\"'))
-		return (WORD_IN_DOUBLE_QOUTE);
-	else if (strcmp(s, "|") == 0)
-		return (PIPE);
-	else if (strcmp(s, "<") == 0 || strcmp(s, ">") == 0)
-		return (REDIRECT);
-	else if (strcmp(s, "<<") == 0)
-		return (HEARDOC);
-	else if (strcmp(s, ">>") == 0)
-		return (REDIRECT);
-	return (WORD);
+	if(!all)
+		return NULL;
+	all->head =(token_list*)malloc(sizeof(token_list));
+	if(!all->head)
+		return NULL;
+	all->cur  = all->head;
+	all->pipe_n = 0;
+	all->head->token = NULL;
+	all->head->token_type = 0;
+	all->head->syntax_error = 0;
+	return all;
 }
 
 token_list	*add_list(char *s)
 {
 	token_list	*new;
 
+
 	new = (token_list *)malloc(sizeof(token_list));
-	if (!new)
+	if (!new || !s)
 		return (NULL);
 	new->token = s;
+	if(!new->token)
+		return NULL;
 	new->token_type = get_token_type(s);
 	new->syntax_error = 0;
 	new->next = NULL;
@@ -103,8 +37,6 @@ token_list	*add_list(char *s)
 t_bool	lexer(char *one_line, token_all *all)
 {
 	char	*start;
-	char	*start;
-	char	*start;
 
 	while (*one_line)
 	{
@@ -112,7 +44,7 @@ t_bool	lexer(char *one_line, token_all *all)
 			one_line++;
 		if (!*one_line)
 			break ;
-		if (check_meta_word(*one_line))
+		if (check_meta_word(*one_line)) // and  or	もこの中で処理を行う
 		{
 			if (*one_line == '|')
 				all->pipe_n++;
@@ -165,4 +97,5 @@ t_bool	lexer(char *one_line, token_all *all)
 		all->cur = all->cur->next;
 	}
 	all->cur = all->head->next;
+	return 1;
 }
