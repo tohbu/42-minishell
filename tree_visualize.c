@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "./lexer/lexer.h"
 #include "./parser/parse.h"
+#include "./expander/executer.h"
 
 void print_tab(int n)
 {
@@ -99,11 +100,12 @@ void print_ast(tree *t)
 	printf("\n");
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[],char *envp[]) {
     // 入力を格納するためのバッファ
     char input[1024];
 	argc++;
 	argc--;
+	t_env_list *env = get_envp_to_struct(envp);
 	while (1)
 	{
 		printf("%s> ",argv[0]);
@@ -127,5 +129,8 @@ int main(int argc, char *argv[]) {
 		tree_visualize(ast,0);
 		printf("\n");
 		syntax_check(all,ast);
+		expand_env(ast,env->next);
+		tree_visualize(ast,0);
+
 	}
 }

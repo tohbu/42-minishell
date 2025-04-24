@@ -6,6 +6,7 @@ void free_command_list(command_list *com)
 	if(!com)
 		return;
 	free_command_list(com->next);
+	free(com->s);
 	free(com);
 }
 

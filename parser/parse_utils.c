@@ -23,7 +23,7 @@ command_list	*new_command_list(char *str)
 	if (!new)
 		return (NULL);
 	new->next = NULL;
-	new->s = str;
+	new->s = ft_strdup(str);
 	return (new);
 }
 

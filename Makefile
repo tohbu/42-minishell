@@ -5,11 +5,11 @@ TREE_NAME = tree_visualize  # tree_visualizeの実行ファイル名
 # ディレクトリの定義
 PARSER_DIR = ./parser
 LEXER_DIR = ./lexer
-INCLUDE_DIRS = $(PARSER_DIR) $(LEXER_DIR)  # ヘッダーファイルディレクトリ
+INCLUDE_DIRS = $(PARSER_DIR) $(LEXER_DIR) ./expander# ヘッダーファイルディレクトリ
 
 # ソースファイル
 SRCS = main.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c
-SRCS_TREE = tree_visualize.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c
+SRCS_TREE = tree_visualize.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c ./expander/env.c
 
 # オブジェクトファイル)?
 OBJS = $(SRCS:.c=.o)
