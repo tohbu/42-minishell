@@ -1,40 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
+/*   Updated: 2025/04/24 22:12:07 by tohbu            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lexer.h"
 
-
-token_all* init_token_all(token_all *all)
+t_token_all	*init_t_token_all(t_token_all *all)
 {
-	if(!all)
-		return NULL;
-	all->head =(token_list*)malloc(sizeof(token_list));
-	if(!all->head)
-		return NULL;
-	all->cur  = all->head;
+	if (!all)
+		return (NULL);
+	all->head = (t_token_list *)malloc(sizeof(t_token_list));
+	if (!all->head)
+		return (NULL);
+	all->cur = all->head;
 	all->pipe_n = 0;
 	all->head->token = NULL;
 	all->head->token_type = 0;
 	all->head->syntax_error = 0;
-	return all;
+	return (all);
 }
 
-token_list	*add_list(char *s)
+t_token_list	*add_list(char *s)
 {
-	token_list	*new;
+	t_token_list	*new;
 
-
-	new = (token_list *)malloc(sizeof(token_list));
+	new = (t_token_list *)malloc(sizeof(t_token_list));
 	if (!new || !s)
 		return (NULL);
 	new->token = s;
-	if(!new->token)
-		return NULL;
+	if (!new->token)
+		return (NULL);
 	new->token_type = get_token_type(s);
 	new->syntax_error = 0;
 	new->next = NULL;
 	return (new);
 }
 
-t_bool	lexer(char *one_line, token_all *all)
+t_bool	lexer(char *one_line, t_token_all *all)
 {
 	char	*start;
 
@@ -44,18 +53,18 @@ t_bool	lexer(char *one_line, token_all *all)
 			one_line++;
 		if (!*one_line)
 			break ;
-		if (check_meta_word(*one_line)) // and  or	もこの中で処理を行う
+		if (check_meta_word(*one_line))
 		{
 			if (*one_line == '|')
 				all->pipe_n++;
 			if (*one_line == '<' && *(one_line + 1) == '<')
 			{
-				all->cur->next = add_list(ft_strndup(one_line, 2)); // << を処理
+				all->cur->next = add_list(ft_strndup(one_line, 2));
 				one_line++;
 			}
 			else if (*one_line == '>' && *(one_line + 1) == '>')
 			{
-				all->cur->next = add_list(ft_strndup(one_line, 2)); // >> を処理
+				all->cur->next = add_list(ft_strndup(one_line, 2));
 				one_line++;
 			}
 			else
@@ -97,5 +106,5 @@ t_bool	lexer(char *one_line, token_all *all)
 		all->cur = all->cur->next;
 	}
 	all->cur = all->head->next;
-	return 1;
+	return (1);
 }

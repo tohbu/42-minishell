@@ -1,50 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/24 22:15:30 by tohbu             #+#    #+#             */
+/*   Updated: 2025/04/24 22:20:08 by tohbu            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSE_H
-#define PARSE_H 
-#include "../lexer/lexer.h"
+# define PARSE_H
+# include "../lexer/lexer.h"
 
-#define SYNTAX_ERROR 1
+# define SYNTAX_ERROR 1
 
-typedef struct word
+typedef struct s_command_list
 {
-	char				*s;
-	int					token_type;
-}						word;
+	struct s_command_list	*next;
+	char					*s;
+	int						token_type;
 
-typedef struct command_list
+}							t_command_list;
+
+typedef struct s_tree
 {
-	struct command_list	*next;
-	char				*s;
+	struct s_tree			*left;
+	struct s_tree			*right;
+	int						token_type;
+	t_command_list			*com;
+	t_command_list			*head;
+}							t_tree;
 
-}						command_list;
+void						p_t_command_list(t_command_list *com);
+int							token_type_check_and_next(t_token_all *all);
+t_tree						*new_node(t_tree *l, t_tree *r, int t_type,
+								char *s);
+t_bool						is_token_word(t_token_list *t);
+t_command_list				*new_t_command_list(char *str, int type);
+t_bool						syntax_check(t_token_all *all, t_tree *t);
 
-typedef struct node
-{
-	struct node			*left;
-	struct node			*right;
-	int					token_type;
-	command_list		*com;
-	command_list		*head;
-}						tree;
+void						redirect(t_token_all *all, t_command_list *com);
+void						string(t_token_all *all, t_command_list *com);
+t_tree						*command(t_token_all *all);
+t_tree						*piped_commands(t_token_all *all);
 
-void p_command_list(command_list *com);
-int	token_type_check_and_next(token_all *all);
-tree	*new_node(tree *l, tree *r, int t_type, char *s);
-t_bool	is_token_word(token_list *t);
-command_list	*new_command_list(char *s);
-t_bool syntax_check(token_all *all,tree*t);
+void						free_t_command_list(t_command_list *com);
+void						free_t_tree(t_tree *t);
+void						free_t_token_list(t_token_list *tok);
+void						free_t_token_all(t_token_all *all);
+void						free_all(t_token_all *all, t_tree *t);
 
-void 	redirect(token_all *all,command_list *com);
-void	string(token_all *all, command_list *com);
-tree	*command(token_all *all);
-tree	*piped_commands(token_all *all);
-
-void free_command_list(command_list *com);
-void free_tree(tree* t);
-void free_token_list(token_list* tok);
-void free_token_all(token_all* all);
-void free_all(token_all *all, tree*t);
-
-
-
+t_bool						set_syntax_error(t_token_all *all);
+t_tree						*init_node(void);
 
 #endif

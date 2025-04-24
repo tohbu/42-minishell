@@ -1,89 +1,87 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/24 21:55:28 by tohbu             #+#    #+#             */
+/*   Updated: 2025/04/24 22:18:28 by tohbu            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parse.h"
 
+void	redirect(t_token_all *all, t_command_list *com)
+{
+	t_command_list	*tmp;
 
-	void 	redirect(token_all *all,command_list *com)
+	tmp = com;
+	if (!all || !all->cur || !all->cur->token)
+		return ;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new_t_command_list(all->cur->token, all->cur->token_type);
+	if (!all->cur->next || !is_token_word(all->cur->next))
+		all->cur->syntax_error = SYNTAX_ERROR;
+}
+
+void	string(t_token_all *all, t_command_list *com)
+{
+	t_command_list	*tmp;
+
+	if (!com)
+		return ;
+	tmp = com;
+	if (!all || !all->cur || !all->cur->token)
+		return ;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new_t_command_list(all->cur->token, all->cur->token_type);
+}
+
+t_tree	*command(t_token_all *all)
+{
+	t_tree	*new;
+	int		i;
+
+	i = 0;
+	if (!all || !all->cur)
+		return (set_syntax_error(all), NULL);
+	new = init_node();
+	if (!new)
+		return (NULL);
+	while (all->cur && all->cur->token_type != PIPE)
 	{
-		command_list	*tmp;
-		tmp = com;
-
-		if (!all || !all->cur || !all->cur->token)
-			return ;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_command_list(all->cur->token);
-		if (!all->cur->next || !is_token_word(all->cur->next))
-			all->cur->syntax_error = SYNTAX_ERROR;
+		if (all->cur->token_type == REDIRECT || all->cur->token_type == HEARDOC)
+			redirect(all, new->com);
+		else
+			string(all, new->com);
+		all->cur = all->cur->next;
+		i++;
 	}
+	if (i == 0 && all->cur)
+		all->cur->syntax_error = 1;
+	return (new);
+}
 
-	void	string(token_all *all, command_list *com)
+t_tree	*piped_commands(t_token_all *all)
+{
+	t_tree	*pipe_right;
+	t_tree	*parent;
+
+	if (!all)
+		return (NULL);
+	parent = command(all);
+	while (1)
 	{
-		command_list	*tmp;
-		if(!com)
-			return ;
-		tmp = com;
-		if (!all || !all->cur || !all->cur->token)
-			return;
-		while (tmp->next) 
-			tmp = tmp->next;
-		tmp->next = new_command_list(all->cur->token);
-	}
-
-
-		
-	tree	*command(token_all *all)
-	{
-		tree	*new;
-		int i = 0;
-	
-		if (!all || !all->cur)
+		if (all && all->cur && all->cur->token_type == PIPE)
 		{
-			token_list *tmp = all->head->next;
-			while (tmp->next)
-				tmp = tmp->next;
-			tmp->syntax_error = 1;
-			return (NULL);
-		}
-		new = (tree *)malloc(sizeof(tree));
-		if (!new)
-			return (NULL);
-		new->left = NULL;
-		new->right = NULL;
-		new->head = (command_list *)malloc(sizeof(command_list));
-		new->head->next = NULL;
-		if (!new)
-			return (NULL);
-		new->com = new->head;
-		while (all->cur != NULL && all->cur->token_type != PIPE)
-		{
-			if (all->cur->token_type == REDIRECT || all->cur->token_type == HEARDOC)
-				redirect(all,new->com);
-			else
-				string(all,new->com);
 			all->cur = all->cur->next;
-			i++;
+			pipe_right = command(all);
+			parent = new_node(parent, pipe_right, PIPE, "|");
 		}
-		if(i == 0)
-			all->cur->syntax_error = 1;
-		return (new);
+		else
+			return (parent);
 	}
-
-	
-	tree	*piped_commands(token_all *all)
-	{
-		tree 	*pipe_right;
-		tree	*parent;
-
-		if (!all)
-			return (NULL);
-		parent = command(all);
-		while (1)
-		{
-			if (token_type_check_and_next(all) == PIPE)
-			{
-				pipe_right = command(all);
-				parent = new_node(parent,pipe_right, PIPE, "|");
-			}
-			else
-				return (parent);	
-		}
-	}
+}

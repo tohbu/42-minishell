@@ -1,55 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/24 22:14:37 by tohbu             #+#    #+#             */
+/*   Created: 2025/04/24 22:03:08 by tohbu             #+#    #+#             */
 /*   Updated: 2025/04/24 22:18:28 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-void	free_t_command_list(t_command_list *com)
+t_tree	*init_node(void)
 {
-	if (!com)
-		return ;
-	free_t_command_list(com->next);
-	free(com->s);
-	free(com);
+	t_tree	*new;
+
+	new = malloc(sizeof(t_tree));
+	if (!new)
+		return (NULL);
+	new->left = NULL;
+	new->right = NULL;
+	new->head = malloc(sizeof(t_command_list));
+	if (!new->head)
+		return (free(new), NULL);
+	new->head->next = NULL;
+	new->head->s = NULL;
+	new->token_type = 0;
+	new->com = new->head;
+	return (new);
 }
 
-void	free_t_tree(t_tree *t)
+t_bool	set_syntax_error(t_token_all *all)
 {
-	if (t == NULL)
-		return ;
-	free_t_tree(t->left);
-	free_t_tree(t->right);
-	free_t_command_list(t->head);
-	free(t);
-}
+	t_token_list	*tmp;
 
-void	free_t_token_list(t_token_list *tok)
-{
-	if (!tok)
-		return ;
-	free_t_token_list(tok->next);
-	free(tok->token);
-	free(tok);
-}
-
-void	free_t_token_all(t_token_all *all)
-{
-	if (!all)
-		return ;
-	free_t_token_list(all->head);
-	free(all);
-}
-
-void	free_all(t_token_all *all, t_tree *t)
-{
-	free_t_tree(t);
-	free_t_token_all(all);
+	tmp = all->head->next;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->syntax_error = 1;
+	return (1);
 }

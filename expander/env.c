@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
+/*   Updated: 2025/04/24 22:18:28 by tohbu            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executer.h"
 
 // char	*ft_strndup(char *s, size_t n)
@@ -21,117 +33,224 @@
 // 	return (ret);
 // }
 
-t_env_list *new_env_node(char *in_key, char* in_value)
+t_bool	check_env_format(char c)
 {
-	t_env_list* new;
-	new =(t_env_list*) malloc(sizeof(t_env_list));
-	if(!new)
-		return NULL;
+	if (ft_isalnum(c) || c == '_')
+		return (1);
+	return (0);
+}
+
+t_env_list	*new_env_node(char *in_key, char *in_value)
+{
+	t_env_list	*new;
+
+	new = (t_env_list *)malloc(sizeof(t_env_list));
+	if (!new)
+		return (NULL);
 	new->key = in_key;
 	new->value = in_value;
 	new->next = NULL;
-	return new;
+	return (new);
 }
 
-t_env_list *ft_get_env(char *s)
+t_env_list	*ft_get_env(char *s)
 {
-	if(!*s)
-		return NULL;
-	char * key = ft_strndup(s, ft_strchr(s,'=') - s);
-	char *value = ft_strdup(ft_strchr(s,'=')+1);
-	return new_env_node(key,value);
+	char	*key;
+	char	*value;
+
+	if (!*s)
+		return (NULL);
+	key = ft_strndup(s, ft_strchr(s, '=') - s);
+	value = ft_strdup(ft_strchr(s, '=') + 1);
+	return (new_env_node(key, value));
 }
 
-
-char * match_env_key(char * search , t_env_list * env)
+char	*match_env_key(char *search, t_env_list *env)
 {
-	t_env_list * tmp = env;
-	while(tmp)
+	t_env_list	*tmp;
+
+	tmp = env;
+	while (tmp)
 	{
-		if(strcmp(tmp->key, search)==0)
-			return ft_strdup(tmp->value);
+		if (strcmp(tmp->key, search) == 0)
+			return (ft_strdup(tmp->value));
 		tmp = tmp->next;
 	}
-	return NULL;
+	return (ft_calloc(sizeof(char *), 1));
 }
 
-void search_expand(command_list *com, t_env_list * env)
+char	*ft_strjoin_and_free(char *s1, char *s2)
 {
-	command_list * tmp_com = com;
-	while(tmp_com)
+	int		i;
+	int		j;
+	char	*reslut;
+
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	reslut = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!reslut)
+		return (NULL);
+	while (s1[i])
 	{
-		char* str = tmp_com->s;
-		while( str && *str && *str != '$')
-			str++;
-		if(!str || !*str )
+		reslut[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		reslut[i + j] = s2[j];
+		j++;
+	}
+	reslut[i + j] = '\0';
+	free(s1);
+	free(s2);
+	return (reslut);
+}
+
+char	*expand_command_str(char *s, t_env_list *env)
+{
+	char	*tmp;
+	int		i;
+	char	*front;
+	char	*back;
+	char	*result;
+
+	tmp = s;
+	i = 0;
+	while (*tmp && *tmp != '$')
+		tmp++;
+	if (!*tmp || !*(tmp + 1))
+		return (s);
+	front = ft_strndup(s, (tmp++ - s));
+	while (check_env_format(tmp[i]))
+		i++;
+	back = ft_strdup(tmp + i);
+	tmp = ft_strndup(tmp, i);
+	result = ft_strjoin_and_free(front, match_env_key(tmp, env));
+	result = ft_strjoin_and_free(result, back);
+	free(tmp);
+	return (result);
+}
+
+void	search_expand(t_command_list *com, t_env_list *env)
+{
+	t_command_list	*tmp_com;
+	char			*result;
+	char			*dast;
+
+	tmp_com = com->next;
+	while (tmp_com)
+	{
+		if ((tmp_com->token_type == WORD
+				|| tmp_com->token_type == WORD_IN_DOUBLE_QOUTE)
+			&& ft_strchr(tmp_com->s, '$'))
 		{
-			tmp_com = tmp_com->next;
-			continue;
-		}
-		else
-		{
-			str++;
-			int i = 0;
-			while(str[i])
+			result = expand_command_str(tmp_com->s, env);
+			while (result && ft_strchr(result, '$'))
 			{
-				char* tmp = ft_strndup(str,(i+1));
-				char *value_tmp = match_env_key(tmp,env);
-				printf("\nsearch expand = %s\n",tmp);
-				if(value_tmp != NULL)
-				{
-					printf("ok\n");
-					char *dast = tmp_com->s;
-					tmp_com->s = ft_strdup(value_tmp);
-					free(tmp);
-					free(dast);
-					break;
-				}
-				i++;
+				dast = result;
+				result = expand_command_str(result, env);
+				free(dast);
 			}
+			dast = tmp_com->s;
+			free(dast);
+			tmp_com->s = result;
 		}
 		tmp_com = tmp_com->next;
 	}
 }
 
-void expand_env(tree* t, t_env_list* env)
+// void	search_expand(t_command_list *com, t_env_list *env)
+// {
+// 	t_command_list	*tmp_com;
+// 	char			*str;
+// 	int				i;
+// 	char			*tmp;
+// 	char			*value_tmp;
+// 	char			*dast;
+
+// 	tmp_com = com;
+// 	while (tmp_com)
+// 	{
+// 		str = tmp_com->s;
+// 		while (str && *str && *str != '$')
+// 			str++;
+// 		if (!str || !*str || tmp_com->token_type == WORD_IN_SINGLE_QOUTE)
+// 		{
+// 			tmp_com = tmp_com->next;
+// 			continue ;
+// 		}
+// 		else if (tmp_com->token_type == WORD_IN_DOUBLE_QOUTE)
+// 		{
+// 		}
+// 		else
+// 		{
+// 			str++;
+// 			if (!*str)
+// 			{
+// 				tmp_com = tmp_com->next;
+// 				continue ;
+// 			}
+// 			i = 0;
+// 			while (check_env_format(str[i]))
+// 				i++;
+// 			tmp = ft_strndup(str, i);
+// 			printf("\nsearch expand = %s\n", tmp);
+// 			value_tmp = match_env_key(tmp, env);
+// 			if (value_tmp != NULL)
+// 			{
+// 				printf("ok\n");
+// 				dast = tmp_com->s;
+// 				tmp_com->s = ft_strdup(value_tmp);
+// 				free(tmp);
+// 				free(dast);
+// 				break ;
+// 			}
+// 		}
+// 		tmp_com = tmp_com->next;
+// 	}
+// }
+
+void	expand_env(t_tree *t, t_env_list *env)
 {
-	if(!t)
+	if (!t)
 		return ;
 	expand_env(t->left, env);
-	expand_env(t->right,env);
+	expand_env(t->right, env);
 	search_expand(t->head, env);
-	return;
+	return ;
 }
 
-void print_env_list(t_env_list* t)
+void	print_env_list(t_env_list *t)
 {
-	while(t)
+	while (t)
 	{
-		printf("key:%s value: %s\n",t->key, t->value);
+		printf("key:%s value: %s\n", t->key, t->value);
 		t = t->next;
 	}
 }
-t_env_list *get_envp_to_struct(char *envp[]) //dumy あり
+t_env_list	*get_envp_to_struct(char *envp[]) // dumy あり
 {
 	int i = 0;
-	t_env_list* st_env;
-    st_env = new_env_node(NULL,NULL);
-	t_env_list* tmp  = st_env;
-	while(envp[i])
+	t_env_list *st_env;
+	st_env = new_env_node(NULL, NULL);
+	t_env_list *tmp = st_env;
+	while (envp[i])
 	{
 		tmp->next = ft_get_env(envp[i]);
-		if(!tmp->next)
-			return NULL;
+		if (!tmp->next)
+			return (NULL);
 		tmp = tmp->next;
 		i++;
 	}
-	return st_env;
+	return (st_env);
 }
 
-void free_envlist(t_env_list * t)
+void	free_envlist(t_env_list *t)
 {
-	if(!t)
-		return;
+	if (!t)
+		return ;
 	free_envlist(t->next);
 	free(t->key);
 	free(t->value);
@@ -144,5 +263,5 @@ void free_envlist(t_env_list * t)
 // 	t_env_list *env = get_envp_to_struct(envp);
 // 	print_env_list(env);
 // 	free_envlist(env);
-//     return 0;
+//     return (0);
 // }

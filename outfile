@@ -1,15 +1,1 @@
-./tree_visualize> a | b | c | d
-Token_type: 0 Token: a
-Token_type: 3 Token: |
-Token_type: 0 Token: b
-Token_type: 3 Token: |
-Token_type: 0 Token: c
-Token_type: 3 Token: |
-Token_type: 0 Token: d
-(PIPE)--|--COMMAND
-
-     (PIPE)--|--COMMAND
-
-          (PIPE)--|--COMMAND
-
-               COMMAND
+ 123
