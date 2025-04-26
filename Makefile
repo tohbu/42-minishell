@@ -10,7 +10,7 @@ INCLUDE_DIRS = $(PARSER_DIR) $(LEXER_DIR) ./expander# ヘッダーファイル�
 # ソースファイル
 SRCS = main.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c
 SRCS_TREE = tree_visualize.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c \
-			./expander/env.c $(PARSER_DIR)/parse_utils2.c ./expander/heredoc.c ./expander/get_next_line.c
+			./expander/env.c $(PARSER_DIR)/parse_utils2.c ./expander/heredoc.c ./expander/get_next_line.c ./expander/delete_quote.c
 
 # オブジェクトファイル)?
 OBJS = $(SRCS:.c=.o)

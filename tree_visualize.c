@@ -1,10 +1,10 @@
 #include "./expander/executer.h"
 #include "./lexer/lexer.h"
 #include "./parser/parse.h"
+#include <readline/history.h>
+#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 
 void	print_tab(int n)
 {
@@ -118,10 +118,15 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		input = readline("minishell> ");
-        if (strlen(input) > 0)
+		if (strlen(input) > 0)
 		{
-            add_history(input);
-        }
+			add_history(input);
+		}
+		if (*input == '\0')
+		{
+			free(input);
+			continue ;
+		}
 		t_token_all *all = (t_token_all *)malloc(sizeof(t_token_all));
 		if (!all)
 			return (1);
@@ -138,8 +143,8 @@ int	main(int argc, char *argv[], char *envp[])
 		printf("\n");
 		if (!syntax_check(all, ast))
 			continue ;
+		// search_tree_heredoc(ast);
 		expand_env(ast, env->next);
-		search_tree_heredoc(ast);
 		t_tree_visualize(ast, 0);
 		printf("\n");
 		free_all(all, ast);

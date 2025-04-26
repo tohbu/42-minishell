@@ -6,32 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/24 22:18:28 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/04/26 16:51:14 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executer.h"
-
-// char	*ft_strndup(char *s, size_t n)
-// {
-// 	char	*ret;
-// 	size_t	i;
-
-// 	i = 0;
-// 	int len = ft_strlen(s);
-// 	if(len < n)
-// 		n = len;
-// 	ret = (char *)malloc(n + 1);
-// 	if (!ret)
-// 		return (NULL);
-// 	while (i < n && s[i] != '\0')
-// 	{
-// 		ret[i] = s[i];
-// 		i++;
-// 	}
-// 	ret[i] = '\0';
-// 	return (ret);
-// }
 
 t_bool	check_env_format(char c)
 {
@@ -70,6 +49,7 @@ char	*match_env_key(char *search, t_env_list *env)
 	t_env_list	*tmp;
 
 	tmp = env;
+	printf("segf = %s\n", search);
 	while (tmp)
 	{
 		if (strcmp(tmp->key, search) == 0)
@@ -161,63 +141,14 @@ void	search_expand(t_command_list *com, t_env_list *env)
 	}
 }
 
-// void	search_expand(t_command_list *com, t_env_list *env)
-// {
-// 	t_command_list	*tmp_com;
-// 	char			*str;
-// 	int				i;
-// 	char			*tmp;
-// 	char			*value_tmp;
-// 	char			*dast;
-
-// 	tmp_com = com;
-// 	while (tmp_com)
-// 	{
-// 		str = tmp_com->s;
-// 		while (str && *str && *str != '$')
-// 			str++;
-// 		if (!str || !*str || tmp_com->token_type == WORD_IN_SINGLE_QOUTE)
-// 		{
-// 			tmp_com = tmp_com->next;
-// 			continue ;
-// 		}
-// 		else if (tmp_com->token_type == WORD_IN_DOUBLE_QOUTE)
-// 		{
-// 		}
-// 		else
-// 		{
-// 			str++;
-// 			if (!*str)
-// 			{
-// 				tmp_com = tmp_com->next;
-// 				continue ;
-// 			}
-// 			i = 0;
-// 			while (check_env_format(str[i]))
-// 				i++;
-// 			tmp = ft_strndup(str, i);
-// 			printf("\nsearch expand = %s\n", tmp);
-// 			value_tmp = match_env_key(tmp, env);
-// 			if (value_tmp != NULL)
-// 			{
-// 				printf("ok\n");
-// 				dast = tmp_com->s;
-// 				tmp_com->s = ft_strdup(value_tmp);
-// 				free(tmp);
-// 				free(dast);
-// 				break ;
-// 			}
-// 		}
-// 		tmp_com = tmp_com->next;
-// 	}
-// }
-
 void	expand_env(t_tree *t, t_env_list *env)
 {
 	if (!t)
 		return ;
 	expand_env(t->left, env);
 	expand_env(t->right, env);
+	expand_herdoc(t->head);
+	delete_quote_com(t->head);
 	search_expand(t->head, env);
 	return ;
 }
@@ -256,12 +187,3 @@ void	free_envlist(t_env_list *t)
 	free(t->value);
 	free(t);
 }
-
-#include <stdio.h>
-
-// int main(int argc, char *argv[], char *envp[]) {
-// 	t_env_list *env = get_envp_to_struct(envp);
-// 	print_env_list(env);
-// 	free_envlist(env);
-//     return (0);
-// }
