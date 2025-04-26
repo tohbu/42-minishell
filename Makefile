@@ -9,7 +9,8 @@ INCLUDE_DIRS = $(PARSER_DIR) $(LEXER_DIR) ./expander# ヘッダーファイル�
 
 # ソースファイル
 SRCS = main.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c
-SRCS_TREE = tree_visualize.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c ./expander/env.c $(PARSER_DIR)/parse_utils2.c
+SRCS_TREE = tree_visualize.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c \
+			./expander/env.c $(PARSER_DIR)/parse_utils2.c ./expander/heredoc.c ./expander/get_next_line.c
 
 # オブジェクトファイル)?
 OBJS = $(SRCS:.c=.o)
@@ -26,7 +27,7 @@ LIBFT = libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L. -lft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L. -lft -lreadline
 
 $(LIBFT):
 	make -C ./libft
@@ -47,4 +48,4 @@ re: fclean all
 
 # treeのターゲット：tree_visualize用の実行ファイルを作成
 tree: $(OBJS_TREE) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TREE_NAME) $(OBJS_TREE) -L. -lft  # tree_visualize の実行ファイルを作成
+	$(CC) $(CFLAGS) -o $(TREE_NAME) $(OBJS_TREE) -L. -lft -lreadline # tree_visualize の実行ファイルを作成

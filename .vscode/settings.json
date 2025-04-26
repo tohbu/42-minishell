@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"libft.h": "c",
-		"parse.h": "c"
+		"parse.h": "c",
+		"history.h": "c"
 	}
 }

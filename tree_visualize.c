@@ -3,6 +3,8 @@
 #include "./parser/parse.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 void	print_tab(int n)
 {
@@ -108,20 +110,18 @@ void	print_ast(t_tree *t)
 int	main(int argc, char *argv[], char *envp[])
 {
 	// 入力を格納するためのバッファ
-	char input[1024];
+	char *input;
 	argc++;
 	argc--;
+	argv++;
 	t_env_list *env = get_envp_to_struct(envp);
 	while (1)
 	{
-		printf("%s> ", argv[0]);
-
-		if (fgets(input, sizeof(input), stdin) == NULL)
+		input = readline("minishell> ");
+        if (strlen(input) > 0)
 		{
-			printf("Error reading input.\n");
-			return (1);
-		}
-		input[strcspn(input, "\n")] = 0;
+            add_history(input);
+        }
 		t_token_all *all = (t_token_all *)malloc(sizeof(t_token_all));
 		if (!all)
 			return (1);
@@ -139,7 +139,10 @@ int	main(int argc, char *argv[], char *envp[])
 		if (!syntax_check(all, ast))
 			continue ;
 		expand_env(ast, env->next);
+		search_tree_heredoc(ast);
 		t_tree_visualize(ast, 0);
+		printf("\n");
 		free_all(all, ast);
+		free(input);
 	}
 }
