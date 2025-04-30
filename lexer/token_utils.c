@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:06 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/26 16:24:11 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/04/29 17:05:28 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,13 @@ int	get_token_type(char *s)
 		return (WORD_IN_DOUBLE_QOUTE);
 	else if (strcmp(s, "|") == 0)
 		return (PIPE);
-	else if (strcmp(s, "<") == 0 || strcmp(s, ">") == 0)
-		return (REDIRECT);
+	else if (strcmp(s, "<") == 0)
+		return (REDIRECT_IN);
+	else if (strcmp(s, ">") == 0)
+		return (REDIRECT_OUT);
 	else if (strcmp(s, "<<") == 0)
 		return (HEARDOC);
 	else if (strcmp(s, ">>") == 0)
-		return (REDIRECT);
+		return (REDIRECT_APPEND);
 	return (WORD);
 }

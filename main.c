@@ -1,12 +1,11 @@
 
 #include "./lexer/lexer.h"
 #include "./parser/parse.h"
-#include <string.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-
+#include <string.h>
 
 void	print_t_token_list(t_token_list *head)
 {
@@ -51,31 +50,33 @@ void	print_ast(t_tree *t)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char* input;
+	char		*input;
+	t_token_all	*all;
+	t_tree		*ast;
+
 	argc++;
 	argc--;
 	while (1)
-	{   
+	{
 		input = readline("minishell> ");
-        if (strlen(input) > 0)
+		if (strlen(input) > 0)
 		{
-            add_history(input); /* 履歴を保存 */
-        }
-
-		t_token_all *all = (t_token_all *)malloc(sizeof(t_token_all));
+			add_history(input); /* 履歴を保存 */
+		}
+		all = (t_token_all *)malloc(sizeof(t_token_all));
 		if (!all)
 			return (1);
-			init_t_token_all(all);
-			if (lexer(input, all) == ERROR)
-			{
-				printf("Error in lexer\n");
-				return (1);
-			}
-			print_t_token_list(all->head->next);
-			// parse;
-			t_tree *ast = piped_commands(all);
-			// print_ast(ast);
-			syntax_check(all, ast);
-			free(input);
+		init_t_token_all(all);
+		if (lexer(input, all) == ERROR)
+		{
+			printf("Error in lexer\n");
+			return (1);
+		}
+		print_t_token_list(all->head->next);
+		// parse;
+		ast = piped_commands(all);
+		// print_ast(ast);
+		syntax_check(all, ast);
+		free(input);
 	}
 }

@@ -1,3 +1,9 @@
+argv[0] = cat
+path[0] = /home/tohbu/bin/cat
+path[1] = /bin/cat
+argv[0] = cat
+path[0] = /home/tohbu/bin/cat
+path[1] = /bin/cat
 # プログラム名
 NAME = minishell
 TREE_NAME = tree_visualize  # tree_visualizeの実行ファイル名

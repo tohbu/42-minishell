@@ -1,8 +1,21 @@
-#ifndef EXECUTER_H
-# define EXECUTER_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
+/*   Updated: 2025/04/29 13:49:47 by tohbu            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef EXPANDER_H
+# define EXPANDER_H
 # include "../lexer/lexer.h"
 # include "../parser/parse.h"
 # include "get_next_line.h"
+
 typedef struct s_env_list
 {
 	char				*key;

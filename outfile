@@ -1,1 +1,19 @@
- 123
+argv[0] = cat
+path[0] = /bin/cat
+argv[0] = ls
+path[0] = /bin/ls
+Makefile
+executer
+expander
+lexer
+libft
+libft.a
+main.c
+out
+out2
+outfile
+parser
+trace.txt
+tree_visualize
+tree_visualize.c
+tree_visualize.o

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:10:04 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/24 22:10:34 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/04/29 17:04:22 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ enum					e_Token_type
 	WORD_IN_DOUBLE_QOUTE,
 	PIPE,
 	REDIRECT,
+	REDIRECT_IN,
+	REDIRECT_OUT,
+	REDIRECT_APPEND,
 	HEARDOC,
-	FILENAME,
-	LIMITER,
 };
 
 typedef struct s_token_list

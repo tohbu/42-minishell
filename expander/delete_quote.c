@@ -6,11 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:36:46 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/26 16:47:03 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/04/29 17:01:42 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executer.h"
+#include "expander.h"
 
 char	*delete_quote(char *s)
 {
@@ -31,9 +31,7 @@ void	delete_quote_com(t_command_list *com)
 	tmp = com->next;
 	while ((tmp))
 	{
-		if (tmp->token_type == REDIRECT)
-			tmp = tmp->next;
-		else if (tmp->token_type == WORD_IN_DOUBLE_QOUTE
+		if (tmp->token_type == WORD_IN_DOUBLE_QOUTE
 			|| tmp->token_type == WORD_IN_SINGLE_QOUTE)
 			tmp->s = delete_quote(tmp->s);
 		tmp = tmp->next;

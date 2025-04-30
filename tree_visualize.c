@@ -1,10 +1,12 @@
-#include "./expander/executer.h"
+#include "./executer/executer.h"
+#include "./expander/expander.h"
 #include "./lexer/lexer.h"
 #include "./parser/parse.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 
 void	print_tab(int n)
 {
@@ -49,18 +51,18 @@ char	*print_type(int token_type)
 {
 	if (token_type == PIPE)
 		return ("PIPE");
-	else if (token_type == REDIRECT)
-		return ("REDIRECT");
+	else if (token_type == REDIRECT_IN)
+		return ("REDIRECT_IN");
+	else if (token_type == REDIRECT_OUT)
+		return ("REDIRECT_OUT");
+	else if (token_type == REDIRECT_APPEND)
+		return ("REDIRECT_APPEND");
 	else if (token_type == HEARDOC)
 		return ("HEARDOC");
 	else if (token_type == WORD_IN_SINGLE_QOUTE)
 		return ("WORD_IN_SINGLE_QOUTE");
 	else if (token_type == WORD_IN_DOUBLE_QOUTE)
 		return ("WORD_IN_DOUBLE_QOUTE");
-	else if (token_type == FILENAME)
-		return ("FILENAME");
-	else if (token_type == LIMITER)
-		return ("LIMITER");
 	else
 		return ("WORD");
 }
@@ -147,6 +149,12 @@ int	main(int argc, char *argv[], char *envp[])
 		expand_env(ast, env->next);
 		t_tree_visualize(ast, 0);
 		printf("\n");
+		int p_fd[2];
+		p_fd[0] = NO_FILE;
+		p_fd[1] = NO_FILE;
+		ft_executer(ast, env->next, p_fd);
+		while (wait(NULL) > 0)
+			;
 		free_all(all, ast);
 		free(input);
 	}

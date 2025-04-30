@@ -1,0 +1,3 @@
+argv[0] = ls
+argv[1] = -a
+path[0] = PATH/ls
