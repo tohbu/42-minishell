@@ -141,11 +141,9 @@ int	main(int argc, char *argv[], char *envp[])
 		print_t_token_list(all->head->next);
 		// parse;
 		t_tree *ast = piped_commands(all);
-		t_tree_visualize(ast, 0);
 		printf("\n");
 		if (!syntax_check(all, ast))
 			continue ;
-		// search_tree_heredoc(ast);
 		expand_env(ast, env->next);
 		t_tree_visualize(ast, 0);
 		printf("\n");

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/30 17:32:54 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/04/30 18:37:10 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,6 @@ char	**vecter_join(char **array, char *s, int size)
 	return (reslut);
 }
 
-void	close_fd(int r, int w)
-{
-	if (r != NO_FILE)
-		close(r);
-	if (w != NO_FILE)
-		close(w);
-}
-
 int	ft_open(char *filename, int token_type)
 {
 	int	fd;
@@ -92,9 +84,7 @@ void	set_heardoc(char *s)
 		exit(ERROR);
 	}
 	write(p_fd[WRITE_FD], s, ft_strlen(s));
-	close(p_fd[WRITE_FD]);
 	dup2(p_fd[READ_FD], STDIN_FILENO);
-	close(p_fd[READ_FD]);
 }
 
 void	set_redirect(char *filename, int token_type)
@@ -116,7 +106,6 @@ void	set_redirect(char *filename, int token_type)
 		dup2(fd, STDIN_FILENO);
 	else if (token_type == REDIRECT_OUT || token_type == REDIRECT_APPEND)
 		dup2(fd, STDOUT_FILENO);
-	close(fd);
 }
 
 char	*join_path(char *dir, char *cmd)
@@ -136,9 +125,10 @@ void	print_argv(char **argv)
 	i = 0;
 	while (argv[i])
 	{
-		printf("argv[%d] = %s\n", i, argv[i]);
+		// printf("argv[%d] = %s\n", i, argv[i]);
 		i++;
 	}
+	// printf("--------------------------\n\n");
 }
 
 void	do_command(char **path, char **argv)
@@ -158,7 +148,6 @@ void	do_command(char **path, char **argv)
 			return ;
 		free(path[i]);
 		path[i] = tmp;
-		printf("path[%d] = %s\n", i, path[i]);
 		execve(path[i], argv, NULL);
 		i++;
 	}
@@ -187,6 +176,16 @@ char	**get_path(t_env_list *env)
 	return (reslut);
 }
 
+void	close_all_fd(void)
+{
+	int	i;
+
+	i = STDERR_FILENO + 1;
+	while (close(i) != -1)
+		i++;
+	return ;
+}
+
 void	do_process(t_command_list *com, t_env_list *env)
 {
 	t_command_list	*tmp;
@@ -207,6 +206,7 @@ void	do_process(t_command_list *com, t_env_list *env)
 			ft_argv = vecter_join(ft_argv, tmp->s, i++);
 		tmp = tmp->next;
 	}
+	close_all_fd();
 	do_command(get_path(env), ft_argv);
 }
 
@@ -223,7 +223,6 @@ int	exeve_command(t_command_list *com, t_env_list *env, int fd[2])
 			dup2(fd[READ_FD], STDIN_FILENO);
 		if (fd[WRITE_FD] != NO_FILE)
 			dup2(fd[WRITE_FD], STDOUT_FILENO);
-		close_fd(fd[0], fd[1]);
 		do_process(com, env);
 		return (1);
 	}

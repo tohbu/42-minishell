@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/29 13:48:59 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/04/30 18:59:42 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*delete_quote_for_heredoc(char *s)
 	char	*result;
 
 	if (strcmp(s, "\"\"") == 0 || strcmp(s, "\'\'") == 0)
-		result = ft_strdup("\n");
+		result = ft_calloc(sizeof(char *), 1);
 	else
 		result = ft_strndup((s + 1), ft_strlen(s) - 2);
 	free(s);
@@ -28,6 +28,7 @@ char	*heredoc(char *eof)
 {
 	char	*reslut;
 	char	*buf;
+	int		len;
 
 	reslut = ft_calloc(sizeof(char *), 1);
 	printf("eof = %s\n", eof);
@@ -37,16 +38,19 @@ char	*heredoc(char *eof)
 		buf = get_next_line(STDIN_FILENO);
 		if (!buf)
 			return (NULL);
-		if (buf && ((strcmp("\n", eof) == 0 && strcmp(eof, buf) == 0)
-				|| ft_strncmp(buf, eof, ft_strlen(buf) - 1) == 0))
+		len = ft_strlen(buf);
+		if (len > 0 && buf[len - 1] == '\n')
+			buf[len - 1] = '\0';
+		if (!buf[0] || strcmp(buf, eof) == 0)
 		{
 			free(buf);
-			free(eof);
-			return (reslut);
+			break ;
 		}
+		buf[len - 1] = '\n';
 		reslut = ft_strjoin_and_free(reslut, buf);
 	}
-	return (NULL);
+	free(eof);
+	return (reslut);
 }
 
 void	expand_herdoc(t_command_list *com)
