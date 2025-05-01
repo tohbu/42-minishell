@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/30 18:59:42 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/01 22:17:21 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
+
+
+int ft_strcmp(char * s1 , char *s2)
+{
+	int i = 0;
+	if(!s1 || !s2)
+		return -1;
+		
+	while (s1[i] == s2[i])
+	{
+		if(s1[i] == '\0' && s2[i] =='\0')
+			return 0;
+		i++;
+	}
+	return s1[i] -s2[i];
+} 
 
 char	*delete_quote_for_heredoc(char *s)
 {
@@ -41,7 +57,7 @@ char	*heredoc(char *eof)
 		len = ft_strlen(buf);
 		if (len > 0 && buf[len - 1] == '\n')
 			buf[len - 1] = '\0';
-		if (!buf[0] || strcmp(buf, eof) == 0)
+		if (ft_strcmp(buf, eof) == 0)
 		{
 			free(buf);
 			break ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:36:46 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/29 17:01:42 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/01 22:17:07 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void	delete_quote_com(t_command_list *com)
 	tmp = com->next;
 	while ((tmp))
 	{
-		if (tmp->token_type == WORD_IN_DOUBLE_QOUTE
+		if(tmp->token_type == HEARDOC)
+	 		tmp = tmp->next;
+		else if(tmp->token_type == WORD_IN_DOUBLE_QOUTE
 			|| tmp->token_type == WORD_IN_SINGLE_QOUTE)
 			tmp->s = delete_quote(tmp->s);
 		tmp = tmp->next;
