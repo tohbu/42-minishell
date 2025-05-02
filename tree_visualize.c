@@ -142,9 +142,9 @@ int	main(int argc, char *argv[], char *envp[])
 		// parse;
 		t_tree *ast = piped_commands(all);
 		printf("\n");
+		expand_env(ast, env->next);
 		if (!syntax_check(all, ast))
 			continue ;
-		expand_env(ast, env->next);
 		t_tree_visualize(ast, 0);
 		printf("\n");
 		int p_fd[2];
