@@ -120,10 +120,13 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		input = readline("minishell> ");
-		if (strlen(input) > 0)
+		if (input == NULL)
 		{
-			add_history(input);
+			printf("exit\n");
+			return (0);
 		}
+		if (*input)
+			add_history(input);
 		if (*input == '\0')
 		{
 			free(input);
@@ -141,7 +144,6 @@ int	main(int argc, char *argv[], char *envp[])
 		print_t_token_list(all->head->next);
 		// parse;
 		t_tree *ast = piped_commands(all);
-		printf("\n");
 		expand_env(ast, env->next);
 		if (!syntax_check(all, ast))
 			continue ;

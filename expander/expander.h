@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/29 13:49:47 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/02 15:28:19 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include "../lexer/lexer.h"
 # include "../parser/parse.h"
 # include "get_next_line.h"
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef struct s_env_list
 {
