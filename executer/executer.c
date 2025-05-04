@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 20:12:27 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 21:59:52 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	set_heardoc(char *s)
 	if (pipe(p_fd) < 0)
 	{
 		perror("pipe");
-		exit(ERROR);
+		exit(1);
 	}
 	write(p_fd[WRITE_FD], s, ft_strlen(s));
 	dup2(p_fd[READ_FD], STDIN_FILENO);
@@ -89,7 +89,8 @@ void	set_heardoc(char *s)
 
 void	set_redirect(char *filename, int token_type)
 {
-	int	fd;
+	int		fd;
+	char	*error_message;
 
 	if (token_type == HEARDOC)
 	{
@@ -100,7 +101,8 @@ void	set_redirect(char *filename, int token_type)
 	fd = ft_open(filename, token_type);
 	if (fd < 0)
 	{
-		return (perror("minishell: "), exit(ERROR));
+		error_message = ft_strjoin("minishell: ", filename);
+		return (perror(error_message), exit(1));
 	}
 	if (token_type == REDIRECT_IN)
 		dup2(fd, STDIN_FILENO);
@@ -139,8 +141,9 @@ void	do_command(char **path, char **argv)
 		execve(path[i], argv, NULL);
 		i++;
 	}
+	ft_putstr_fd(argv[0], STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
-	exit(ERROR);
+	exit(COMAND_NOT_FOUND);
 	return ;
 }
 

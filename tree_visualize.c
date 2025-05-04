@@ -162,6 +162,10 @@ void	wait_pid_list(t_pid_list *pid_list, int *sta)
 		waitpid(tmp->pid, sta, 0);
 		tmp = tmp->next;
 	}
+	if (WIFSIGNALED(*sta))
+		*sta = WTERMSIG(*sta) + 128;
+	else
+		*sta = WEXITSTATUS(*sta);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -192,7 +196,7 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		if (*input)
 			add_history(input);
-		if (*input == '\0')
+		if (*input == '\0'  )
 		{
 			free(input);
 			continue ;

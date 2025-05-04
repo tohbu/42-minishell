@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:44:31 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 20:10:10 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 21:49:12 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define READ_FD 0
 # define WRITE_FD 1
 # define NO_FILE -1
-
+# define COMAND_NOT_FOUND 127
 typedef struct s_pid_list
 {
 	struct s_pid_list	*next;
