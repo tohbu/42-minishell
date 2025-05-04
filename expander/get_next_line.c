@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:48:48 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 16:15:51 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 18:00:27 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ int	ft_getc(int fd)
 	int		reslut;
 
 	s[0] = '\0';
-	reslut = read(fd, s, 1);
+	(void)fd;
+	reslut = read(STDIN_FILENO, s, 1);
+	if (reslut == -1 && errno == EINTR)
+		return (END);
 	if (reslut == 0)
 		return (EOF);
 	else
@@ -96,10 +99,10 @@ char	*get_next_line(int fd)
 		if (!tmp)
 			return (NULL);
 		tmp[i] = ft_getc(fd);
-		if (tmp[i] == EOF && i == 0)
+		if (tmp[i] == END || (tmp[i] == EOF && i == 0))
 			return (free(tmp), NULL);
-		if(tmp[i] == EOF && i != 0)
-			continue;
+		if (tmp[i] == EOF && i != 0)
+			continue ;
 		if (tmp[i] == '\n')
 			return (ft_strdup_extra(tmp));
 		i++;

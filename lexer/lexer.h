@@ -6,19 +6,21 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:10:04 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/02 16:50:43 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 20:12:12 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 # include "../libft/libft.h"
+# include <errno.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 
 typedef int				t_bool;
+extern int				g_interrupt_state;
 
 # define ERROR -1
 # define TOKEN_END -2
@@ -61,4 +63,5 @@ t_bool					check_quote(char c);
 
 char					*ft_strndup(char *s, size_t n);
 int						get_token_type(char *s);
+int						ft_strcmp(char *s1, char *s2);
 #endif

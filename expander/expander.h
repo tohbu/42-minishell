@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 14:44:22 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 18:26:52 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "get_next_line.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 
 typedef struct s_env_list
 {
@@ -39,7 +40,7 @@ void					free_envlist(t_env_list *t);
 // heredoc.c
 char					*delete_quote_for_heredoc(char *s);
 char					*heredoc(char *eof);
-void					expand_heredoc(t_command_list *com);
+void					expand_heredoc(t_token_all *com);
 
 void					delete_quote_com(t_command_list *com);
 char					*delete_quote(char *s);

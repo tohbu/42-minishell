@@ -6,13 +6,12 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 16:19:02 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 20:11:58 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
-
-volatile sig_atomic_t	g_heredoc_interrupted = 0;
+#include <signal.h>
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -54,6 +53,23 @@ void	print_heredoc_warning(char *eof)
 	return ;
 }
 
+void	signal_heredoc(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	g_interrupt_state = SIGINT;
+}
+
+void	set_up_signal_heredoc(void)
+{
+	struct sigaction	sig;
+
+	sig.sa_handler = signal_heredoc;
+	sigemptyset(&sig.sa_mask);
+	sig.sa_flags = 0;
+	sigaction(SIGINT, &sig, NULL);
+}
+
 char	*heredoc(char *eof)
 {
 	char	*reslut;
@@ -61,10 +77,13 @@ char	*heredoc(char *eof)
 	int		len;
 
 	reslut = ft_calloc(sizeof(char *), 1);
+	set_up_signal_heredoc();
 	while (1)
 	{
-		write(1, ">", 1);
+		write(STDOUT_FILENO, ">", 1);
 		buf = get_next_line(STDIN_FILENO);
+		if (g_interrupt_state == SIGINT)
+			return (free(reslut), free(eof), (NULL));
 		if (!buf)
 			return (print_heredoc_warning(eof), free(eof), (reslut));
 		len = ft_strlen(buf);
@@ -78,15 +97,14 @@ char	*heredoc(char *eof)
 		buf[len - 1] = '\n';
 		reslut = ft_strjoin_and_free(reslut, buf);
 	}
-	free(eof);
-	return (reslut);
+	return (free(eof), (reslut));
 }
 
-void	expand_heredoc(t_command_list *com)
+void	expand_heredoc(t_token_all *com)
 {
-	t_command_list	*tmp;
+	t_token_list	*tmp;
 
-	tmp = com->next;
+	tmp = com->head->next;
 	while (tmp)
 	{
 		if (tmp->token_type == HEARDOC)
@@ -94,10 +112,15 @@ void	expand_heredoc(t_command_list *com)
 			if (tmp->next->token_type == WORD_IN_DOUBLE_QOUTE
 				|| tmp->next->token_type == WORD_IN_SINGLE_QOUTE)
 			{
-				tmp->next->s = delete_quote_for_heredoc(tmp->next->s);
+				tmp->next->token = delete_quote_for_heredoc(tmp->next->token);
 				tmp->next->token_type = WORD_IN_SINGLE_QOUTE;
 			}
-			tmp->next->s = heredoc(tmp->next->s);
+			tmp->next->token = heredoc(tmp->next->token);
+			if (g_interrupt_state == SIGINT)
+			{
+				tmp->syntax_error = SIGINT;
+				return ;
+			}
 			tmp = tmp->next;
 		}
 		tmp = tmp->next;
