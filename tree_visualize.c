@@ -137,12 +137,40 @@ t_bool	heredoc_check(t_token_all *all)
 	return (1);
 }
 
+void	print_pid_list(t_pid_list *pid_list)
+{
+	t_pid_list	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = pid_list->next;
+	while (tmp)
+	{
+		printf("pid[%d] = %d\n", i, tmp->pid);
+		tmp = tmp->next;
+	}
+	return ;
+}
+
+void	wait_pid_list(t_pid_list *pid_list, int *sta)
+{
+	t_pid_list	*tmp;
+
+	tmp = pid_list->next;
+	while (tmp)
+	{
+		waitpid(tmp->pid, sta, 0);
+		tmp = tmp->next;
+	}
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	t_env_list	*env;
 	t_token_all	*all;
 	t_tree		*ast;
+	t_pid_list	*pid_list;
 	int			p_fd[2];
 	int			state;
 
@@ -189,9 +217,10 @@ int	main(int argc, char *argv[], char *envp[])
 		printf("\n");
 		p_fd[0] = NO_FILE;
 		p_fd[1] = NO_FILE;
-		ft_executer(ast, env->next, p_fd);
-		while (wait(&state) > 0)
-			;
+		pid_list = init_pid_list();
+		ft_executer(ast, env->next, p_fd, pid_list);
+		print_pid_list(pid_list);
+		wait_pid_list(pid_list, &state);
 		printf("exit state = %d\n", state);
 		free_all(all, ast);
 		free(input);

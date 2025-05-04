@@ -4,6 +4,7 @@
 		"parse.h": "c",
 		"history.h": "c",
 		"wait.h": "c",
-		"expander.h": "c"
+		"expander.h": "c",
+		"lexer.h": "c"
 	}
 }

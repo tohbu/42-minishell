@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:10:04 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 17:52:15 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 20:12:12 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,5 @@ t_bool					check_quote(char c);
 
 char					*ft_strndup(char *s, size_t n);
 int						get_token_type(char *s);
+int						ft_strcmp(char *s1, char *s2);
 #endif

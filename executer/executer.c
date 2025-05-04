@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 19:43:55 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 20:12:27 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ void	do_command(char **path, char **argv)
 	if (ft_strchr(argv[0], '/'))
 		execve(argv[0], argv, NULL);
 	i = 0;
-	print_argv(argv);
 	while (path && path[i])
 	{
 		tmp = join_path(path[i], argv[0]);
@@ -209,7 +208,8 @@ void	signal_quite_print_message(int sig)
 	(void)(sig);
 	write(2, "Quit (core dumped)\n", 20);
 }
-int	exeve_command(t_command_list *com, t_env_list *env, int fd[2])
+int	exeve_command(t_command_list *com, t_env_list *env, int fd[2],
+		t_pid_list *pid_list)
 {
 	pid_t	pid;
 
@@ -230,7 +230,10 @@ int	exeve_command(t_command_list *com, t_env_list *env, int fd[2])
 		return (1);
 	}
 	else
+	{
+		new_pid_node(pid_list, pid);
 		return (1);
+	}
 }
 
 void	set_left_fd(int now_pipe[2], int set_fd[2])
@@ -245,7 +248,8 @@ void	set_right_fd(int parent_fd[2], int now_pipe[2], int set_fd[2])
 	set_fd[WRITE_FD] = parent_fd[WRITE_FD];
 }
 
-int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2])
+int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2],
+		t_pid_list *pid_list)
 {
 	int	pipes[2];
 	int	fds[2];
@@ -260,10 +264,10 @@ int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2])
 			return (ERROR);
 		}
 		set_left_fd(pipes, fds);
-		ft_executer(ast->left, env, fds);
+		ft_executer(ast->left, env, fds, pid_list);
 		close(pipes[WRITE_FD]);
 		set_right_fd(parent_fd, pipes, fds);
-		ft_executer(ast->right, env, fds);
+		ft_executer(ast->right, env, fds, pid_list);
 		close(pipes[READ_FD]);
 	}
 	else
@@ -274,7 +278,7 @@ int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2])
 		// }
 		// else
 		// {
-		exeve_command(ast->head->next, env->next, parent_fd);
+		exeve_command(ast->head->next, env->next, parent_fd, pid_list);
 		//
 	}
 	return (1);
