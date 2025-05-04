@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/30 18:37:10 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/02 17:44:57 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,15 +210,29 @@ void	do_process(t_command_list *com, t_env_list *env)
 	do_command(get_path(env), ft_argv);
 }
 
+void	signal_parent_print_newline(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+}
+void	signal_quite_print_message(int sig)
+{
+	(void)(sig);
+	write(2, "Quit (core dumped)\n", 20);
+}
 int	exeve_command(t_command_list *com, t_env_list *env, int fd[2])
 {
 	pid_t	pid;
 
+	signal(SIGINT, signal_parent_print_newline);
+	signal(SIGQUIT, signal_quite_print_message);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork failed"), ERROR);
 	if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		if (fd[READ_FD] != NO_FILE)
 			dup2(fd[READ_FD], STDIN_FILENO);
 		if (fd[WRITE_FD] != NO_FILE)

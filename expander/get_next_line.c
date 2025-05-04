@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:48:48 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/25 16:19:01 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/04 16:15:51 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "lexer.h"
+
 char	*ft_strdup_extra(char *s)
 {
 	char	*cp;
@@ -62,31 +63,17 @@ char	*exted_buf(char *s, int k)
 	return (result);
 }
 
-int	ft_getchar(int fd)
+int	ft_getc(int fd)
 {
-	static char	buf[BUFFER_SIZE];
-	static char	*bufp = NULL;
-	static int	n = 0;
-	static int	eof_frag = 0;
+	char	s[1];
+	int		reslut;
 
-	if (eof_frag)
-		return (END);
-	if (n == 0)
-	{
-		n = read(fd, buf, BUFFER_SIZE);
-		if (n < 0)
-			return (END);
-		if (n == 0)
-		{
-			if (bufp == NULL || *--bufp == '\n')
-				return (END);
-			eof_frag = 1;
-		}
-		bufp = buf;
-	}
-	if (!eof_frag && n-- >= 0)
-		return ((unsigned char)*bufp++);
-	return (EOF);
+	s[0] = '\0';
+	reslut = read(fd, s, 1);
+	if (reslut == 0)
+		return (EOF);
+	else
+		return (s[0]);
 }
 
 char	*get_next_line(int fd)
@@ -108,10 +95,12 @@ char	*get_next_line(int fd)
 			tmp = exted_buf(tmp, k++);
 		if (!tmp)
 			return (NULL);
-		tmp[i] = ft_getchar(fd);
-		if (tmp[i] == END)
+		tmp[i] = ft_getc(fd);
+		if (tmp[i] == EOF && i == 0)
 			return (free(tmp), NULL);
-		if (tmp[i] == '\n' || tmp[i] == EOF)
+		if(tmp[i] == EOF && i != 0)
+			continue;
+		if (tmp[i] == '\n')
 			return (ft_strdup_extra(tmp));
 		i++;
 	}

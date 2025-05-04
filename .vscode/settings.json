@@ -2,6 +2,8 @@
 	"files.associations": {
 		"libft.h": "c",
 		"parse.h": "c",
-		"history.h": "c"
+		"history.h": "c",
+		"wait.h": "c",
+		"expander.h": "c"
 	}
 }

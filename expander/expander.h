@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/02 15:28:19 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 14:44:22 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ void					free_envlist(t_env_list *t);
 // heredoc.c
 char					*delete_quote_for_heredoc(char *s);
 char					*heredoc(char *eof);
-void					expand_herdoc(t_command_list *com);
-void					search_tree_heredoc(t_tree *t);
+void					expand_heredoc(t_command_list *com);
 
 void					delete_quote_com(t_command_list *com);
 char					*delete_quote(char *s);
+void					signal_handle_parent_c(int sig);
 
 #endif

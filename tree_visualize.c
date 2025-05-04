@@ -4,6 +4,7 @@
 #include "./parser/parse.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -109,16 +110,32 @@ void	print_ast(t_tree *t)
 	printf("\n");
 }
 
+void	signal_handle_parent_c(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
+	char		*input;
+	t_env_list	*env;
+	t_token_all	*all;
+	t_tree		*ast;
+	int			p_fd[2];
+
 	// 入力を格納するためのバッファ
-	char *input;
 	argc++;
 	argc--;
 	argv++;
-	t_env_list *env = get_envp_to_struct(envp);
+	env = get_envp_to_struct(envp);
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, signal_handle_parent_c);
 		input = readline("minishell> ");
 		if (input == NULL)
 		{
@@ -132,7 +149,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free(input);
 			continue ;
 		}
-		t_token_all *all = (t_token_all *)malloc(sizeof(t_token_all));
+		all = (t_token_all *)malloc(sizeof(t_token_all));
 		if (!all)
 			return (1);
 		init_t_token_all(all);
@@ -143,13 +160,12 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		print_t_token_list(all->head->next);
 		// parse;
-		t_tree *ast = piped_commands(all);
+		ast = piped_commands(all);
 		expand_env(ast, env->next);
 		if (!syntax_check(all, ast))
 			continue ;
 		t_tree_visualize(ast, 0);
 		printf("\n");
-		int p_fd[2];
 		p_fd[0] = NO_FILE;
 		p_fd[1] = NO_FILE;
 		ft_executer(ast, env->next, p_fd);
@@ -157,5 +173,7 @@ int	main(int argc, char *argv[], char *envp[])
 			;
 		free_all(all, ast);
 		free(input);
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, signal_handle_parent_c);
 	}
 }
