@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
+int		g_interrupt_state = 0;
+
 void	print_tab(int n)
 {
 	while (n-- > 0)
@@ -99,7 +101,6 @@ void	print_t_command_list(t_command_list *com)
 		tmp = tmp->next;
 	}
 }
-
 void	print_ast(t_tree *t)
 {
 	if (!t)
@@ -119,6 +120,23 @@ void	signal_handle_parent_c(int sig)
 	rl_redisplay();
 }
 
+t_bool	heredoc_check(t_token_all *all)
+{
+	t_token_list	*tmp;
+
+	tmp = all->head->next;
+	while (tmp)
+	{
+		if (tmp->syntax_error == SIGINT)
+		{
+			free_all(all, NULL);
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*input;
@@ -126,6 +144,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_token_all	*all;
 	t_tree		*ast;
 	int			p_fd[2];
+	int			state;
 
 	// 入力を格納するためのバッファ
 	argc++;
@@ -134,6 +153,7 @@ int	main(int argc, char *argv[], char *envp[])
 	env = get_envp_to_struct(envp);
 	while (1)
 	{
+		g_interrupt_state = 0;
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, signal_handle_parent_c);
 		input = readline("minishell> ");
@@ -158,22 +178,22 @@ int	main(int argc, char *argv[], char *envp[])
 			printf("Error in lexer\n");
 			return (1);
 		}
-		print_t_token_list(all->head->next);
-		// parse;
+		expand_heredoc(all);
+		if (!heredoc_check(all))
+			continue ;
 		ast = piped_commands(all);
-		expand_env(ast, env->next);
 		if (!syntax_check(all, ast))
 			continue ;
+		expand_env(ast, env->next);
 		t_tree_visualize(ast, 0);
 		printf("\n");
 		p_fd[0] = NO_FILE;
 		p_fd[1] = NO_FILE;
 		ft_executer(ast, env->next, p_fd);
-		while (wait(NULL) > 0)
+		while (wait(&state) > 0)
 			;
+		printf("exit state = %d\n", state);
 		free_all(all, ast);
 		free(input);
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, signal_handle_parent_c);
 	}
 }

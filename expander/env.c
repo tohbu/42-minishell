@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 14:35:37 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 17:22:05 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	expand_env(t_tree *t, t_env_list *env)
 		return ;
 	expand_env(t->left, env);
 	expand_env(t->right, env);
-	expand_heredoc(t->head);
+	// expand_heredoc(t->head);
 	delete_quote_com(t->head);
 	search_expand(t->head, env);
 	return ;

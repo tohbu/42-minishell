@@ -6,19 +6,21 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:10:04 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/02 16:50:43 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 17:52:15 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 # include "../libft/libft.h"
+# include <errno.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 
 typedef int				t_bool;
+extern int				g_interrupt_state;
 
 # define ERROR -1
 # define TOKEN_END -2

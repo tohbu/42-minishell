@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:55:28 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/29 17:12:28 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 19:46:30 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ t_tree	*command(t_token_all *all)
 		return (NULL);
 	while (all->cur && all->cur->token_type != PIPE)
 	{
-		if ( REDIRECT_IN <=all->cur->token_type && all->cur->token_type <= HEARDOC)
+		if (REDIRECT_IN <= all->cur->token_type
+			&& all->cur->token_type <= HEARDOC)
 			redirect(all, new->com);
 		else
 			string(all, new->com);

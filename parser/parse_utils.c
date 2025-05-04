@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:03:57 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/24 22:18:28 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 17:20:44 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ t_bool	syntax_check(t_token_all *all, t_tree *t)
 			free_all(all, t);
 			return (0);
 		}
+		if (tmp->syntax_error == SIGINT)
+			return (free_all(all, t), 0);
 		tmp = tmp->next;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/02 17:44:57 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/04 19:43:55 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	set_redirect(char *filename, int token_type)
 		dup2(fd, STDIN_FILENO);
 	else if (token_type == REDIRECT_OUT || token_type == REDIRECT_APPEND)
 		dup2(fd, STDOUT_FILENO);
+	close(fd);
 }
 
 char	*join_path(char *dir, char *cmd)
@@ -117,18 +118,6 @@ char	*join_path(char *dir, char *cmd)
 	full = ft_strjoin(tmp, cmd);
 	free(tmp);
 	return (full);
-}
-void	print_argv(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-	{
-		// printf("argv[%d] = %s\n", i, argv[i]);
-		i++;
-	}
-	// printf("--------------------------\n\n");
 }
 
 void	do_command(char **path, char **argv)
