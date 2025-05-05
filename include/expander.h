@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:25:07 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 22:53:37 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,33 @@
 # include "minishell.h"
 # include "struct.h"
 
+// expander_utils.c
 t_bool		check_env_format(char c);
 t_env_list	*new_env_node(char *in_key, char *in_value);
 t_env_list	*ft_get_env(char *s);
-char		*match_env_key(char *search, t_env_list *env);
+int			ft_strcmp(char *s1, char *s2);
 char		*ft_strjoin_and_free(char *s1, char *s2);
+// env.c
+char		*match_env_key(char *search, t_env_list *env);
 char		*expand_command_str(char *s, t_env_list *env);
 void		search_expand(t_command_list *com, t_env_list *env);
 void		expand_env(t_tree *t, t_env_list *env);
-void		print_env_list(t_env_list *t);
 t_env_list	*get_envp_to_struct(char *envp[]); // dumy あり;
-void		free_envlist(t_env_list *t);
 // heredoc.c
-char		*delete_quote_for_heredoc(char *s);
+void		print_heredoc_warning(char *eof);
 char		*heredoc(char *eof);
 void		expand_heredoc(t_token_manager *com);
+t_bool		heredoc_check(t_token_manager *token);
 
+// delete_quote.c
 void		delete_quote_com(t_command_list *com);
 char		*delete_quote(char *s);
-void		signal_handle_parent_c(int sig);
+char		*delete_quote_for_heredoc(char *s);
 
-//
+// heredoc_readline.c
 char		*ft_strdup_extra(char *s);
 char		*exted_buf(char *s, int k);
 int			ft_getc(int fd);
-char		*get_next_line(int fd);
+char		*heredoc_readline(void);
 
 #endif

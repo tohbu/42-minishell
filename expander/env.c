@@ -6,43 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 20:49:46 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 22:10:17 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-t_bool	check_env_format(char c)
-{
-	if (ft_isalnum(c) || c == '_')
-		return (1);
-	return (0);
-}
-
-t_env_list	*new_env_node(char *in_key, char *in_value)
-{
-	t_env_list	*new;
-
-	new = (t_env_list *)malloc(sizeof(t_env_list));
-	if (!new)
-		return (NULL);
-	new->key = in_key;
-	new->value = in_value;
-	new->next = NULL;
-	return (new);
-}
-
-t_env_list	*ft_get_env(char *s)
-{
-	char	*key;
-	char	*value;
-
-	if (!*s)
-		return (NULL);
-	key = ft_strndup(s, ft_strchr(s, '=') - s);
-	value = ft_strdup(ft_strchr(s, '=') + 1);
-	return (new_env_node(key, value));
-}
 
 char	*match_env_key(char *search, t_env_list *env)
 {
@@ -57,35 +25,6 @@ char	*match_env_key(char *search, t_env_list *env)
 		tmp = tmp->next;
 	}
 	return (ft_calloc(sizeof(char *), 1));
-}
-
-char	*ft_strjoin_and_free(char *s1, char *s2)
-{
-	int		i;
-	int		j;
-	char	*reslut;
-
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	reslut = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!reslut)
-		return (NULL);
-	while (s1[i])
-	{
-		reslut[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
-		reslut[i + j] = s2[j];
-		j++;
-	}
-	reslut[i + j] = '\0';
-	free(s1);
-	free(s2);
-	return (reslut);
 }
 
 char	*expand_command_str(char *s, t_env_list *env)
@@ -147,12 +86,10 @@ void	expand_env(t_tree *t, t_env_list *env)
 		return ;
 	expand_env(t->left, env);
 	expand_env(t->right, env);
-	// expand_heredoc(t->head);
 	delete_quote_com(t->head);
 	search_expand(t->head, env);
 	return ;
 }
-
 
 t_env_list	*get_envp_to_struct(char *envp[])
 {
@@ -173,5 +110,3 @@ t_env_list	*get_envp_to_struct(char *envp[])
 	}
 	return (st_env);
 }
-
-

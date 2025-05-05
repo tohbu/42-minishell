@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:50:40 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 19:26:48 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 23:16:52 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,20 @@ t_pid_list	*init_pid_list(void)
 		return (NULL);
 	new->next = NULL;
 	return (new);
+}
+
+void	wait_pid_list(t_pid_list *pid_list, int *sta)
+{
+	t_pid_list	*tmp;
+
+	tmp = pid_list->next;
+	while (tmp)
+	{
+		waitpid(tmp->pid, sta, 0);
+		tmp = tmp->next;
+	}
+	if (WIFSIGNALED(*sta))
+		*sta = WTERMSIG(*sta) + 128;
+	else
+		*sta = WEXITSTATUS(*sta);
 }

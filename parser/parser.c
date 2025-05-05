@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:55:28 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:57:14 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+t_bool	is_token_word(t_token_list *t)
+{
+	if (t->token_type == WORD || t->token_type == WORD_IN_DOUBLE_QOUTE
+		|| t->token_type == WORD_IN_SINGLE_QOUTE)
+		return (1);
+	else
+		return (0);
+}
 
 void	redirect(t_token_manager *token, t_command_list *com)
 {
@@ -62,7 +71,7 @@ t_tree	*command(t_token_manager *token)
 		i++;
 	}
 	if (i == 0 && token->cur)
-		token->cur->error_flag = 1;
+		token->cur->error_flag = SYNTAX_ERROR;
 	return (new);
 }
 

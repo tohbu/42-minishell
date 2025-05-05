@@ -6,39 +6,12 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:25:07 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 22:53:15 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (-1);
-	while (s1[i] == s2[i])
-	{
-		if (s1[i] == '\0' && s2[i] == '\0')
-			return (0);
-		i++;
-	}
-	return (s1[i] - s2[i]);
-}
-
-char	*delete_quote_for_heredoc(char *s)
-{
-	char	*result;
-
-	if (strcmp(s, "\"\"") == 0 || strcmp(s, "\'\'") == 0)
-		result = ft_calloc(sizeof(char *), 1);
-	else
-		result = ft_strndup((s + 1), ft_strlen(s) - 2);
-	free(s);
-	return (result);
-}
 void	print_heredoc_warning(char *eof)
 {
 	int	origin_stdout;
@@ -52,23 +25,6 @@ void	print_heredoc_warning(char *eof)
 	return ;
 }
 
-void	signal_heredoc(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-	g_interrupt_state = SIGINT;
-}
-
-void	set_up_signal_heredoc(void)
-{
-	struct sigaction	sig;
-
-	sig.sa_handler = signal_heredoc;
-	sigemptyset(&sig.sa_mask);
-	sig.sa_flags = 0;
-	sigaction(SIGINT, &sig, NULL);
-}
-
 char	*heredoc(char *eof)
 {
 	char	*reslut;
@@ -80,23 +36,19 @@ char	*heredoc(char *eof)
 	while (1)
 	{
 		write(STDOUT_FILENO, ">", 1);
-		buf = get_next_line(STDIN_FILENO);
+		buf = heredoc_readline();
 		if (g_interrupt_state == SIGINT)
 			return (free(reslut), free(eof), (NULL));
 		if (!buf)
 			return (print_heredoc_warning(eof), free(eof), (reslut));
 		len = ft_strlen(buf);
-		if (buf[len - 1] == '\n')
-			buf[len - 1] = '\0';
+		buf[len - 1] = '\0';
 		if (ft_strcmp(buf, eof) == 0)
-		{
-			free(buf);
 			break ;
-		}
 		buf[len - 1] = '\n';
 		reslut = ft_strjoin_and_free(reslut, buf);
 	}
-	return (free(eof), (reslut));
+	return (free(eof), free(buf), (reslut));
 }
 
 void	expand_heredoc(t_token_manager *com)
@@ -124,4 +76,20 @@ void	expand_heredoc(t_token_manager *com)
 		}
 		tmp = tmp->next;
 	}
+}
+
+t_bool	heredoc_check(t_token_manager *token)
+{
+	t_token_list	*tmp;
+
+	tmp = token->head->next;
+	while (tmp)
+	{
+		if (tmp->error_flag == SIGINT)
+		{
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
 }

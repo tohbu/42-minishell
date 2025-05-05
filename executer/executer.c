@@ -6,110 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 19:48:31 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 22:45:04 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-t_bool	ft_strcmp_built_in(char *s)
-{
-	if (strcmp(s, "echo") == 0 || strcmp(s, "cd") == 0 || strcmp(s, "pwd") == 0
-		|| strcmp(s, "export") == 0)
-		return (1);
-	if (strcmp(s, "unset") == 0 || strcmp(s, "env") == 0 || strcmp(s,
-			"exit") == 0)
-		return (1);
-	return (0);
-}
-
-t_bool	is_built_in(t_command_list *com)
-{
-	t_command_list	*tmp;
-
-	tmp = com;
-	while (tmp)
-	{
-		if (REDIRECT_IN <= tmp->token_type && tmp->token_type <= HEARDOC)
-			tmp = tmp->next;
-		else
-			return (ft_strcmp_built_in(tmp->s));
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-char	**vecter_join(char **array, char *s, int size)
-{
-	char	**reslut;
-	int		i;
-
-	reslut = (char **)malloc(sizeof(char *) * (size + 1));
-	if (!reslut)
-		return (NULL);
-	i = 0;
-	while (array && array[i])
-	{
-		reslut[i] = array[i];
-		i++;
-	}
-	reslut[i++] = ft_strdup(s);
-	reslut[i] = NULL;
-	if (array)
-		free(array);
-	return (reslut);
-}
-
-int	ft_open(char *filename, int token_type)
-{
-	int	fd;
-
-	fd = NO_FILE;
-	if (token_type == REDIRECT_IN)
-		fd = open(filename, O_RDONLY);
-	else if (token_type == REDIRECT_OUT)
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	else if (token_type == REDIRECT_APPEND)
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	return (fd);
-}
-
-void	set_heardoc(char *s)
-{
-	int	p_fd[2];
-
-	if (pipe(p_fd) < 0)
-	{
-		perror("pipe");
-		exit(1);
-	}
-	write(p_fd[WRITE_FD], s, ft_strlen(s));
-	dup2(p_fd[READ_FD], STDIN_FILENO);
-}
-
-void	set_redirect(char *filename, int token_type)
-{
-	int		fd;
-	char	*error_message;
-
-	if (token_type == HEARDOC)
-	{
-		set_heardoc(filename);
-		return ;
-	}
-	fd = NO_FILE;
-	fd = ft_open(filename, token_type);
-	if (fd < 0)
-	{
-		error_message = ft_strjoin("minishell: ", filename);
-		return (perror(error_message), exit(1));
-	}
-	if (token_type == REDIRECT_IN)
-		dup2(fd, STDIN_FILENO);
-	else if (token_type == REDIRECT_OUT || token_type == REDIRECT_APPEND)
-		dup2(fd, STDOUT_FILENO);
-	close(fd);
-}
 
 char	*join_path(char *dir, char *cmd)
 {
@@ -147,37 +48,7 @@ void	do_command(char **path, char **argv)
 	return ;
 }
 
-char	**get_path(t_env_list *env)
-{
-	char		**reslut;
-	t_env_list	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		if (strcmp(tmp->key, "PATH") == 0)
-			break ;
-		tmp = tmp->next;
-	}
-	if (!tmp)
-		return (NULL);
-	reslut = ft_split(tmp->value, ':');
-	if (!reslut)
-		return (NULL);
-	return (reslut);
-}
-
-void	close_all_fd(void)
-{
-	int	i;
-
-	i = STDERR_FILENO + 1;
-	while (close(i) != -1)
-		i++;
-	return ;
-}
-
-void	do_process(t_command_list *com, t_env_list *env)
+void	setting_fd(t_command_list *com, t_env_list *env)
 {
 	t_command_list	*tmp;
 	char			**ft_argv;
@@ -201,16 +72,6 @@ void	do_process(t_command_list *com, t_env_list *env)
 	do_command(get_path(env), ft_argv);
 }
 
-void	signal_parent_print_newline(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-}
-void	signal_quite_print_message(int sig)
-{
-	(void)(sig);
-	write(2, "Quit (core dumped)\n", 20);
-}
 int	exeve_command(t_command_list *com, t_env_list *env, int fd[2],
 		t_pid_list *pid_list)
 {
@@ -229,7 +90,7 @@ int	exeve_command(t_command_list *com, t_env_list *env, int fd[2],
 			dup2(fd[READ_FD], STDIN_FILENO);
 		if (fd[WRITE_FD] != NO_FILE)
 			dup2(fd[WRITE_FD], STDOUT_FILENO);
-		do_process(com, env);
+		setting_fd(com, env);
 		return (1);
 	}
 	else
@@ -237,18 +98,6 @@ int	exeve_command(t_command_list *com, t_env_list *env, int fd[2],
 		new_pid_node(pid_list, pid);
 		return (1);
 	}
-}
-
-void	set_left_fd(int now_pipe[2], int set_fd[2])
-{
-	set_fd[READ_FD] = NO_FILE;
-	set_fd[WRITE_FD] = now_pipe[WRITE_FD];
-}
-
-void	set_right_fd(int parent_fd[2], int now_pipe[2], int set_fd[2])
-{
-	set_fd[READ_FD] = now_pipe[READ_FD];
-	set_fd[WRITE_FD] = parent_fd[WRITE_FD];
 }
 
 int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2],
@@ -276,13 +125,7 @@ int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2],
 	else
 	{
 		// if (is_built_in(ast->head->next))
-		// {
-		// 	execve_built_in(ast, env, parent_fd);
-		// }
-		// else
-		// {
 		exeve_command(ast->head->next, env->next, parent_fd, pid_list);
-		//
 	}
 	return (1);
 }

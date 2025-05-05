@@ -19,27 +19,32 @@ LIBFT     := libft.a
 
 # ソースファイル
 SRCS := main.c \
-        $(PARSER_DIR)/parse.c \
+        $(PARSER_DIR)/parser.c \
         $(LEXER_DIR)/token.c \
         $(PARSER_DIR)/parse_utils.c \
         $(LEXER_DIR)/token_utils.c \
         $(PARSER_DIR)/free.c
 
 SRCS_TREE := tree_visualize.c \
-             $(PARSER_DIR)/parse.c \
+             $(PARSER_DIR)/parser.c \
+             $(PARSER_DIR)/parser_utils.c \
              $(LEXER_DIR)/token.c \
-             $(PARSER_DIR)/parse_utils.c \
              $(LEXER_DIR)/token_utils.c \
-             ./utils/free.c \
-			 ./utils/print.c \
-			 ./utils/init_minishell.c \
              $(EXPANDER_DIR)/env.c \
-             $(PARSER_DIR)/parse_utils2.c \
              $(EXPANDER_DIR)/heredoc.c \
-             $(EXPANDER_DIR)/get_next_line.c \
+             $(EXPANDER_DIR)/heredoc_readline.c \
              $(EXPANDER_DIR)/delete_quote.c \
+			 $(EXPANDER_DIR)/expander_utils.c \
              $(EXECUTER_DIR)/executer.c \
-             $(EXECUTER_DIR)/pid_list.c
+             $(EXECUTER_DIR)/pid_list.c \
+			 $(EXECUTER_DIR)/fd_manage.c \
+			 $(EXECUTER_DIR)/executer_utils.c \
+             ./utils/free1.c \
+             ./utils/free2.c \
+			 ./utils/print1.c \
+			 ./utils/print2.c \
+			 ./utils/init_minishell.c \
+			 ./utils/signal.c \
 
 # オブジェクトファイル
 OBJS      := $(SRCS:.c=.o)

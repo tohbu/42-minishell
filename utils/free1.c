@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:14:37 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 22:58:53 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,31 +54,4 @@ void	free_pid_list(t_pid_list *pid)
 		return ;
 	free_pid_list(pid->next);
 	free(pid);
-}
-
-void	free_one_loop_data(t_minishell *myshell)
-{
-	free_t_tree(myshell->ast);
-	free_t_token_manager(myshell->token);
-	free_pid_list(myshell->pid_list);
-	myshell->ast = NULL;
-	myshell->token = NULL;
-	myshell->pid_list = NULL;
-}
-
-void	free_envlist(t_env_list *t)
-{
-	if (!t)
-		return ;
-	free_envlist(t->next);
-	free(t->key);
-	free(t->value);
-	free(t);
-}
-
-void	free_all(t_minishell *my_shell)
-{
-	free_one_loop_data(my_shell);
-	free_envlist(my_shell->env);
-	free(my_shell);
 }

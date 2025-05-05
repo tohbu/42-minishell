@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   print1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:35:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:32:27 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 23:21:17 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,57 +77,5 @@ void	print_t_token_list(t_token_list *head)
 		printf("Token_type: %s Token: %s\n", print_type(temp->token_type),
 			temp->token);
 		temp = temp->next;
-	}
-}
-
-void	print_t_command_list(t_command_list *com)
-{
-	int				i;
-	t_command_list	*tmp;
-
-	i = 0;
-	if (!com)
-	{
-		printf("com = NULL\n");
-		return ;
-	}
-	tmp = com;
-	while (tmp)
-	{
-		printf("%d:%s	", i++, tmp->s);
-		tmp = tmp->next;
-	}
-}
-void	print_ast(t_tree *t)
-{
-	if (!t)
-		return ;
-	print_ast(t->left);
-	print_ast(t->right);
-	print_t_command_list(t->head->next);
-	printf("\n");
-}
-
-void	print_pid_list(t_pid_list *pid_list)
-{
-	t_pid_list	*tmp;
-	int			i;
-
-	i = 0;
-	tmp = pid_list->next;
-	while (tmp)
-	{
-		printf("pid[%d] = %d\n", i, tmp->pid);
-		tmp = tmp->next;
-	}
-	return ;
-}
-
-void	print_env_list(t_env_list *t)
-{
-	while (t)
-	{
-		printf("key:%s value: %s\n", t->key, t->value);
-		t = t->next;
 	}
 }

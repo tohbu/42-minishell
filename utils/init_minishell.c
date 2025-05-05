@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:57:59 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 22:54:56 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ t_minishell	*setup_data(t_minishell *minishell)
 		minishell->pid_list = init_pid_list();
 	g_interrupt_state = 0;
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_handle_parent_c);
+	signal(SIGINT, signal_handle_print_readline);
 	return (minishell);
+}
+
+t_bool	check_input_only_space(char *s)
+{
+	while (*s)
+	{
+		if (!check_space(*s))
+			return (0);
+		s++;
+	}
+	return (1);
 }

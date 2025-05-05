@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   heredoc_readline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:48:48 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 19:26:20 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 22:50:37 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,12 @@ int	ft_getc(int fd)
 		return (s[0]);
 }
 
-char	*get_next_line(int fd)
+char	*heredoc_readline(void)
 {
 	char	*tmp;
 	int		i;
 	int		k;
 
-	if (fd < 0 || fd > _SC_OPEN_MAX)
-		return (NULL);
 	tmp = (char *)malloc(TEMP_BUF_SIZE);
 	if (!tmp)
 		return (NULL);
@@ -97,7 +95,7 @@ char	*get_next_line(int fd)
 			tmp = exted_buf(tmp, k++);
 		if (!tmp)
 			return (NULL);
-		tmp[i] = ft_getc(fd);
+		tmp[i] = ft_getc(STDIN_FILENO);
 		if (tmp[i] == END || (tmp[i] == EOF && i == 0))
 			return (free(tmp), NULL);
 		if (tmp[i] == EOF && i != 0)
