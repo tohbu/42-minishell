@@ -6,11 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:06 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 19:45:46 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 19:25:31 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "../include/minishell.h"
 
 t_bool	check_meta_word(char c)
 {

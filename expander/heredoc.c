@@ -6,12 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 20:11:58 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:25:07 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expander.h"
-#include <signal.h>
+#include "../include/minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -100,7 +99,7 @@ char	*heredoc(char *eof)
 	return (free(eof), (reslut));
 }
 
-void	expand_heredoc(t_token_all *com)
+void	expand_heredoc(t_token_manager *com)
 {
 	t_token_list	*tmp;
 
@@ -118,7 +117,7 @@ void	expand_heredoc(t_token_all *com)
 			tmp->next->token = heredoc(tmp->next->token);
 			if (g_interrupt_state == SIGINT)
 			{
-				tmp->syntax_error = SIGINT;
+				tmp->error_flag = SIGINT;
 				return ;
 			}
 			tmp = tmp->next;

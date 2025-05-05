@@ -6,11 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:50:40 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 20:07:51 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 19:26:48 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executer.h"
+#include "../include/minishell.h"
 
 t_pid_list	*new_pid_node(t_pid_list *head, pid_t p_id)
 {

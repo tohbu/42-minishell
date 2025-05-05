@@ -6,11 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:03:57 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 17:20:44 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:30:24 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/minishell.h"
 
 void	p_t_command_list(t_command_list *com)
 {
@@ -69,14 +69,15 @@ t_bool	is_token_word(t_token_list *t)
 		return (0);
 }
 
-t_bool	syntax_check(t_token_all *all, t_tree *t)
+t_bool	syntax_check(t_token_manager *token, t_tree *t)
 {
 	t_token_list	*tmp;
 
-	tmp = all->head->next;
+	(void)t;
+	tmp = token->head->next;
 	while (tmp)
 	{
-		if (tmp->syntax_error == SYNTAX_ERROR)
+		if (tmp->error_flag == SYNTAX_ERROR)
 		{
 			if (!tmp->next)
 			{
@@ -86,11 +87,10 @@ t_bool	syntax_check(t_token_all *all, t_tree *t)
 			else
 				printf("minishell: syntax error near unexpected token \'%s\'\n",
 					tmp->token);
-			free_all(all, t);
 			return (0);
 		}
-		if (tmp->syntax_error == SIGINT)
-			return (free_all(all, t), 0);
+		if (tmp->error_flag == SIGINT)
+			return (0);
 		tmp = tmp->next;
 	}
 	return (1);

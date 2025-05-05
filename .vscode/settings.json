@@ -5,6 +5,8 @@
 		"history.h": "c",
 		"wait.h": "c",
 		"expander.h": "c",
-		"lexer.h": "c"
+		"lexer.h": "c",
+		"signal.h": "c",
+		"struct.h": "c"
 	}
 }

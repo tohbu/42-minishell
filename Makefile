@@ -1,52 +1,74 @@
 # プログラム名
-NAME = minishell
-TREE_NAME = tree_visualize  # tree_visualizeの実行ファイル名
+NAME       := minishell
+TREE_NAME  := tree_visualize
 
-# ディレクトリの定義
-PARSER_DIR = ./parser
-LEXER_DIR = ./lexer
-INCLUDE_DIRS = $(PARSER_DIR) $(LEXER_DIR) ./expander# ヘッダーファイルディレクトリ
-
-# ソースファイル
-SRCS = main.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c
-SRCS_TREE = tree_visualize.c $(PARSER_DIR)/parse.c $(LEXER_DIR)/token.c $(PARSER_DIR)/parse_utils.c $(LEXER_DIR)/token_utils.c $(PARSER_DIR)/free.c \
-			./expander/env.c $(PARSER_DIR)/parse_utils2.c ./expander/heredoc.c ./expander/get_next_line.c ./expander/delete_quote.c\
-			./executer/executer.c ./executer/pid_list.c
-
-# オブジェクトファイル)?
-OBJS = $(SRCS:.c=.o)
-OBJS_TREE = $(SRCS_TREE:.c=.o)
+# ディレクトリ
+PARSER_DIR  := ./parser
+LEXER_DIR   := ./lexer
+EXPANDER_DIR := ./expander
+EXECUTER_DIR := ./executer
+INCLUDE_DIRS := ./include
 
 # コンパイラとフラグ
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g $(addprefix -I, $(INCLUDE_DIRS))  # ヘッダーファイルディレクトリを追加
+CC      := cc
+CFLAGS  := -Wall -Wextra -Werror -g $(addprefix -I, $(INCLUDE_DIRS))
 
-# ライブラリの指定
-LIBFT = libft.a
+# ライブラリ
+LIBFT_DIR := ./libft
+LIBFT     := libft.a
 
-# ルール
+# ソースファイル
+SRCS := main.c \
+        $(PARSER_DIR)/parse.c \
+        $(LEXER_DIR)/token.c \
+        $(PARSER_DIR)/parse_utils.c \
+        $(LEXER_DIR)/token_utils.c \
+        $(PARSER_DIR)/free.c
+
+SRCS_TREE := tree_visualize.c \
+             $(PARSER_DIR)/parse.c \
+             $(LEXER_DIR)/token.c \
+             $(PARSER_DIR)/parse_utils.c \
+             $(LEXER_DIR)/token_utils.c \
+             ./utils/free.c \
+			 ./utils/print.c \
+			 ./utils/init_minishell.c \
+             $(EXPANDER_DIR)/env.c \
+             $(PARSER_DIR)/parse_utils2.c \
+             $(EXPANDER_DIR)/heredoc.c \
+             $(EXPANDER_DIR)/get_next_line.c \
+             $(EXPANDER_DIR)/delete_quote.c \
+             $(EXECUTER_DIR)/executer.c \
+             $(EXECUTER_DIR)/pid_list.c
+
+# オブジェクトファイル
+OBJS      := $(SRCS:.c=.o)
+OBJS_TREE := $(SRCS_TREE:.c=.o)
+
+# デフォルトターゲット
 all: $(NAME)
 
+# minishell のビルド
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L. -lft -lreadline
 
+# libft のビルド
 $(LIBFT):
-	make -C ./libft
-	cp ./libft/libft.a .
+	$(MAKE) -C $(LIBFT_DIR)
+	cp $(LIBFT_DIR)/$(LIBFT) .
 
-clean:
-	rm -f $(OBJS)
-	rm -f $(OBJS_TREE)
-	make clean -C ./libft
-
-fclean: clean
-	rm -f $(NAME)
-	rm -f $(TREE_NAME)  # tree_visualize の実行ファイルも削除
-	make fclean -C ./libft
-	rm libft.a
-
-re: fclean all
-
-# treeのターゲット：tree_visualize用の実行ファイルを作成
+# tree_visualize のビルド
 tree: $(OBJS_TREE) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TREE_NAME) $(OBJS_TREE) -L. -lft -lreadline # tree_visualize の実行ファイルを作成
+	$(CC) $(CFLAGS) -o $(TREE_NAME) $(OBJS_TREE) -L. -lft -lreadline
+
+# クリーン
+clean:
+	rm -f $(OBJS) $(OBJS_TREE)
+	$(MAKE) clean -C $(LIBFT_DIR)
+
+# フルクリーン
+fclean: clean
+	rm -f $(NAME) $(TREE_NAME) $(LIBFT)
+
+# 再ビルド
+re: fclean all

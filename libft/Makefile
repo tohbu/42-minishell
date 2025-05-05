@@ -14,7 +14,7 @@ OBJS_b = $(SRCS_b:.c=.o)
 CC = cc
 CFLAGS = -Wall -Wextra -Werror 
 
-all: $(NAME)
+token: $(NAME)
 
 $(NAME): $(OBJS)
 	$(AR) -rc $(NAME) $(OBJS)
@@ -29,7 +29,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean all
+re: fclean token
 
 bonus: $(OBJS) $(OBJS_b) 
 	$(AR) -rc $(NAME) $^

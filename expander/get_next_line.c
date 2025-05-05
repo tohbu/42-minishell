@@ -6,12 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:48:48 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 18:00:27 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 19:26:20 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include "lexer.h"
+#include "../include/minishell.h"
 
 char	*ft_strdup_extra(char *s)
 {

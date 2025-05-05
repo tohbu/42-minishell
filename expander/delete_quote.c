@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:36:46 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/01 22:17:07 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/05 19:26:10 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expander.h"
+#include "../include/minishell.h"
 
 char	*delete_quote(char *s)
 {
