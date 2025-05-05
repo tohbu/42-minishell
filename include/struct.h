@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:11:44 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:09:27 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@ typedef struct s_token_list
 	int						error_flag;
 }							t_token_list;
 
-typedef struct s_token_all
+typedef struct s_token_manager
 {
 	t_token_list			*head;
 	t_token_list			*cur;
-	int						pipe_n;
-}							t_token_all;
+}							t_token_manager;
 
 typedef struct s_command_list
 {
@@ -90,7 +89,7 @@ typedef struct s_pid_list
 typedef struct s_minishell
 {
 	t_env_list				*env;
-	t_token_all				*all;
+	t_token_manager			*token;
 	t_tree					*ast;
 	t_pid_list				*pid_list;
 	int						parent_fd[2];

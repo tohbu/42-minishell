@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:57:59 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 20:44:36 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_minishell	*init_minishell(char *envp[])
 	my_shell = (t_minishell *)malloc(sizeof(t_minishell));
 	if (!my_shell)
 		return (NULL);
-	my_shell->all = init_t_token_all();
+	my_shell->token = init_t_token_manager();
 	my_shell->pid_list = init_pid_list();
 	my_shell->env = get_envp_to_struct(envp);
 	my_shell->ast = NULL;
@@ -31,8 +31,8 @@ t_minishell	*init_minishell(char *envp[])
 
 t_minishell	*setup_data(t_minishell *minishell)
 {
-	if (minishell->all == NULL)
-		minishell->all = init_t_token_all();
+	if (minishell->token == NULL)
+		minishell->token = init_t_token_manager();
 	if (minishell->pid_list == NULL)
 		minishell->pid_list = init_pid_list();
 	g_interrupt_state = 0;

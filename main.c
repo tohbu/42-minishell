@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:34:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 19:34:44 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:25:07 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ void	print_ast(t_tree *t)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char		*input;
-	t_token_all	*all;
-	t_tree		*ast;
+	char			*input;
+	t_token_manager	*all;
+	t_tree			*ast;
 
 	argc++;
 	argc--;
@@ -68,10 +68,10 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			add_history(input); /* 履歴を保存 */
 		}
-		all = (t_token_all *)malloc(sizeof(t_token_all));
+		all = (t_token_manager *)malloc(sizeof(t_token_manager));
 		if (!all)
 			return (1);
-		init_t_token_all(all);
+		init_t_token_manager(all);
 		if (lexer(input, all) == ERROR)
 		{
 			printf("Error in lexer\n");

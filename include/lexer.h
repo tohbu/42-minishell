@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:10:04 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 20:05:52 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 # include "minishell.h"
 # include "struct.h"
 
-t_bool			lexer(char *one_line, t_token_all *all);
+t_bool			lexer(char *one_line, t_token_manager *token);
 t_token_list	*add_list(char *s);
-t_token_all		*init_t_token_all(void);
+t_token_manager	*init_t_token_manager(void);
 
 t_bool			check_meta_word(char c);
 t_bool			check_space(char c);

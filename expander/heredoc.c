@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 19:26:28 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:25:07 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*heredoc(char *eof)
 	return (free(eof), (reslut));
 }
 
-void	expand_heredoc(t_token_all *com)
+void	expand_heredoc(t_token_manager *com)
 {
 	t_token_list	*tmp;
 

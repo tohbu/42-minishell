@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:14:37 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 20:50:34 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	free_t_token_list(t_token_list *tok)
 	free(tok);
 }
 
-void	free_t_token_all(t_token_all *all)
+void	free_t_token_manager(t_token_manager *token)
 {
-	if (!all)
+	if (!token)
 		return ;
-	free_t_token_list(all->head);
-	free(all);
+	free_t_token_list(token->head);
+	free(token);
 }
 
 void	free_pid_list(t_pid_list *pid)
@@ -59,10 +59,10 @@ void	free_pid_list(t_pid_list *pid)
 void	free_one_loop_data(t_minishell *myshell)
 {
 	free_t_tree(myshell->ast);
-	free_t_token_all(myshell->all);
+	free_t_token_manager(myshell->token);
 	free_pid_list(myshell->pid_list);
 	myshell->ast = NULL;
-	myshell->all = NULL;
+	myshell->token = NULL;
 	myshell->pid_list = NULL;
 }
 

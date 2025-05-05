@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 20:54:47 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:29:15 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	signal_handle_parent_c(int sig)
 	rl_redisplay();
 }
 
-t_bool	heredoc_check(t_token_all *all)
+t_bool	heredoc_check(t_token_manager *token)
 {
 	t_token_list	*tmp;
 
-	tmp = all->head->next;
+	tmp = token->head->next;
 	while (tmp)
 	{
 		if (tmp->error_flag == SIGINT)
@@ -89,14 +89,14 @@ char	*read_and_validate_input(t_minishell *my_shell)
 
 t_bool	run_lexer_and_heredoc(char *input, t_minishell *my_shell)
 {
-	if (lexer(input, my_shell->all) == ERROR)
+	if (lexer(input, my_shell->token) == ERROR)
 	{
 		printf("Close quote\n");
 		free_one_loop_data(my_shell);
 		return (0);
 	}
-	expand_heredoc(my_shell->all);
-	if (!heredoc_check(my_shell->all))
+	expand_heredoc(my_shell->token);
+	if (!heredoc_check(my_shell->token))
 	{
 		free_one_loop_data(my_shell);
 		return (0);
@@ -107,9 +107,12 @@ t_bool	run_lexer_and_heredoc(char *input, t_minishell *my_shell)
 // ヘルパー3：AST構築・構文チェック・展開・実行
 void	run_execution_pipeline(t_minishell *sh)
 {
-	sh->ast = piped_commands(sh->all);
-	if (!syntax_check(sh->all, sh->ast))
+	sh->ast = piped_commands(sh->token);
+	if (!syntax_check(sh->token, sh->ast))
+	{
+		free_one_loop_data(sh);
 		return ;
+	}
 	expand_env(sh->ast, sh->env->next);
 	ft_executer(sh->ast, sh->env->next, sh->parent_fd, sh->pid_list);
 	wait_pid_list(sh->pid_list, &sh->state);
