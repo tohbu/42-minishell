@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 21:38:49 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_token_manager	*init_t_token_manager(void)
 		return (NULL);
 	token->cur = token->head;
 	token->head->token = NULL;
+	token->head->next = NULL;
 	token->head->token_type = 0;
 	token->head->error_flag = 0;
 	return (token);
