@@ -6,11 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 17:22:05 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 20:49:46 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expander.h"
+#include "../include/minishell.h"
 
 t_bool	check_env_format(char c)
 {
@@ -153,20 +153,16 @@ void	expand_env(t_tree *t, t_env_list *env)
 	return ;
 }
 
-void	print_env_list(t_env_list *t)
+
+t_env_list	*get_envp_to_struct(char *envp[])
 {
-	while (t)
-	{
-		printf("key:%s value: %s\n", t->key, t->value);
-		t = t->next;
-	}
-}
-t_env_list	*get_envp_to_struct(char *envp[]) // dumy あり
-{
-	int i = 0;
-	t_env_list *st_env;
+	int			i;
+	t_env_list	*st_env;
+	t_env_list	*tmp;
+
+	i = 0;
 	st_env = new_env_node(NULL, NULL);
-	t_env_list *tmp = st_env;
+	tmp = st_env;
 	while (envp[i])
 	{
 		tmp->next = ft_get_env(envp[i]);
@@ -178,12 +174,4 @@ t_env_list	*get_envp_to_struct(char *envp[]) // dumy あり
 	return (st_env);
 }
 
-void	free_envlist(t_env_list *t)
-{
-	if (!t)
-		return ;
-	free_envlist(t->next);
-	free(t->key);
-	free(t->value);
-	free(t);
-}
+

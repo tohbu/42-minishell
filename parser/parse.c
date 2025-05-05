@@ -6,11 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:55:28 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 19:46:30 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 19:25:59 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/minishell.h"
 
 void	redirect(t_token_all *all, t_command_list *com)
 {
@@ -23,7 +23,7 @@ void	redirect(t_token_all *all, t_command_list *com)
 		tmp = tmp->next;
 	tmp->next = new_t_command_list(all->cur->token, all->cur->token_type);
 	if (!all->cur->next || !is_token_word(all->cur->next))
-		all->cur->syntax_error = SYNTAX_ERROR;
+		all->cur->error_flag = SYNTAX_ERROR;
 }
 
 void	string(t_token_all *all, t_command_list *com)
@@ -62,7 +62,7 @@ t_tree	*command(t_token_all *all)
 		i++;
 	}
 	if (i == 0 && all->cur)
-		all->cur->syntax_error = 1;
+		all->cur->error_flag = 1;
 	return (new);
 }
 

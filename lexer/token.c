@@ -6,16 +6,17 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/24 22:12:07 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 20:05:14 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "../include/minishell.h"
 
-t_token_all	*init_t_token_all(t_token_all *all)
+t_token_all	*init_t_token_all(void)
 {
-	if (!all)
-		return (NULL);
+	t_token_all	*all;
+
+	all = (t_token_all *)malloc(sizeof(t_token_all));
 	all->head = (t_token_list *)malloc(sizeof(t_token_list));
 	if (!all->head)
 		return (NULL);
@@ -23,7 +24,7 @@ t_token_all	*init_t_token_all(t_token_all *all)
 	all->pipe_n = 0;
 	all->head->token = NULL;
 	all->head->token_type = 0;
-	all->head->syntax_error = 0;
+	all->head->error_flag = 0;
 	return (all);
 }
 
@@ -38,7 +39,7 @@ t_token_list	*add_list(char *s)
 	if (!new->token)
 		return (NULL);
 	new->token_type = get_token_type(s);
-	new->syntax_error = 0;
+	new->error_flag = 0;
 	new->next = NULL;
 	return (new);
 }

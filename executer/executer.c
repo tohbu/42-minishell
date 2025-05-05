@@ -6,12 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/04 21:59:52 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 19:48:31 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executer.h"
-#include <unistd.h>
+#include "../include/minishell.h"
 
 t_bool	ft_strcmp_built_in(char *s)
 {
@@ -39,6 +38,7 @@ t_bool	is_built_in(t_command_list *com)
 	}
 	return (0);
 }
+
 char	**vecter_join(char **array, char *s, int size)
 {
 	char	**reslut;

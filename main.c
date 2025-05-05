@@ -1,11 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/05 19:34:25 by tohbu             #+#    #+#             */
+/*   Updated: 2025/05/05 19:34:44 by tohbu            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "./lexer/lexer.h"
-#include "./parser/parse.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "./include/minishell.h"
 
 void	print_t_token_list(t_token_list *head)
 {

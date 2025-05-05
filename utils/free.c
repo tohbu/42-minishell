@@ -6,11 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:14:37 by tohbu             #+#    #+#             */
-/*   Updated: 2025/04/24 22:18:28 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/05 20:50:34 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/minishell.h"
 
 void	free_t_command_list(t_command_list *com)
 {
@@ -48,8 +48,37 @@ void	free_t_token_all(t_token_all *all)
 	free(all);
 }
 
-void	free_all(t_token_all *all, t_tree *t)
+void	free_pid_list(t_pid_list *pid)
 {
-	free_t_tree(t);
-	free_t_token_all(all);
+	if (!pid)
+		return ;
+	free_pid_list(pid->next);
+	free(pid);
+}
+
+void	free_one_loop_data(t_minishell *myshell)
+{
+	free_t_tree(myshell->ast);
+	free_t_token_all(myshell->all);
+	free_pid_list(myshell->pid_list);
+	myshell->ast = NULL;
+	myshell->all = NULL;
+	myshell->pid_list = NULL;
+}
+
+void	free_envlist(t_env_list *t)
+{
+	if (!t)
+		return ;
+	free_envlist(t->next);
+	free(t->key);
+	free(t->value);
+	free(t);
+}
+
+void	free_all(t_minishell *my_shell)
+{
+	free_one_loop_data(my_shell);
+	free_envlist(my_shell->env);
+	free(my_shell);
 }
