@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 23:09:21 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/07 13:48:49 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	run_execution_pipeline(t_minishell *sh)
 	expand_env(sh->ast, sh->env->next);
 	ft_executer(sh->ast, sh->env->next, sh->parent_fd, sh->pid_list);
 	wait_pid_list(sh->pid_list, &sh->state);
-	print_debag(sh);
+	// print_debag(sh);
 	printf("exit state = %d\n", sh->state);
 	free_one_loop_data(sh);
 }
