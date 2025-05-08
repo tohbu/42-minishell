@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:10:17 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/07 16:03:05 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*match_env_key(char *search, t_env_list *env)
 	t_env_list	*tmp;
 
 	tmp = env;
-	printf("segf = %s\n", search);
 	while (tmp)
 	{
 		if (strcmp(tmp->key, search) == 0)

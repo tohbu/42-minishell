@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/07 13:48:49 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/07 16:05:12 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ int		g_interrupt_state = 0;
 char	*read_and_validate_input(t_minishell *my_shell)
 {
 	char	*input;
+	char	*prompt;
 
-	input = readline("minishell> ");
+	prompt = ft_strjoin_and_free(match_env_key("PWD", my_shell->env->next),
+			ft_strdup("$ "));
+	input = readline(prompt);
+	free(prompt);
 	if (!input)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
