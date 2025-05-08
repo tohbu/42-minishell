@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:45:04 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/08 23:51:10 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,35 @@ int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2],
 	{
 		// if (is_built_in(ast->head->next))
 		exeve_command(ast->head->next, env->next, parent_fd, pid_list);
+	}
+	return (1);
+}
+
+int	ft_executer_and_or(t_tree *ast, t_env_list *env, int parent_fd[2],
+		t_pid_list *pid_list)
+{
+	int	sta;
+
+	if (!ast)
+		return (TREE_END);
+	if (ast->token_type == AND || ast->token_type == OR)
+	{
+		ft_executer_and_or(ast->left, env, parent_fd, pid_list);
+		wait_pid_list(pid_list, &sta);
+		if ((ast->token_type == AND && sta == 0) || (ast->token_type == OR
+				&& sta != 0))
+		{
+			parent_fd[WRITE_FD] = NO_FILE;
+			parent_fd[READ_FD] = NO_FILE;
+			ft_executer_and_or(ast->right, env, parent_fd, pid_list);
+		}
+		else
+			return (sta);
+	}
+	else
+	{
+		expand_env(ast, env);
+		ft_executer(ast, env, parent_fd, pid_list);
 	}
 	return (1);
 }

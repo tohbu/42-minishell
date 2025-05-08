@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:38:49 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/08 22:06:08 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,24 @@ t_bool	lexer(char *one_line, t_token_manager *token)
 			break ;
 		if (check_meta_word(*one_line))
 		{
-			if (*one_line == '<' && *(one_line + 1) == '<')
+			if (*one_line == '&' && *(one_line + 1) != '&')
+				return (ERROR);
+			else if (*one_line == '<' && *(one_line + 1) == '<')
 			{
 				token->cur->next = add_list(ft_strndup(one_line, 2));
 				one_line++;
 			}
 			else if (*one_line == '>' && *(one_line + 1) == '>')
+			{
+				token->cur->next = add_list(ft_strndup(one_line, 2));
+				one_line++;
+			}
+			else if (*one_line == '&' && *(one_line + 1) == '&')
+			{
+				token->cur->next = add_list(ft_strndup(one_line, 2));
+				one_line++;
+			}
+			else if (*one_line == '|' && *(one_line + 1) == '|')
 			{
 				token->cur->next = add_list(ft_strndup(one_line, 2));
 				one_line++;

@@ -6,25 +6,36 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:35:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 23:21:17 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/08 23:21:25 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// void	print_tab(int n)
+// {
+// 	while (n-- > 0)
+// 		printf("            ");
+// }
+
 void	print_tab(int n)
 {
 	while (n-- > 0)
-		printf("     ");
+		printf("        "); // 8スペースに調整
 }
 
-void	print_token(int t, t_command_list *head)
+void	print_token(int t, t_command_list *head, int deep)
 {
 	t_command_list	*tmp;
 
+	printf("%d", deep);
 	tmp = head->next;
 	if (t == PIPE)
 		printf("(PIPE)");
+	else if (t == AND)
+		printf("(AND)");
+	else if (t == OR)
+		printf("(_OR)");
 	else
 		printf("COMMAND");
 	while (tmp)
@@ -34,23 +45,28 @@ void	print_token(int t, t_command_list *head)
 	}
 }
 
-void	t_tree_visualize(t_tree *t, int deep)
+void	t_tree_visualize(t_tree *t, int depth)
 {
 	if (!t)
 		return ;
-	print_token(t->token_type, t->head);
-	if (t->right)
-		printf("--↓--");
-	t_tree_visualize(t->right, deep + 1);
+	// 右を先に描画
+	t_tree_visualize(t->right, depth + 1);
+	// 中央（現在のノード）
 	printf("\n");
-	print_tab(deep + 1);
-	t_tree_visualize(t->left, deep + 1);
+	print_tab(depth);
+	print_token(t->token_type, t->head, depth);
+	// 左をあとに描画
+	t_tree_visualize(t->left, depth + 1);
 }
 
 char	*print_type(int token_type)
 {
 	if (token_type == PIPE)
 		return ("PIPE");
+	else if (token_type == AND)
+		return ("AND");
+	else if (token_type == OR)
+		return ("OR");
 	else if (token_type == REDIRECT_IN)
 		return ("REDIRECT_IN");
 	else if (token_type == REDIRECT_OUT)

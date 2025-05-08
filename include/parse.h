@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:15:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:58:48 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/08 22:28:32 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void			redirect(t_token_manager *token, t_command_list *com);
 void			string(t_token_manager *token, t_command_list *com);
 t_tree			*command(t_token_manager *token);
 t_tree			*piped_commands(t_token_manager *token);
+t_tree			*and_or_node(t_token_manager *token);
 t_bool			is_token_word(t_token_list *t);
 //
 
