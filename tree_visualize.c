@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_visualize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/08 22:33:25 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/09 11:44:04 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,10 @@ void	run_execution_pipeline(t_minishell *sh)
 		free_one_loop_data(sh);
 		return ;
 	}
-	// expand_env(sh->ast, sh->env->next);
-	// ft_executer(sh->ast, sh->env->next, sh->parent_fd, sh->pid_list);
-	// wait_pid_list(sh->pid_list, &sh->state);
-	// printf("exit state = %d\n", sh->state);
-	print_debag(sh);
+	 ft_executer_and_or(sh->ast, sh->env->next, sh->parent_fd, sh->pid_list);
+	 wait_pid_list(sh->pid_list, &sh->state);
+	 printf("exit state = %d\n", sh->state);
+	//print_debag(sh);
 	free_one_loop_data(sh);
 }
 

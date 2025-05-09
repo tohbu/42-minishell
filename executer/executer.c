@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/08 23:51:10 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/09 11:57:16 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,11 @@ int	ft_executer_and_or(t_tree *ast, t_env_list *env, int parent_fd[2],
 	{
 		ft_executer_and_or(ast->left, env, parent_fd, pid_list);
 		wait_pid_list(pid_list, &sta);
+		printf("sta = %d\n",sta);
+		if(sta == 130)
+			return sta;
 		if ((ast->token_type == AND && sta == 0) || (ast->token_type == OR
-				&& sta != 0))
+			&& sta != 0))
 		{
 			parent_fd[WRITE_FD] = NO_FILE;
 			parent_fd[READ_FD] = NO_FILE;
@@ -151,10 +154,13 @@ int	ft_executer_and_or(t_tree *ast, t_env_list *env, int parent_fd[2],
 		else
 			return (sta);
 	}
-	else
+	else 
 	{
 		expand_env(ast, env);
-		ft_executer(ast, env, parent_fd, pid_list);
+		if(ast->token_type == PIPE)
+			ft_executer(ast, env, parent_fd, pid_list);
+		else
+			exeve_command(ast->head->next,env->next,parent_fd,pid_list);
 	}
 	return (1);
 }

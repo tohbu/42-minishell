@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:44:31 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 23:25:25 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/09 11:37:22 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,7 @@ void		setting_fd(t_command_list *com, t_env_list *env);
 int			exeve_command(t_command_list *com, t_env_list *env, int fd[2],
 				t_pid_list *pid_list);
 int			ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2],
+				t_pid_list *pid_list);
+int	ft_executer_and_or(t_tree *ast, t_env_list *env, int parent_fd[2],
 				t_pid_list *pid_list);
 #endif
