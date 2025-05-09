@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/09 11:57:16 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/09 15:23:23 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*join_path(char *dir, char *cmd)
 	return (full);
 }
 
-void	do_command(char **path, char **argv)
+void	do_command(char **path, char **argv,t_minishell* my_shell)
 {
 	int		i;
 	char	*tmp;
@@ -44,11 +44,14 @@ void	do_command(char **path, char **argv)
 	}
 	ft_putstr_fd(argv[0], STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
+	free_char_arr(path);
+	free_char_arr(argv);
+	free_all(my_shell);
 	exit(COMAND_NOT_FOUND);
 	return ;
 }
 
-void	setting_fd(t_command_list *com, t_env_list *env)
+void	setting_fd(t_command_list *com, t_minishell *my_shell)
 {
 	t_command_list	*tmp;
 	char			**ft_argv;
@@ -69,11 +72,10 @@ void	setting_fd(t_command_list *com, t_env_list *env)
 		tmp = tmp->next;
 	}
 	close_all_fd();
-	do_command(get_path(env), ft_argv);
+	do_command(get_path(my_shell->env->next), ft_argv,my_shell);
 }
 
-int	exeve_command(t_command_list *com, t_env_list *env, int fd[2],
-		t_pid_list *pid_list)
+int	exeve_command(t_command_list *com, int fd[2],t_minishell *my_shell)
 {
 	pid_t	pid;
 
@@ -90,18 +92,17 @@ int	exeve_command(t_command_list *com, t_env_list *env, int fd[2],
 			dup2(fd[READ_FD], STDIN_FILENO);
 		if (fd[WRITE_FD] != NO_FILE)
 			dup2(fd[WRITE_FD], STDOUT_FILENO);
-		setting_fd(com, env);
+		setting_fd(com, my_shell);
 		return (1);
 	}
 	else
 	{
-		new_pid_node(pid_list, pid);
+		new_pid_node(my_shell->pid_list, pid);
 		return (1);
 	}
 }
 
-int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2],
-		t_pid_list *pid_list)
+int	ft_executer(t_tree *ast, int parent_fd[2], t_minishell* my_shell)
 {
 	int	pipes[2];
 	int	fds[2];
@@ -116,51 +117,49 @@ int	ft_executer(t_tree *ast, t_env_list *env, int parent_fd[2],
 			return (ERROR);
 		}
 		set_left_fd(pipes, fds);
-		ft_executer(ast->left, env, fds, pid_list);
+		ft_executer(ast->left,fds,my_shell);
 		close(pipes[WRITE_FD]);
 		set_right_fd(parent_fd, pipes, fds);
-		ft_executer(ast->right, env, fds, pid_list);
+		ft_executer(ast->right,fds, my_shell);
 		close(pipes[READ_FD]);
 	}
 	else
 	{
 		// if (is_built_in(ast->head->next))
-		exeve_command(ast->head->next, env->next, parent_fd, pid_list);
+		exeve_command(ast->head->next,parent_fd,my_shell);
 	}
 	return (1);
 }
 
-int	ft_executer_and_or(t_tree *ast, t_env_list *env, int parent_fd[2],
-		t_pid_list *pid_list)
+int	ft_executer_and_or(t_tree *ast, t_minishell *my_shell)
 {
-	int	sta;
 
 	if (!ast)
 		return (TREE_END);
 	if (ast->token_type == AND || ast->token_type == OR)
 	{
-		ft_executer_and_or(ast->left, env, parent_fd, pid_list);
-		wait_pid_list(pid_list, &sta);
-		printf("sta = %d\n",sta);
-		if(sta == 130)
-			return sta;
-		if ((ast->token_type == AND && sta == 0) || (ast->token_type == OR
-			&& sta != 0))
+		ft_executer_and_or(ast->left, my_shell);
+		wait_pid_list(my_shell->pid_list, &my_shell->state);
+		printf("sta = %d\n",my_shell->state);
+		if(my_shell->state == 130)
+			return my_shell->state;
+		if ((ast->token_type == AND && my_shell->state == 0) || (ast->token_type == OR
+			&& my_shell->state != 0))
 		{
-			parent_fd[WRITE_FD] = NO_FILE;
-			parent_fd[READ_FD] = NO_FILE;
-			ft_executer_and_or(ast->right, env, parent_fd, pid_list);
+			my_shell->parent_fd[WRITE_FD] = NO_FILE;
+			my_shell->parent_fd[READ_FD] = NO_FILE;
+			ft_executer_and_or(ast->right, my_shell);
 		}
 		else
-			return (sta);
+			return (my_shell->state);
 	}
 	else 
 	{
-		expand_env(ast, env);
+		expand_env(ast, my_shell->env);
 		if(ast->token_type == PIPE)
-			ft_executer(ast, env, parent_fd, pid_list);
+			ft_executer(ast, my_shell->parent_fd,my_shell);
 		else
-			exeve_command(ast->head->next,env->next,parent_fd,pid_list);
+			exeve_command(ast->head->next,my_shell->parent_fd,my_shell);
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/09 11:44:04 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/09 15:26:09 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	run_execution_pipeline(t_minishell *sh)
 		free_one_loop_data(sh);
 		return ;
 	}
-	 ft_executer_and_or(sh->ast, sh->env->next, sh->parent_fd, sh->pid_list);
+	 ft_executer_and_or(sh->ast, sh);
 	 wait_pid_list(sh->pid_list, &sh->state);
 	 printf("exit state = %d\n", sh->state);
-	//print_debag(sh);
+	print_debag(sh);
 	free_one_loop_data(sh);
 }
 
