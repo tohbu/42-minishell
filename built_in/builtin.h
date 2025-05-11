@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in.h                                         :+:      :+:    :+:   */
+/*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,4 +13,20 @@
 #include "../include/minishell.h"
 #include "../include/struct.h"
 
-int	buitin(char *argv[], t_env_list *env);
+typedef struct s_builtin
+{
+    const char  *builtin_name;
+    int (*foo)(char **); //protype of every builtin
+
+}   t_builtin;
+
+// builtin.c
+int	execute_builtin(char *argv[], t_env_list *env);
+char	**split_input(char *line);
+
+// command_echo.c
+int ft_echo(char **args);
+
+// utilis.c
+int ft_strcmp_builtin(const char *s1, const char *s2);
+
