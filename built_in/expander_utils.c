@@ -41,6 +41,8 @@ char	*ft_strjoin_and_free(char *s1, char *s2)
 	return (reslut);
 }
 
+// valid enviroment variable can only contain
+// letters(a-z, A-Z), digits(0-9), and underscore(_).
 t_bool	check_env_format(char c)
 {
 	if (ft_isalnum(c) || c == '_')

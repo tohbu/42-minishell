@@ -29,6 +29,18 @@ char	*match_env_key(char *search, t_env_list *env)
 	return (ft_calloc(sizeof(char *), 1));
 }
 
+/*
+replaces the first $VAR found inside the string s with the actual value from env
+1. find the first $
+2. if no $ or it is the last char, return s
+3. split the s into parts
+	s = "Hello $USER world"
+	front = "Hello "
+	tmp = "USER"
+	back = " world"
+4. extract the variable name by match_env_key
+5. return "Hello <VALUE> world"
+*/
 char	*expand_command_str(char *s, t_env_list *env)
 {
 	char	*tmp;
@@ -40,12 +52,12 @@ char	*expand_command_str(char *s, t_env_list *env)
 	tmp = s;
 	i = 0;
 	while (*tmp && *tmp != '$')
-		tmp++;
+		tmp++;	//tmp -> '$'
 	if (!*tmp || !*(tmp + 1))
 		return (s);
-	front = ft_strndup(s, (tmp++ - s));
+	front = ft_strndup(s, (tmp++ - s)); // tmp->'U' 
 	while (check_env_format(tmp[i]))
-		i++;
+		i++;	//U<->R
 	back = ft_strdup(tmp + i);
 	tmp = ft_strndup(tmp, i);
 	result = ft_strjoin_and_free(front, match_env_key(tmp, env));

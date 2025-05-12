@@ -6,7 +6,10 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 # ソースファイルとオブジェクトファイル
-SRCS = main.c env.c expander_utils.c
+SRCS = main.c env.c expander_utils.c builtin.c \
+command_echo.c command_env.c command_pwd.c \
+utilis.c
+
 OBJS = $(SRCS:.c=.o)
 
 # 依存ライブラリ

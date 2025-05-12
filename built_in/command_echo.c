@@ -52,10 +52,11 @@ args[0] = "echo". args[1] == "-n"??
 3. prints the remaining arguments.
 4. add a newline only if -n was not found.
 */
-int ft_echo(char **args)
+int ft_echo(char **args, t_env_list *env)
 {
-    int i;
-    int new_line;
+    int     i;
+    int     new_line;
+    char    *expanded;
 
     i = 1;
     new_line = 1;
@@ -68,6 +69,9 @@ int ft_echo(char **args)
     while (args[i])
     {
         remove_quates_and_print(args[i]);
+        expanded = expand_command_str(args[i], env);
+        if (expanded != args[i])
+            free(expanded);
         if (args[i + 1])
             write(STDOUT_FILENO, " ", 1);
         i++;

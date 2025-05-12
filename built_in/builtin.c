@@ -12,42 +12,60 @@
 
 #include "builtin.h"
 
-t_builtin   g_builtin[] = {
+static const t_builtin   l_builtin[] = {
     {"echo", ft_echo},
+	{"pwd", ft_pwd},
     {NULL, NULL}
 };
 
-// int g_exit_status = 0;
-
+// Excute built-in command if match
+// returns built-in's exit code (0 for success)
+// returns -1 if not a built-in
 int	execute_builtin(char *argv[], t_env_list *env)
 {
-    int          i;
+    int	i;
+	int	exit_status;
 
     (void)env;
     i = 0;
-    while (g_builtin[i].builtin_name)
+    while (l_builtin[i].builtin_name)
     {
-        if (!ft_strcmp_builtin(g_builtin[i].builtin_name, argv[0]))
+        if (!ft_strcmp_builtin(l_builtin[i].builtin_name, argv[0]))
         {
-            // g_exit_status = g_builtin[i].foo(argv);
-            // return (0);
-            return (g_builtin[i].foo(argv));
+            exit_status = l_builtin[i].foo(argv, env);
+            return (exit_status);
         }
         i++;
     }
-    printf("Not a built-in command.\n");
     return (-1);
+}
+
+static char *strip_quotes(char *s)
+{
+    size_t len = ft_strlen(s);
+
+    if (len >= 2 && s[0] == '"' && s[len - 1] == '"')
+    {
+        s[len - 1] = '\0'; // remove trailing quote
+        return s + 1;       // skip leading quote
+    }
+    return s;
 }
 
 // Very simple split function for testing
 char	**split_input(char *line)
 {
-	char	**args = malloc(sizeof(char *) * 64);
+	char	**args;
 	int		i = 0;
+	char	*token;
 
-	char *token = strtok(line, " \t\n");
+	args = malloc(sizeof(char *) * 64);
+	if (!args)
+		return (NULL);
+	token = strtok(line, " \t\n");
 	while (token)
 	{
+		token = strip_quotes(token);
 		args[i++] = token;
 		token = strtok(NULL, " \t\n");
 	}
@@ -55,20 +73,24 @@ char	**split_input(char *line)
 	return (args);
 }
 
-int	main(void)
-{
-	char	line[1024];
-	char	**args;
+// int	main(void)
+// {
+// 	char	line[1024];
+// 	char	**args;
 
-	while (1)
-	{
-		printf("echo-test$ ");
-		if (!fgets(line, sizeof(line), stdin))
-			break;
-		args = split_input(line);
-		if (args[0] == NULL)
-			continue;
-		execute_builtin(args, NULL);
-	}
-	return (0);
-}
+// 	while (1)
+// 	{
+// 		printf("minishell$ ");
+// 		if (!fgets(line, sizeof(line), stdin))
+// 			break;
+// 		args = split_input(line);
+// 		if (!args || !args[0])
+// 		{
+// 			free(args);
+// 			continue ;
+// 		}
+// 		execute_builtin(args, NULL);
+// 		free(args);
+// 	}
+// 	return (0);
+// }
