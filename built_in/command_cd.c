@@ -1,29 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_env.c                                      :+:      :+:    :+:   */
+/*   command_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 13:23:31 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/12 13:23:32 by rseki            ###   ########.fr       */
+/*   Created: 2025/05/13 14:48:49 by rseki             #+#    #+#             */
+/*   Updated: 2025/05/13 14:48:50 by rseki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	ft_env(char **argv, t_env_list *env)
+int	ft_cd(char **argv, t_env_list *env)
 {
-	if (argv[1])
+	char	*old;
+	char	*new;
+
+	if (!argv[1])
+		return (p_builtin_error("cd", "missing argument"), 1);
+	old = getcwd(NULL, 0);
+	if (!old)
+		return (perror("cd: getcwd"), 1);
+	if (chdir(argv[1]) != 0)
 	{
-		p_builtin_error("env", "no option or argument avaiable");
-		return (1);
+		perror("cd");
+		return (free(old), 1);
 	}
-	env = env->next;
-	while (env)
+	new = getcwd(NULL, 0);
+	if (!new)
 	{
-		printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		perror("cd: getcwd");
+		return (free(old), 1);
 	}
+	ft_setenv(env, "PWD", new);
+	ft_setenv(env, "OLDPWD", old);
+	free(old);
+	free(new);
 	return (0);
 }

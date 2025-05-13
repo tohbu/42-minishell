@@ -1,33 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_pwd.c                                      :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 12:20:34 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/12 12:20:35 by rseki            ###   ########.fr       */
+/*   Created: 2025/05/13 14:09:33 by rseki             #+#    #+#             */
+/*   Updated: 2025/05/13 14:09:34 by rseki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-/*
-pwd
-->print name of current/working directory
-*/
-int	ft_pwd(char **argv, t_env_list *env)
+// Free
+void	free_args(char **args)
 {
-	char cwd[BUFSIZ];
+	int	i;
 
-	(void)env;
-	if (argv[1])
+	i = 0;
+	if (!args)
+		return ;
+	while (args[i])
+		free(args[i++]);
+	free(args);
+}
+
+void	free_env(t_env_list *env)
+{
+	t_env_list	*cur;
+	t_env_list	*next;
+
+	if (!env)
+		return ;
+	cur = env->next;
+	while (cur)
 	{
-		p_builtin_error("pwd", "too many arguments");
-		return (1);
+		next = cur->next;
+		if (cur->key)
+			free(cur->key);
+		if (cur->value)
+			free(cur->value);
+		free(cur);
+		cur = next;
 	}
-	Getcwd(cwd, sizeof(cwd));
-	write(STDOUT_FILENO, cwd, ft_strlen(cwd));
-	write(STDOUT_FILENO, "\n", 1);
-	return (0);
+	free(env);
 }

@@ -50,7 +50,7 @@ t_bool	check_env_format(char c)
 	return (0);
 }
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
 

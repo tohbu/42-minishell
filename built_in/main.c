@@ -66,48 +66,4 @@ char	*ft_strndup(char *s, size_t n)
 // 	print_env_list(my_env->next);
 // }
 
-static int	init_env(char *envp[], t_env_list **my_env)
-{
-	*my_env = get_envp_to_struct(envp);
-	if (!*my_env)
-	{
-		ft_error("Failed to initialize env list");
-		return (1);
-	}
-	return (0);
-}
-
-static void	minishell_loop(t_env_list *env)
-{
-	char	line[BUFSIZ];
-	char	**args;
-
-	while (1)
-	{
-		printf("minishell$ ");
-		if (!fgets(line, sizeof(line), stdin))
-			break;
-		args = split_input(line);
-		if (!args || !args[0])
-		{
-			free(args);
-			continue;
-		}
-		execute_builtin(args, env);
-		free(args);
-	}
-}
-
-int	main(int argc, char *argv[], char *envp[])
-{
-	t_env_list	*my_env;
-
-	(void)argc;
-	(void)argv;
-	if (init_env(envp, &my_env))
-		return (1);
-	minishell_loop(my_env);
-	// TODO: free env list 
-	return (0);
-}
 

@@ -12,17 +12,31 @@
 
 #include "../include/minishell.h"
 
-// サーチに入れた環境変数があるかどうかを確認する、あればその文字列をかえす
+// printing out the env list
+// static void	debug_env_list(t_env_list *env)
+// {
+// 	while (env)
+// 	{
+// 		printf("Node at %p\n", env);
+// 		if (env->key)
+// 			printf("  key = %s\n", env->key);
+// 		else
+// 			printf("  key is NULL\n");
+// 		env = env->next;
+// 	}
+// }
 
+// サーチに入れた環境変数があるかどうかを確認する、あればその文字列をかえす
 char	*match_env_key(char *search, t_env_list *env)
 {
 	t_env_list	*tmp;
 
 	tmp = env;
 	printf("segf = %s\n", search);
+	// debug_env_list(env);
 	while (tmp)
 	{
-		if (strcmp(tmp->key, search) == 0)
+		if (tmp->key && ft_strcmp(tmp->key, search) == 0)
 			return (ft_strdup(tmp->value));
 		tmp = tmp->next;
 	}
@@ -52,12 +66,12 @@ char	*expand_command_str(char *s, t_env_list *env)
 	tmp = s;
 	i = 0;
 	while (*tmp && *tmp != '$')
-		tmp++;	//tmp -> '$'
+		tmp++;
 	if (!*tmp || !*(tmp + 1))
 		return (s);
-	front = ft_strndup(s, (tmp++ - s)); // tmp->'U' 
+	front = ft_strndup(s, (tmp++ - s));
 	while (check_env_format(tmp[i]))
-		i++;	//U<->R
+		i++;
 	back = ft_strdup(tmp + i);
 	tmp = ft_strndup(tmp, i);
 	result = ft_strjoin_and_free(front, match_env_key(tmp, env));
@@ -65,25 +79,32 @@ char	*expand_command_str(char *s, t_env_list *env)
 	free(tmp);
 	return (result);
 }
+
 // 自分の構造体に構造体を格納する　dumyありのリストで一番はじめはからのノード
+// free the memory malloc by ft_get_env if failed.
 t_env_list	*get_envp_to_struct(char *envp[])
 {
 	int			i;
 	t_env_list	*st_env;
 	t_env_list	*tmp;
+	t_env_list	*new_node;
 
 	i = 0;
 	st_env = new_env_node(NULL, NULL);
+	if (!st_env)
+		return (NULL);
 	tmp = st_env;
 	while (envp[i])
 	{
-		tmp->next = ft_get_env(envp[i]);
-		if (!tmp->next)
+		new_node = ft_get_env(envp[i]);
+		if (!new_node)
+		{
+			// free_env(st_env);
 			return (NULL);
-		tmp = tmp->next;
+		}
+		tmp->next = new_node;
+		tmp = new_node;
 		i++;
 	}
 	return (st_env);
 }
-
-
