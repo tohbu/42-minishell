@@ -6,12 +6,12 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:08:12 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/07 15:39:00 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include "builtin.h"
+#include "../include/builtin.h"
 
 void	print_env_list(t_env_list *t)
 {

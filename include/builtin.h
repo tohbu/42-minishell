@@ -6,13 +6,14 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:03:08 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/07 14:18:04 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:07:49 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
-#include "../include/struct.h"
-
+#ifndef BUILTIN_H
+# define BUILTIN_H
+# include "minishell.h"
+# include "struct.h"
 typedef int		(*t_builtin_func)(char **);
 
 typedef struct s_builtin
@@ -79,3 +80,5 @@ void			free_env(t_env_list *env);
 
 // ft_setenv.c
 int				ft_setenv(t_env_list *env, const char *key, char *value);
+
+#endif

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:53:13 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/13 15:53:14 by rseki            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../include/builtin.h"
 
 static void	free_content(t_env_list **node)
 {

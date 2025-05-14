@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:53:15 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 18:52:25 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*heredoc(char *eof)
 	return (free(eof), free(buf), (reslut));
 }
 
-void	expand_heredoc(t_token_manager *com)
+void	expand_heredoc(t_token_manager *com, t_minishell *my_shell)
 {
 	t_token_list	*tmp;
 
@@ -70,6 +70,7 @@ void	expand_heredoc(t_token_manager *com)
 			if (g_interrupt_state == SIGINT)
 			{
 				tmp->error_flag = SIGINT;
+				my_shell->state = SIGINT + 128;
 				return ;
 			}
 			tmp = tmp->next;

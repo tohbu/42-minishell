@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:09:33 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/13 14:09:34 by rseki            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../include/builtin.h"
 
 // Free
 void	free_args(char **args)

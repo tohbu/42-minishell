@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/07 16:03:05 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 20:23:54 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,15 @@ void	search_expand(t_command_list *com, t_env_list *env)
 	}
 }
 
-void	expand_env(t_tree *t, t_env_list *env)
+void	expand_env(t_tree *t, t_minishell *my_shell)
 {
 	if (!t)
 		return ;
-	expand_env(t->left, env);
-	expand_env(t->right, env);
+	expand_env(t->left, my_shell);
+	expand_env(t->right, my_shell);
 	delete_quote_com(t->head);
-	search_expand(t->head, env);
+	expand_last_state(t->head, my_shell);
+	search_expand(t->head, my_shell->env->next);
 	return ;
 }
 

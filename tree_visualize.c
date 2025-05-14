@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_visualize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/09 15:26:09 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/14 18:53:48 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_bool	run_lexer_and_heredoc(char *input, t_minishell *my_shell)
 		free_one_loop_data(my_shell);
 		return (0);
 	}
-	expand_heredoc(my_shell->token);
+	expand_heredoc(my_shell->token, my_shell);
 	if (!heredoc_check(my_shell->token))
 	{
 		free_one_loop_data(my_shell);
@@ -64,10 +64,9 @@ void	run_execution_pipeline(t_minishell *sh)
 		free_one_loop_data(sh);
 		return ;
 	}
-	 ft_executer_and_or(sh->ast, sh);
-	 wait_pid_list(sh->pid_list, &sh->state);
-	 printf("exit state = %d\n", sh->state);
-	print_debag(sh);
+	ft_executer_and_or(sh->ast, sh);
+	if (sh->pid_list && sh->pid_list->next)
+		wait_pid_list(sh->pid_list, &sh->state);
 	free_one_loop_data(sh);
 }
 

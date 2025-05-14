@@ -8,6 +8,7 @@ LEXER_DIR   := ./lexer
 EXPANDER_DIR := ./expander
 EXECUTER_DIR := ./executer
 INCLUDE_DIRS := ./include
+BUILT_IN_DIRS := ./built_in
 
 # コンパイラとフラグ
 CC      := cc
@@ -34,17 +35,30 @@ SRCS_TREE := tree_visualize.c \
              $(EXPANDER_DIR)/heredoc.c \
              $(EXPANDER_DIR)/heredoc_readline.c \
              $(EXPANDER_DIR)/delete_quote.c \
-			 $(EXPANDER_DIR)/expander_utils.c \
+             $(EXPANDER_DIR)/expander_utils.c \
+			 $(EXPANDER_DIR)/expand_last_state.c\
              $(EXECUTER_DIR)/executer.c \
              $(EXECUTER_DIR)/pid_list.c \
-			 $(EXECUTER_DIR)/fd_manage.c \
-			 $(EXECUTER_DIR)/executer_utils.c \
+             $(EXECUTER_DIR)/fd_manage.c \
+             $(EXECUTER_DIR)/executer_utils.c \
              ./utils/free1.c \
              ./utils/free2.c \
-			 ./utils/print1.c \
-			 ./utils/print2.c \
-			 ./utils/init_minishell.c \
-			 ./utils/signal.c \
+             ./utils/print1.c \
+             ./utils/print2.c \
+             ./utils/init_minishell.c \
+             ./utils/signal.c \
+             $(BUILT_IN_DIRS)/command_cd.c \
+             $(BUILT_IN_DIRS)/command_echo.c \
+             $(BUILT_IN_DIRS)/command_env.c \
+             $(BUILT_IN_DIRS)/command_exit.c \
+             $(BUILT_IN_DIRS)/command_export.c \
+             $(BUILT_IN_DIRS)/command_export_utilis.c \
+             $(BUILT_IN_DIRS)/command_pwd.c \
+             $(BUILT_IN_DIRS)/command_unset.c \
+             $(BUILT_IN_DIRS)/free.c \
+             $(BUILT_IN_DIRS)/ft_setenv.c \
+             $(BUILT_IN_DIRS)/parse_and_execute_builtin.c \
+             $(BUILT_IN_DIRS)/utilis.c
 
 # オブジェクトファイル
 OBJS      := $(SRCS:.c=.o)

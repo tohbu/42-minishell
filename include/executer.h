@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:44:31 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/09 15:22:23 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/14 16:19:53 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ char		**vecter_join(char **array, char *s, int size);
 char		**get_path(t_env_list *env);
 // executer.c
 char		*join_path(char *dir, char *cmd);
-void	do_command(char **path, char **argv,t_minishell* my_shell);
-void	setting_fd(t_command_list *com, t_minishell *my_shell);
-int	exeve_command(t_command_list *com, int fd[2],t_minishell *my_shell);
-int	ft_executer(t_tree *ast, int parent_fd[2], t_minishell* my_shell);
-int	ft_executer_and_or(t_tree *ast, t_minishell *my_shell);
+void		do_command(char **path, char **argv, t_minishell *my_shell);
+void		setting_fd(t_command_list *com, t_minishell *my_shell,
+				int paret_token_type);
+int			exeve_command(t_command_list *com, int fd[2],
+				t_minishell *my_shell);
+int			ft_executer(t_tree *ast, int parent_fd[2], t_minishell *my_shell);
+int			ft_executer_and_or(t_tree *ast, t_minishell *my_shell);
 #endif

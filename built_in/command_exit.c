@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:01:48 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/13 11:01:49 by rseki            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../include/builtin.h"
 
 static int	is_numeric(const char *str)
 {

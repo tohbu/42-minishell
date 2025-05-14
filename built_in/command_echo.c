@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:39:50 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/11 14:39:51 by rseki            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:26:46 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../include/builtin.h"
 
 /*
 is there "-n" flag?

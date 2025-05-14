@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utilis.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:37:11 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/11 16:37:13 by rseki            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "../include/builtin.h"
 
 int	ft_strcmp_builtin(const char *s1, const char *s2)
 {

@@ -1,8 +1,0 @@
-0(AND)[&&]--↓--1(PIPE)[|]--↓--2COMMAND[d][>][outfile]
-                                    
-                        2COMMAND[c]
-                                    
-            1(PIPE)[|]--↓--2COMMAND[b]
-                                    
-                        2COMMAND[a]
-                                    

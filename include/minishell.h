@@ -6,13 +6,14 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:05:35 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 19:45:35 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:19:30 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libft/libft.h"
+# include "./builtin.h"
 # include "./executer.h"
 # include "./expander.h"
 # include "./lexer.h"
