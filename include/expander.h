@@ -19,7 +19,7 @@
 t_bool		check_env_format(char c);
 t_env_list	*new_env_node(char *in_key, char *in_value);
 t_env_list	*ft_get_env(char *s);
-int			ft_strcmp(char *s1, char *s2);
+int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strjoin_and_free(char *s1, char *s2);
 // env.c
 char		*match_env_key(char *search, t_env_list *env);
