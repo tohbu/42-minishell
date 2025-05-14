@@ -3,10 +3,16 @@ NAME = main
 
 # コンパイラとフラグ
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 # ソースファイルとオブジェクトファイル
-SRCS = main.c env.c expander_utils.c
+SRCS = main.c main_builtin.c env.c expander_utils.c \
+parse_and_execute_builtin.c \
+command_echo.c command_env.c command_pwd.c command_exit.c \
+command_cd.c command_export.c command_export_utilis.c \
+command_unset.c \
+utilis.c free.c ft_setenv.c 
+
 OBJS = $(SRCS:.c=.o)
 
 # 依存ライブラリ

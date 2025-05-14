@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "builtin.h"
 
 void	print_env_list(t_env_list *t)
 {
@@ -53,14 +54,16 @@ char	*ft_strndup(char *s, size_t n)
 	return (ret);
 }
 
-int	main(int argc, char *argv[], char *envp[])
-{
-	t_env_list	*my_env;
+// int	main(int argc, char *argv[], char *envp[])
+// {
+// 	t_env_list	*my_env;
 
-	(void)argc;
-	(void)argv;
-	my_env = get_envp_to_struct(envp);
-	print_env_list(my_env->next);
-	my_env = add_new_env(my_env, "NEW_ENV", "minishell");
-	print_env_list(my_env->next);
-}
+// 	(void)argc;
+// 	(void)argv;
+// 	my_env = get_envp_to_struct(envp);
+// 	print_env_list(my_env->next);
+// 	my_env = add_new_env(my_env, "NEW_ENV", "minishell");
+// 	print_env_list(my_env->next);
+// }
+
+

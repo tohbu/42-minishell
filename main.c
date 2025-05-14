@@ -61,6 +61,8 @@ int	main(int argc, char *argv[], char *envp[])
 
 	argc++;
 	argc--;
+	(void)argv;
+	(void)envp;
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -68,10 +70,11 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			add_history(input); /* 履歴を保存 */
 		}
-		all = (t_token_manager *)malloc(sizeof(t_token_manager));
-		if (!all)
-			return (1);
-		init_t_token_manager(all);
+		// all = (t_token_manager *)malloc(sizeof(t_token_manager));
+		// if (!all)
+		// 	return (1);
+		all = init_t_token_manager();
+		// init_t_token_manager(all);
 		if (lexer(input, all) == ERROR)
 		{
 			printf("Error in lexer\n");
