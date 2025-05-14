@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pid_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:50:40 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/09 11:33:05 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/14 20:59:20 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_pid_list	*init_pid_list(void)
 void	wait_pid_list(t_pid_list *pid_list, int *sta)
 {
 	t_pid_list	*tmp;
-	t_pid_list   *dast;
+	t_pid_list	*dast;
 
 	tmp = pid_list->next;
 	while (tmp)

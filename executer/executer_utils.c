@@ -6,20 +6,20 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:37:41 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:42:51 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:01:13 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	close_all_fd(void)
+int	close_all_fd(void)
 {
 	int	i;
 
 	i = STDERR_FILENO + 1;
 	while (close(i) != -1)
 		i++;
-	return ;
+	return (1);
 }
 
 t_bool	ft_strcmp_built_in(char *s)
@@ -49,7 +49,7 @@ t_bool	is_built_in(t_command_list *com)
 	return (0);
 }
 
-char	**vecter_join(char **array, char *s, int size)
+char	**join_argv(char **array, char *s, int size)
 {
 	char	**reslut;
 	int		i;

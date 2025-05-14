@@ -6,12 +6,12 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:08:12 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:31:59 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
 #include "../include/builtin.h"
+#include "../include/minishell.h"
 
 void	print_env_list(t_env_list *t)
 {
@@ -65,5 +65,3 @@ char	*ft_strndup(char *s, size_t n)
 // 	my_env = add_new_env(my_env, "NEW_ENV", "minishell");
 // 	print_env_list(my_env->next);
 // }
-
-

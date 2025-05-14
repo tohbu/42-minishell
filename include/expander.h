@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 18:52:53 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 20:58:06 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char		*ft_strjoin_and_free(char *s1, char *s2);
 // env.c
 char		*match_env_key(char *search, t_env_list *env);
 char		*expand_command_str(char *s, t_env_list *env);
-void		search_expand(t_command_list *com, t_env_list *env);
+void		expand_env_vars(t_command_list *com, t_env_list *env);
 void		expand_env(t_tree *t, t_minishell *my_shell);
 t_env_list	*get_envp_to_struct(char *envp[]); // dumy あり;
 // heredoc.c

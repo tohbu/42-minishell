@@ -6,22 +6,16 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:35:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/08 23:21:25 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:47:52 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// void	print_tab(int n)
-// {
-// 	while (n-- > 0)
-// 		printf("            ");
-// }
-
 void	print_tab(int n)
 {
 	while (n-- > 0)
-		printf("        "); // 8スペースに調整
+		printf("        ");
 }
 
 void	print_token(int t, t_command_list *head, int deep)
@@ -49,13 +43,10 @@ void	t_tree_visualize(t_tree *t, int depth)
 {
 	if (!t)
 		return ;
-	// 右を先に描画
 	t_tree_visualize(t->right, depth + 1);
-	// 中央（現在のノード）
 	printf("\n");
 	print_tab(depth);
 	print_token(t->token_type, t->head, depth);
-	// 左をあとに描画
 	t_tree_visualize(t->left, depth + 1);
 }
 

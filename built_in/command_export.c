@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:58:29 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:30:43 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static int	print_export_list(t_env_list *env)
 	char	**sorted;
 	int		i;
 
-	// t_env_list	*tmp;
 	sorted = convert_env_list_to_sorted_array(env);
 	i = 0;
 	while (sorted[i])

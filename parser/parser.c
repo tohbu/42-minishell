@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:55:28 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/08 23:34:59 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 20:53:27 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_tree	*piped_commands(t_token_manager *token)
 	}
 }
 
-t_tree	*and_or_node(t_token_manager *token)
+t_tree	*parser_logical_operator(t_token_manager *token)
 {
 	t_tree	*tree_right;
 	t_tree	*parent;

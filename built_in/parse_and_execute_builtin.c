@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:25:37 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:32:04 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,28 @@
 
 int	execute_builtin(char **argv, t_env_list *env)
 {
+	int	result;
+
 	if (!argv || !argv[0])
 		return (-1);
 	if (ft_strcmp_builtin(argv[0], "echo") == 0)
-		return (ft_echo(argv, env));
+		result = (ft_echo(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "pwd") == 0)
-		return (ft_pwd(argv, env));
+		result = (ft_pwd(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "env") == 0)
-		return (ft_env(argv, env));
+		result = (ft_env(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "exit") == 0)
-		return (ft_exit(argv, env));
+		result = (ft_exit(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "cd") == 0)
-		return (ft_cd(argv, env));
+		result = (ft_cd(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "export") == 0)
-		return (ft_export(argv, env));
+		result = (ft_export(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "unset") == 0)
-		return (ft_unset(argv, env));
-	return (-1);
+		result = (ft_unset(argv, env));
+	else
+		result = (-1);
+	free_args(argv);
+	return (result);
 }
 
 // remove trailing quote

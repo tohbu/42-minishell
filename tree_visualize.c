@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 18:53:48 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:08:02 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ t_bool	run_lexer_and_heredoc(char *input, t_minishell *my_shell)
 	return (1);
 }
 
-void	run_execution_pipeline(t_minishell *sh)
+void	parser_and_executer(t_minishell *sh)
 {
-	sh->ast = and_or_node(sh->token);
+	sh->ast = parser_logical_operator(sh->token);
 	if (!syntax_check(sh->token, sh->ast))
 	{
 		free_one_loop_data(sh);
 		return ;
 	}
-	ft_executer_and_or(sh->ast, sh);
+	execute_logical_operater_tree(sh->ast, sh);
 	if (sh->pid_list && sh->pid_list->next)
 		wait_pid_list(sh->pid_list, &sh->state);
 	free_one_loop_data(sh);
@@ -89,7 +89,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free(input);
 			continue ;
 		}
-		run_execution_pipeline(my_shell);
+		parser_and_executer(my_shell);
 		free(input);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:40:16 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:30:15 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	sort_string_array(char **array)
 // 5. combine into convert_env_list_to_sorted_array
 char	**convert_env_list_to_sorted_array(t_env_list *env)
 {
-	char **array;
+	char	**array;
 
 	array = env_list_to_array(env);
 	if (!array)

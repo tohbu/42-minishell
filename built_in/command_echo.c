@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:39:50 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 16:26:46 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:30:00 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ args[0] = "echo". args[1] == "-n"??
 */
 int	ft_echo(char **args, t_env_list *env)
 {
-	int i;
-	int new_line;
+	int	i;
+	int	new_line;
 
 	i = 1;
 	new_line = 1;

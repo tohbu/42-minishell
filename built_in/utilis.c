@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:37:11 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 15:06:40 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:33:10 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	p_builtin_error(const char *cmd, const char *msg)
 }
 
 // WRAPPER
-void	Getcwd(char *buf, size_t size)
+void	ft_getcwd(char *buf, size_t size)
 {
 	if (getcwd(buf, size) == NULL)
 	{
