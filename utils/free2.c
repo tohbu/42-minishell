@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:57:43 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:59:36 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/09 15:19:14 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,13 @@ void	free_all(t_minishell *my_shell)
 	free_one_loop_data(my_shell);
 	free_envlist(my_shell->env);
 	free(my_shell);
+}
+
+void free_char_arr(char ** arr)
+{
+	int i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr[i]);
+	free(arr);
 }

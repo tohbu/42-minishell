@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:03:57 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:50:04 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/08 22:28:10 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,13 @@ t_bool	syntax_check(t_token_manager *token, t_tree *t)
 		tmp = tmp->next;
 	}
 	return (1);
+}
+
+t_bool	is_token_word(t_token_list *t)
+{
+	if (t->token_type == WORD || t->token_type == WORD_IN_DOUBLE_QOUTE
+		|| t->token_type == WORD_IN_SINGLE_QOUTE)
+		return (1);
+	else
+		return (0);
 }

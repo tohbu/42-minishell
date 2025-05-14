@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:11:44 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/08 21:57:48 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ enum						e_Token_type
 	WORD_IN_SINGLE_QOUTE,
 	WORD_IN_DOUBLE_QOUTE,
 	PIPE,
+	AND,
+	OR,
 	REDIRECT,
 	REDIRECT_IN,
 	REDIRECT_OUT,
