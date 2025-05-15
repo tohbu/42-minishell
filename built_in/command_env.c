@@ -12,6 +12,10 @@
 
 #include "../include/builtin.h"
 
+/*
+env foo
+=>env: ‘foo’: No such file or directory
+*/
 int	ft_env(char **argv, t_env_list *env)
 {
 	if (argv[1])

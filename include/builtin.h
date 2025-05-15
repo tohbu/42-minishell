@@ -15,22 +15,15 @@
 # include "minishell.h"
 # include "struct.h"
 
-typedef int	(*t_builtin_func)(char **);
-
-// typedef struct s_builtin
-// {
-// 	const char	*builtin_name;
-// 	int (*foo)(char **, t_env_list *); // protype of every builtin
-// }				t_builtin;
-
-// builtin.c
-int			execute_builtin(char *argv[], t_env_list *env);
+// parse_and_execute_builtin.c
+int			execute_builtin(char **argv, t_env_list *env);
 char		**split_input(char *line);
 
 // command_echo.c
 int			ft_echo(char **args, t_env_list *env);
 
 // command_pwd.c
+void		Getcwd(char *buf, size_t size);
 int			ft_pwd(char **argv, t_env_list *env);
 
 // command_env.c
@@ -56,18 +49,8 @@ int			ft_unset(char **argv, t_env_list *env);
 int			ft_strcmp_builtin(const char *s1, const char *s2);
 void		ft_error(const char *msg);
 void		p_builtin_error(const char *cmd, const char *msg);
-void		ft_getcwd(char *buf, size_t size);
-void		free_args(char **args);
-void		free_env(t_env_list *env);
-
-// main.c
-void		print_env_list(t_env_list *t);
-t_env_list	*add_new_env(t_env_list *env, char *key, char *value);
-char		*ft_strndup(char *s, size_t n);
-int			main(int argc, char *argv[], char *envp[]);
-
-// main_builtin.c
-int			main(int argc, char *argv[], char *envp[]);
+void		p_builtin_error_no_minishell(const char *cmd, const char *msg);
+char		*extract_key(const char *arg);
 
 // env.c
 char		*match_env_key(char *search, t_env_list *env);
@@ -80,5 +63,8 @@ void		free_env(t_env_list *env);
 
 // ft_setenv.c
 int			ft_setenv(t_env_list *env, const char *key, char *value);
+
+// main.c
+char		*ft_strndup(char *s, size_t n);
 
 #endif

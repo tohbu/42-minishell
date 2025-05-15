@@ -58,6 +58,15 @@ static long long	ft_atoll(const char *str, int *error)
 	return (result * sign);
 }
 
+static void	p_exit_custum_error(const char *arg1, const char *arg2)
+{
+	write(STDERR_FILENO, "exit\nminishell: exit: ", 22);
+	write(STDERR_FILENO, arg1, ft_strlen(arg1));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, arg2, ft_strlen(arg2));
+	write(STDERR_FILENO, "\n", 1);
+}
+
 static int	ft_check_args(char **argv, long long *exit_status)
 {
 	int	error;
@@ -65,17 +74,20 @@ static int	ft_check_args(char **argv, long long *exit_status)
 	error = 0;
 	if (!is_numeric(argv[1]))
 	{
-		p_builtin_error("exit", "numeric argument required");
+		// p_builtin_error("exit", "numeric argument required");
+		// write(STDERR_FILENO, "exit: ", 6);
+		p_exit_custum_error(argv[1], "numeric argument required");
 		exit(255);
 	}
 	*exit_status = ft_atoll(argv[1], &error);
 	if (error)
 	{
-		p_builtin_error("exit", "numeric argument within 0 to 255 required");
+		p_exit_custum_error(argv[1], "numeric argument required");
 		exit(255);
 	}
 	if (argv[2])
 	{
+		write(2, "exit\n", 5);
 		p_builtin_error("exit", "too many arguments");
 		return (1);
 	}
@@ -98,7 +110,6 @@ int	ft_exit(char **argv, t_env_list *env)
 	long long	exit_status;
 	int			error;
 
-	(void)env;
 	exit_status = 0;
 	error = 0;
 	if (argv[1])
@@ -110,5 +121,7 @@ int	ft_exit(char **argv, t_env_list *env)
 		exit_status = 0;
 	free_args(argv);
 	free_env(env);
+	env = NULL;
 	exit(exit_status % 256);
+	return (0);
 }

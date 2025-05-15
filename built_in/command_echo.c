@@ -31,40 +31,6 @@ static int	is_n_flag(const char *str)
 }
 
 /*
-echo "hello" -> hello
-*/
-static int	remove_quates_and_print(const char *str)
-{
-	size_t	len;
-
-	len = ft_strlen(str);
-	if (len >= 2 && str[0] == '"' && str[len - 1] == '"')
-		write(STDOUT_FILENO, str + 1, len - 2);
-	else
-		write(STDOUT_FILENO, str, len);
-	return (0);
-}
-
-//
-static void	print_arg_with_expansion(char *arg, t_env_list *env)
-{
-	char	*expanded;
-
-	expanded = expand_command_str(arg, env);
-	if (expanded && ft_strcmp(expanded, arg) != 0)
-	{
-		remove_quates_and_print(expanded);
-		free(expanded);
-	}
-	else
-	{
-		remove_quates_and_print(arg);
-		if (expanded != arg)
-			free(expanded);
-	}
-}
-
-/*
 args[0] = "echo". args[1] == "-n"??
 1. is_n_flag?
 2. skips the n flag if present.
@@ -76,6 +42,7 @@ int	ft_echo(char **args, t_env_list *env)
 	int	i;
 	int	new_line;
 
+	(void)env;
 	i = 1;
 	new_line = 1;
 	while (args[i] && is_n_flag(args[i]))
@@ -85,7 +52,7 @@ int	ft_echo(char **args, t_env_list *env)
 	}
 	while (args[i])
 	{
-		print_arg_with_expansion(args[i], env);
+		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
 		if (args[i + 1])
 			write(STDOUT_FILENO, " ", 1);
 		i++;

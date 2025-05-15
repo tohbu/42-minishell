@@ -37,18 +37,32 @@ void	ft_error(const char *msg)
 
 void	p_builtin_error(const char *cmd, const char *msg)
 {
+	write(STDERR_FILENO, "minishell: ", 11);
 	write(STDERR_FILENO, cmd, ft_strlen(cmd));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	write(STDERR_FILENO, "\n", 1);
 }
 
-// WRAPPER
-void	ft_getcwd(char *buf, size_t size)
+void	p_builtin_error_no_minishell(const char *cmd, const char *msg)
 {
-	if (getcwd(buf, size) == NULL)
-	{
-		perror("getcwd FAILED\n");
-		exit(1);
-	}
+	write(STDERR_FILENO, cmd, ft_strlen(cmd));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, msg, ft_strlen(msg));
+	write(STDERR_FILENO, "\n", 1);
+}
+
+char	*extract_key(const char *arg)
+{
+	int i;
+	char *key;
+
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+		i++;
+	key = malloc(i + 1);
+	if (!key)
+		return (NULL);
+	ft_strlcpy(key, arg, i + 1);
+	return (key);
 }
