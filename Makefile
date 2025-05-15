@@ -1,8 +1,6 @@
-# プログラム名
-NAME       := minishell
-TREE_NAME  := tree_visualize
 
-# ディレクトリ
+NAME       := minishell
+
 PARSER_DIR  := ./parser
 LEXER_DIR   := ./lexer
 EXPANDER_DIR := ./expander
@@ -11,23 +9,14 @@ INCLUDE_DIRS := ./include
 BUILT_IN_DIRS := ./built_in
 UTILS_DIRS := ./utils
 
-# コンパイラとフラグ
 CC      := cc
-CFLAGS  := -Wall -Wextra -Werror -g $(addprefix -I, $(INCLUDE_DIRS))
+CFLAGS  := -Wall -Wextra -Werror  $(addprefix -I, $(INCLUDE_DIRS))
 
-# ライブラリ
 LIBFT_DIR := ./libft
 LIBFT     := libft.a
 
-# ソースファイル
-SRCS := main.c \
-        $(PARSER_DIR)/parser.c \
-        $(LEXER_DIR)/token.c \
-        $(PARSER_DIR)/parse_utils.c \
-        $(LEXER_DIR)/token_utils.c \
-        $(PARSER_DIR)/free.c
 
-SRCS_TREE := tree_visualize.c \
+SRCS		 := tree_visualize.c \
              $(PARSER_DIR)/parser.c \
              $(PARSER_DIR)/parser_struct.c \
 			 $(PARSER_DIR)/parser_utils.c \
@@ -65,7 +54,6 @@ SRCS_TREE := tree_visualize.c \
 
 # オブジェクトファイル
 OBJS      := $(SRCS:.c=.o)
-OBJS_TREE := $(SRCS_TREE:.c=.o)
 
 # デフォルトターゲット
 all: $(NAME)
@@ -78,10 +66,6 @@ $(NAME): $(OBJS) $(LIBFT)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 	cp $(LIBFT_DIR)/$(LIBFT) .
-
-# tree_visualize のビルド
-tree: $(OBJS_TREE) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TREE_NAME) $(OBJS_TREE) -L. -lft -lreadline
 
 # クリーン
 clean:

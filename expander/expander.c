@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:54:32 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/15 14:50:16 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*match_env_key(char *search, t_env_list *env)
 	tmp = env;
 	while (tmp)
 	{
-		if (strcmp(tmp->key, search) == 0)
+		if (ft_strcmp(tmp->key, search) == 0)
 			return (ft_strdup(tmp->value));
 		tmp = tmp->next;
 	}

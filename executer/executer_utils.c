@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:37:41 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:01:13 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/15 14:50:20 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	close_all_fd(void)
 
 t_bool	ft_strcmp_built_in(char *s)
 {
-	if (strcmp(s, "echo") == 0 || strcmp(s, "cd") == 0 || strcmp(s, "pwd") == 0
-		|| strcmp(s, "export") == 0)
+	if (ft_strcmp(s, "echo") == 0 || ft_strcmp(s, "cd") == 0 || ft_strcmp(s,
+			"pwd") == 0 || ft_strcmp(s, "export") == 0)
 		return (1);
-	if (strcmp(s, "unset") == 0 || strcmp(s, "env") == 0 || strcmp(s,
+	if (ft_strcmp(s, "unset") == 0 || ft_strcmp(s, "env") == 0 || ft_strcmp(s,
 			"exit") == 0)
 		return (1);
 	return (0);
@@ -78,7 +78,7 @@ char	**get_path(t_env_list *env)
 	tmp = env;
 	while (tmp)
 	{
-		if (strcmp(tmp->key, "PATH") == 0)
+		if (ft_strcmp(tmp->key, "PATH") == 0)
 			break ;
 		tmp = tmp->next;
 	}

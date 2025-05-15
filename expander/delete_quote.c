@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:36:46 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:55:23 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/15 14:50:16 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*delete_quote(char *s)
 {
 	char	*result;
 
-	if (strcmp(s, "\"\"") == 0 || strcmp(s, "\'\'") == 0)
+	if (ft_strcmp(s, "\"\"") == 0 || ft_strcmp(s, "\'\'") == 0)
 		result = ft_calloc(sizeof(char *), 1);
 	else
 		result = ft_strndup((s + 1), ft_strlen(s) - 2);
@@ -44,7 +44,7 @@ char	*delete_quote_for_heredoc(char *s)
 {
 	char	*result;
 
-	if (strcmp(s, "\"\"") == 0 || strcmp(s, "\'\'") == 0)
+	if (ft_strcmp(s, "\"\"") == 0 || ft_strcmp(s, "\'\'") == 0)
 		result = ft_calloc(sizeof(char *), 1);
 	else
 		result = ft_strndup((s + 1), ft_strlen(s) - 2);
