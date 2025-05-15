@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:37:41 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 14:50:20 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/15 19:17:27 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,26 @@ t_bool	is_built_in(t_command_list *com)
 	return (0);
 }
 
-char	**join_argv(char **array, char *s, int size)
+char	*add_quote(char *s, int token_type)
+{
+	char	*result;
+
+	if (token_type == WORD_IN_DOUBLE_QOUTE)
+	{
+		result = ft_strjoin("\"", s);
+		result = ft_strjoin_and_free(result, ft_strdup("\""));
+		return (result);
+	}
+	if (token_type == WORD_IN_SINGLE_QOUTE)
+	{
+		result = ft_strjoin("\'", s);
+		result = ft_strjoin_and_free(result, ft_strdup("\'"));
+		return (result);
+	}
+	return (NULL);
+}
+
+char	**join_argv(char **array, char *s, int size, int token_type)
 {
 	char	**reslut;
 	int		i;
@@ -63,29 +82,14 @@ char	**join_argv(char **array, char *s, int size)
 		reslut[i] = array[i];
 		i++;
 	}
-	reslut[i++] = ft_strdup(s);
+	if (i != 0 && ft_strcmp(reslut[0], "export") == 0
+		&& (token_type == WORD_IN_DOUBLE_QOUTE
+			|| token_type == WORD_IN_SINGLE_QOUTE))
+		reslut[i++] = add_quote(s, token_type);
+	else
+		reslut[i++] = ft_strdup(s);
 	reslut[i] = NULL;
 	if (array)
 		free(array);
-	return (reslut);
-}
-
-char	**get_path(t_env_list *env)
-{
-	char		**reslut;
-	t_env_list	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, "PATH") == 0)
-			break ;
-		tmp = tmp->next;
-	}
-	if (!tmp)
-		return (NULL);
-	reslut = ft_split(tmp->value, ':');
-	if (!reslut)
-		return (NULL);
 	return (reslut);
 }

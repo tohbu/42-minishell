@@ -6,76 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 14:50:16 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/15 19:16:55 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	*expand_command_str(char *s, t_env_list *env)
-{
-	char	*tmp;
-	int		i;
-	char	*front;
-	char	*back;
-	char	*result;
-
-	tmp = s;
-	i = 0;
-	while (*tmp && *tmp != '$')
-		tmp++;
-	if (!*tmp || !*(tmp + 1))
-		return (s);
-	front = ft_strndup(s, (tmp++ - s));
-	while (check_env_format(tmp[i]))
-		i++;
-	back = ft_strdup(tmp + i);
-	tmp = ft_strndup(tmp, i);
-	result = ft_strjoin_and_free(front, match_env_key(tmp, env));
-	result = ft_strjoin_and_free(result, back);
-	free(tmp);
-	return (result);
-}
-
-void	expand_env_vars(t_command_list *com, t_env_list *env)
-{
-	t_command_list	*tmp_com;
-	char			*result;
-	char			*dast;
-
-	tmp_com = com->next;
-	while (tmp_com)
-	{
-		if ((tmp_com->token_type == WORD
-				|| tmp_com->token_type == WORD_IN_DOUBLE_QOUTE)
-			&& ft_strchr(tmp_com->s, '$'))
-		{
-			result = expand_command_str(tmp_com->s, env);
-			while (result && ft_strchr(result, '$'))
-			{
-				dast = result;
-				result = expand_command_str(result, env);
-				free(dast);
-			}
-			dast = tmp_com->s;
-			free(dast);
-			tmp_com->s = result;
-		}
-		tmp_com = tmp_com->next;
-	}
-}
-
-void	expand_env(t_tree *t, t_minishell *my_shell)
-{
-	if (!t)
-		return ;
-	expand_env(t->left, my_shell);
-	expand_env(t->right, my_shell);
-	delete_quote_com(t->head);
-	expand_last_state(t->head, my_shell);
-	expand_env_vars(t->head, my_shell->env->next);
-	return ;
-}
 
 char	*match_env_key(char *search, t_env_list *env)
 {
@@ -109,4 +44,57 @@ t_env_list	*get_envp_to_struct(char *envp[])
 		i++;
 	}
 	return (st_env);
+}
+
+char	*expand_all_dollars(char *s, t_env_list *env, int state)
+{
+	int		count;
+	char	*pre;
+	char	*cur;
+	int		i;
+
+	count = count_same_char(s, '$');
+	pre = s;
+	cur = s;
+	i = 1;
+	while (count-- > 0)
+	{
+		cur = expand_env_or_status(pre, env, state, i);
+		if (cur == pre)
+		{
+			i++;
+			continue ;
+		}
+		free(pre);
+		pre = cur;
+	}
+	return (cur);
+}
+
+void	expand_env_args_and_state(t_command_list *com, t_env_list *env,
+		int state)
+{
+	t_command_list	*cur;
+
+	cur = com->next;
+	while (cur)
+	{
+		if ((cur->token_type == WORD || cur->token_type == WORD_IN_DOUBLE_QOUTE)
+			&& ft_strchr(cur->s, '$'))
+		{
+			cur->s = expand_all_dollars(cur->s, env, state);
+		}
+		cur = cur->next;
+	}
+}
+
+void	expand_env(t_tree *t, t_minishell *my_shell)
+{
+	if (!t)
+		return ;
+	expand_env(t->left, my_shell);
+	expand_env(t->right, my_shell);
+	delete_quote_com(t->head);
+	expand_env_args_and_state(t->head, my_shell->env->next, my_shell->state);
+	return ;
 }

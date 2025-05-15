@@ -1,53 +1,70 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/08 22:06:08 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/15 15:33:28 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token_manager	*init_t_token_manager(void)
+char	*handle_meta(char *s, t_token_manager *token)
 {
-	t_token_manager	*token;
+	int	len;
 
-	token = (t_token_manager *)malloc(sizeof(t_token_manager));
-	token->head = (t_token_list *)malloc(sizeof(t_token_list));
-	if (!token->head)
+	len = 1;
+	if (*s == '&' && *(s + 1) != '&')
 		return (NULL);
-	token->cur = token->head;
-	token->head->token = NULL;
-	token->head->next = NULL;
-	token->head->token_type = 0;
-	token->head->error_flag = 0;
-	return (token);
+	if ((*s == '<' && *(s + 1) == '<') || (*s == '>' && *(s + 1) == '>')
+		|| (*s == '&' && *(s + 1) == '&') || (*s == '|' && *(s + 1) == '|'))
+		len = 2;
+	token->cur->next = add_list(ft_strndup(s, len));
+	return (s + len);
 }
 
-t_token_list	*add_list(char *s)
+char	*handle_single_quote(char *s, t_token_manager *token)
 {
-	t_token_list	*new;
+	char	*start;
 
-	new = (t_token_list *)malloc(sizeof(t_token_list));
-	if (!new || !s)
+	start = s++;
+	while (*s && *s != '\'')
+		s++;
+	if (!*s)
 		return (NULL);
-	new->token = s;
-	if (!new->token)
+	token->cur->next = add_list(ft_strndup(start, s - start + 1));
+	return (s + 1);
+}
+
+char	*handle_double_quote(char *s, t_token_manager *token)
+{
+	char	*start;
+
+	start = s++;
+	while (*s && *s != '\"')
+		s++;
+	if (!*s)
 		return (NULL);
-	new->token_type = get_token_type(s);
-	new->error_flag = 0;
-	new->next = NULL;
-	return (new);
+	token->cur->next = add_list(ft_strndup(start, s - start + 1));
+	return (s + 1);
+}
+
+char	*handle_word(char *s, t_token_manager *token)
+{
+	char	*start;
+
+	start = s;
+	while (*s && !check_space(*s) && !check_meta_word(*s) && !check_quote(*s))
+		s++;
+	token->cur->next = add_list(ft_strndup(start, s - start));
+	return (s);
 }
 
 t_bool	lexer(char *one_line, t_token_manager *token)
 {
-	char	*start;
-
 	while (*one_line)
 	{
 		while (*one_line && check_space(*one_line))
@@ -55,66 +72,14 @@ t_bool	lexer(char *one_line, t_token_manager *token)
 		if (!*one_line)
 			break ;
 		if (check_meta_word(*one_line))
-		{
-			if (*one_line == '&' && *(one_line + 1) != '&')
-				return (ERROR);
-			else if (*one_line == '<' && *(one_line + 1) == '<')
-			{
-				token->cur->next = add_list(ft_strndup(one_line, 2));
-				one_line++;
-			}
-			else if (*one_line == '>' && *(one_line + 1) == '>')
-			{
-				token->cur->next = add_list(ft_strndup(one_line, 2));
-				one_line++;
-			}
-			else if (*one_line == '&' && *(one_line + 1) == '&')
-			{
-				token->cur->next = add_list(ft_strndup(one_line, 2));
-				one_line++;
-			}
-			else if (*one_line == '|' && *(one_line + 1) == '|')
-			{
-				token->cur->next = add_list(ft_strndup(one_line, 2));
-				one_line++;
-			}
-			else
-				token->cur->next = add_list(ft_strndup(one_line, 1));
-			one_line++;
-		}
+			one_line = handle_meta(one_line, token);
 		else if (*one_line == '\'')
-		{
-			start = one_line;
-			one_line++;
-			while (*one_line && *one_line != '\'')
-				one_line++;
-			if (!*one_line)
-				return (ERROR);
-			token->cur->next = add_list(ft_strndup(start, one_line - start
-						+ 1));
-			one_line++;
-		}
+			one_line = handle_single_quote(one_line, token);
 		else if (*one_line == '\"')
-		{
-			start = one_line;
-			one_line++;
-			while (*one_line && *one_line != '\"')
-				one_line++;
-			if (!*one_line)
-				return (ERROR);
-			token->cur->next = add_list(ft_strndup(start, one_line - start
-						+ 1));
-			one_line++;
-		}
+			one_line = handle_double_quote(one_line, token);
 		else
-		{
-			start = one_line;
-			while (*one_line && !check_space(*one_line)
-				&& !check_meta_word(*one_line) && !check_quote(*one_line))
-				one_line++;
-			token->cur->next = add_list(ft_strndup(start, one_line - start));
-		}
-		if (!token->cur->next)
+			one_line = handle_word(one_line, token);
+		if (!one_line || !token->cur->next)
 			return (ERROR);
 		token->cur = token->cur->next;
 	}

@@ -8,6 +8,7 @@
 		"lexer.h": "c",
 		"signal.h": "c",
 		"struct.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"typeinfo": "c"
 	}
 }

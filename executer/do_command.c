@@ -6,11 +6,31 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:14:33 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:58:27 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/15 19:13:25 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+char	**get_path(t_env_list *env)
+{
+	char		**reslut;
+	t_env_list	*tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, "PATH") == 0)
+			break ;
+		tmp = tmp->next;
+	}
+	if (!tmp)
+		return (NULL);
+	reslut = ft_split(tmp->value, ':');
+	if (!reslut)
+		return (NULL);
+	return (reslut);
+}
 
 char	*join_path(char *dir, char *cmd)
 {
@@ -68,7 +88,7 @@ void	handle_redirect_and_argv(t_command_list *com, t_minishell *my_shell,
 			tmp = tmp->next;
 		}
 		else
-			ft_argv = join_argv(ft_argv, tmp->s, i++);
+			ft_argv = join_argv(ft_argv, tmp->s, i++, tmp->token_type);
 		tmp = tmp->next;
 	}
 	if (paret_token_type == PIPE && close_all_fd() && is_built_in(com))
