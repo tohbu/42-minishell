@@ -58,6 +58,15 @@ static long long	ft_atoll(const char *str, int *error)
 	return (result * sign);
 }
 
+static void	p_exit_custum_error(const char *arg1, const char *arg2)
+{
+	write(STDERR_FILENO, "exit\nminishell: exit: ", 22);
+	write(STDERR_FILENO, arg1, ft_strlen(arg1));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, arg2, ft_strlen(arg2));
+	write(STDERR_FILENO, "\n", 1);
+}
+
 static int	ft_check_args(char **argv, long long *exit_status)
 {
 	int	error;
@@ -71,12 +80,12 @@ static int	ft_check_args(char **argv, long long *exit_status)
 	*exit_status = ft_atoll(argv[1], &error);
 	if (error)
 	{
-		p_builtin_error("exit", "numeric argument within 0 to 255 required");
+		p_exit_custum_error(argv[1], "numeric argument required");
 		exit(255);
 	}
 	if (argv[2])
 	{
-		p_builtin_error("exit", "too many arguments");
+		p_builtin_error_no_minishell("exit", "too many arguments");
 		return (1);
 	}
 	return (0);

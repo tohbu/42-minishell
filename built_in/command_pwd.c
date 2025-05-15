@@ -12,6 +12,15 @@
 
 #include "../include/builtin.h"
 
+void	Getcwd(char *buf, size_t size)
+{
+	if (getcwd(buf, size) == NULL)
+	{
+		perror("getcwd FAILED\n");
+		exit(1);
+	}
+}
+
 /*
 pwd
 ->print name of current/working directory

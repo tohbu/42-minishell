@@ -28,11 +28,22 @@ int	is_valid_identifier(const char *arg)
 	return (1);
 }
 
+char	*remove_surrounding_quates(const char *str)
+{
+	size_t	len;
+
+	len = ft_strlen(str);
+	if (len >= 2 && str[0] == '"' && str[len - 1] == '"')
+		return (ft_substr(str, 1, len - 2));
+	return (ft_strdup(str));
+}
+
 static void	handle_export_arg(const char *arg, t_env_list *env)
 {
 	char	*equal_sign;
 	char	*key;
 	char	*value;
+	char	*clean_value;
 
 	equal_sign = ft_strchr(arg, '=');
 	if (!equal_sign)
@@ -41,7 +52,9 @@ static void	handle_export_arg(const char *arg, t_env_list *env)
 	{
 		key = ft_substr(arg, 0, equal_sign - arg);
 		value = ft_strdup(equal_sign + 1);
-		ft_setenv(env, key, value);
+		clean_value = remove_surrounding_quates(value);
+		ft_setenv(env, key, clean_value);
+		free(clean_value);
 		free(key);
 		free(value);
 	}
@@ -67,8 +80,10 @@ static int	print_export_list(t_env_list *env)
 
 int	ft_export(char **argv, t_env_list *env)
 {
-	int	i;
-	int	ret;
+	int		i;
+	int		ret;
+	char	*key;
+	char	*equal_sign;
 
 	ret = 0;
 	if (!argv[1])
@@ -76,14 +91,21 @@ int	ft_export(char **argv, t_env_list *env)
 	i = 1;
 	while (argv[i])
 	{
-		if (!is_valid_identifier(argv[i]))
+		equal_sign = ft_strchr(argv[i], '=');
+		if (equal_sign)
+			key = ft_substr(argv[i], 0, equal_sign - argv[i]);
+		else
+			key = ft_strdup(argv[i]);
+		if (!is_valid_identifier(key))
 		{
-			ret = (ft_putstr_fd("minishell: export: '", 2),
-					ft_putstr_fd(argv[i], 2),
-					ft_putendl_fd("': not a valid identifier", 2), 1);
+			ft_putstr_fd("minishell: export: '", 2);
+			ft_putstr_fd(argv[i], 2);
+			ft_putendl_fd("': not a valid identifier", 2);
+			ret = 1;
 		}
 		else
 			handle_export_arg(argv[i], env);
+		free(key);
 		i++;
 	}
 	return (ret);
