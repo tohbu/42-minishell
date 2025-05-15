@@ -74,7 +74,9 @@ static int	ft_check_args(char **argv, long long *exit_status)
 	error = 0;
 	if (!is_numeric(argv[1]))
 	{
-		p_builtin_error("exit", "numeric argument required");
+		// p_builtin_error("exit", "numeric argument required");
+		// write(STDERR_FILENO, "exit: ", 6);
+		p_exit_custum_error(argv[1], "numeric argument required");
 		exit(255);
 	}
 	*exit_status = ft_atoll(argv[1], &error);
@@ -85,7 +87,8 @@ static int	ft_check_args(char **argv, long long *exit_status)
 	}
 	if (argv[2])
 	{
-		p_builtin_error_no_minishell("exit", "too many arguments");
+		write(2, "exit\n", 5);
+		p_builtin_error("exit", "too many arguments");
 		return (1);
 	}
 	return (0);
@@ -107,7 +110,6 @@ int	ft_exit(char **argv, t_env_list *env)
 	long long	exit_status;
 	int			error;
 
-	(void)env;
 	exit_status = 0;
 	error = 0;
 	if (argv[1])
@@ -119,5 +121,7 @@ int	ft_exit(char **argv, t_env_list *env)
 		exit_status = 0;
 	free_args(argv);
 	free_env(env);
+	env = NULL;
 	exit(exit_status % 256);
+	return (0);
 }

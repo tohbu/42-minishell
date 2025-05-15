@@ -12,19 +12,6 @@
 
 #include "../include/builtin.h"
 
-void	Getcwd(char *buf, size_t size)
-{
-	if (getcwd(buf, size) == NULL)
-	{
-		perror("getcwd FAILED\n");
-		exit(1);
-	}
-}
-
-/*
-pwd
-->print name of current/working directory
-*/
 int	ft_pwd(char **argv, t_env_list *env)
 {
 	char	cwd[BUFSIZ];
@@ -35,7 +22,11 @@ int	ft_pwd(char **argv, t_env_list *env)
 		p_builtin_error("pwd", "too many arguments");
 		return (1);
 	}
-	ft_getcwd(cwd, sizeof(cwd));
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	{
+		perror("getcwd FAILED\n");
+		return (1);
+	}
 	write(STDOUT_FILENO, cwd, ft_strlen(cwd));
 	write(STDOUT_FILENO, "\n", 1);
 	return (0);

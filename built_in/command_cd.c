@@ -50,42 +50,57 @@ static int	change_to_home(t_env_list **env)
 	return (0);
 }
 
+static char	*expand_tilde(const char *path, t_env_list *env)
+{
+	char		*home;
+	char		*expanded;
+	const char	*rest;
+
+	if (!path || path[0] != '~')
+		return (ft_strdup(path));
+	home = match_env_key("HOME", env);
+	if (!home)
+		return (ft_strdup(path));
+	if (path[1] == '/' || path[1] == '\0')
+	{
+		rest = path + 1;
+		expanded = ft_strjoin(home, rest);
+		return (expanded);
+	}
+	return (ft_strdup(path));
+}
+
 /*
-1. check if argument is given. if no return 0.
+0. check if argument is given. if 0, move to home.
+1. check if the number of arguments is over 2.
 2. Get current working directory before change.
-3. Change directory
-4. Get new current directory after change
-5. Update environment variables PWD and OLDPWD
+3. check if path is with "~".
+4. Change directory
+5. Get new current directory after change
+6. Update environment variables PWD and OLDPWD
 */
 int	ft_cd(char **argv, t_env_list *env)
 {
 	char	*old;
+	char	*path;
 	char	*new;
 
 	if (!argv[1])
-	{
-		if (change_to_home(&env))
-			return (perror("cd: getcwd"), 1);
-		return (0);
-	}
+		return (change_to_home(&env));
 	if (argv[2])
 		return (p_cd_costum_error("too many arguments"), 1);
 	old = getcwd(NULL, 0);
 	if (!old)
 		return (perror("cd: getcwd"), 1);
-	if (chdir(argv[1]) != 0)
-	{
-		p_cd_error(argv[1]);
-		return (free(old), 1);
-	}
+	path = expand_tilde(argv[1], env);
+	if (chdir(path) != 0)
+		return (p_cd_error(argv[1]), free(old), free(path), 1);
 	new = getcwd(NULL, 0);
 	if (!new)
-	{
-		perror("cd: getcwd");
-		return (free(old), 1);
-	}
+		return (perror("cd: getcwd"), free(old), 1);
 	ft_setenv(env, "PWD", new);
 	ft_setenv(env, "OLDPWD", old);
+	free(path);
 	free(old);
 	free(new);
 	return (0);

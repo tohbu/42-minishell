@@ -30,9 +30,7 @@ void	free_env(t_env_list *env)
 	t_env_list	*cur;
 	t_env_list	*next;
 
-	if (!env)
-		return ;
-	cur = env->next;
+	cur = env;
 	while (cur)
 	{
 		next = cur->next;
@@ -43,5 +41,4 @@ void	free_env(t_env_list *env)
 		free(cur);
 		cur = next;
 	}
-	free(env);
 }
