@@ -9,7 +9,7 @@ INCLUDE_DIRS := ./include
 BUILT_IN_DIRS := ./built_in
 UTILS_DIRS := ./utils
 
-CC      := cc
+CC      := clang
 CFLAGS  := -Wall -Wextra -Werror -g $(addprefix -I, $(INCLUDE_DIRS))
 
 LIBFT_DIR := ./libft

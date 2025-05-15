@@ -11,7 +11,7 @@ SRCS = ft_atoi.c     ft_isdigit.c       ft_memchr.c      ft_putendl_fd.c  ft_str
 
 OBJS = $(SRCS:.c=.o)
 OBJS_b = $(SRCS_b:.c=.o)
-CC = cc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror 
 
 token: $(NAME)
