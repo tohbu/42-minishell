@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 15:33:28 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 17:37:41 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,40 +26,57 @@ char	*handle_meta(char *s, t_token_manager *token)
 	return (s + len);
 }
 
-char	*handle_single_quote(char *s, t_token_manager *token)
-{
-	char	*start;
+// char	*handle_single_quote(char *s, t_token_manager *token)
+// {
+// 	char	*start;
 
-	start = s++;
-	while (*s && *s != '\'')
-		s++;
-	if (!*s)
-		return (NULL);
-	token->cur->next = add_list(ft_strndup(start, s - start + 1));
-	return (s + 1);
-}
+// 	start = s++;
+// 	while (*s && *s != '\'')
+// 		s++;
+// 	if (!*s)
+// 		return (NULL);
+// 	token->cur->next = add_list(ft_strndup(start, s - start + 1));
+// 	return (s + 1);
+// }
 
-char	*handle_double_quote(char *s, t_token_manager *token)
-{
-	char	*start;
+// char	*handle_double_quote(char *s, t_token_manager *token)
+// {
+// 	char	*start;
 
-	start = s++;
-	while (*s && *s != '\"')
-		s++;
-	if (!*s)
-		return (NULL);
-	token->cur->next = add_list(ft_strndup(start, s - start + 1));
-	return (s + 1);
-}
+// 	start = s++;
+// 	while (*s && *s != '\"')
+// 		s++;
+// 	if (!*s)
+// 		return (NULL);
+// 	token->cur->next = add_list(ft_strndup(start, s - start + 1));
+// 	return (s + 1);
+// }
 
 char	*handle_word(char *s, t_token_manager *token)
 {
 	char	*start;
+	int		e_flag;
 
+	e_flag = 0;
 	start = s;
-	while (*s && !check_space(*s) && !check_meta_word(*s) && !check_quote(*s))
+	while (*s && !check_space(*s) && !check_meta_word(*s))
+	{
+		if (*s == '\'')
+		{
+			while (*s && *s != '\'')
+				s++;
+		}
+		else if (*s == '\"')
+		{
+			while (*s && *s != '\'')
+				s++;
+		}
+		if (!*s && ++e_flag)
+			break ;
 		s++;
+	}
 	token->cur->next = add_list(ft_strndup(start, s - start));
+	token->cur->next->error_flag = e_flag;
 	return (s);
 }
 
@@ -73,10 +90,6 @@ t_bool	lexer(char *one_line, t_token_manager *token)
 			break ;
 		if (check_meta_word(*one_line))
 			one_line = handle_meta(one_line, token);
-		else if (*one_line == '\'')
-			one_line = handle_single_quote(one_line, token);
-		else if (*one_line == '\"')
-			one_line = handle_double_quote(one_line, token);
 		else
 			one_line = handle_word(one_line, token);
 		if (!one_line || !token->cur->next)
@@ -86,3 +99,8 @@ t_bool	lexer(char *one_line, t_token_manager *token)
 	token->cur = token->head->next;
 	return (1);
 }
+
+// else if (*one_line == '\'')
+// 	one_line = handle_single_quote(one_line, token);
+// else if (*one_line == '\"')
+// 	one_line = handle_double_quote(one_line, token);
