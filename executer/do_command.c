@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:14:33 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 19:13:25 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 20:39:14 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	try_execve(char **path, char **argv, t_minishell *my_shell)
 	char	*tmp;
 
 	i = 0;
+	if (argv == NULL)
+		exit(0);
 	if (ft_strchr(argv[0], '/'))
 		execve(argv[0], argv, NULL);
 	i = 0;

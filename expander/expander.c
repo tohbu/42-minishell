@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 19:05:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 19:16:55 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 17:48:01 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ void	expand_env_args_and_state(t_command_list *com, t_env_list *env,
 	cur = com->next;
 	while (cur)
 	{
-		if ((cur->token_type == WORD || cur->token_type == WORD_IN_DOUBLE_QOUTE)
-			&& ft_strchr(cur->s, '$'))
+		if (cur->token_type == WORD && ft_strchr(cur->s, '$'))
 		{
 			cur->s = expand_all_dollars(cur->s, env, state);
 		}
@@ -94,7 +93,7 @@ void	expand_env(t_tree *t, t_minishell *my_shell)
 		return ;
 	expand_env(t->left, my_shell);
 	expand_env(t->right, my_shell);
-	delete_quote_com(t->head);
 	expand_env_args_and_state(t->head, my_shell->env->next, my_shell->state);
+	delete_quote_com(t->head);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:05:38 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 19:16:31 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 20:01:00 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,3 +113,6 @@ char	*expand_command_str(char *s, t_env_list *env)
 	free(tmp);
 	return (result);
 }
+
+
+

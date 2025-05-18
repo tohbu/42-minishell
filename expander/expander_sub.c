@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_last_state.c                                :+:      :+:    :+:   */
+/*   expander_sub.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:19:26 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 18:19:36 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 20:26:41 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,26 @@ int	count_same_char(char *s, char c)
 		return (0);
 	while (*s)
 	{
-		if (*s == c)
+		if (*s == SINGLE_QUOTE_CHAR)
+		{
+			s++;
+			while (*s && *s != SINGLE_QUOTE_CHAR)
+				s++;
+		}
+		else if (*s == DOUBLE_QUOTE_CHAR)
+		{
+			s++;
+			while (*s && *s != DOUBLE_QUOTE_CHAR)
+			{
+				if (*s == c)
+					count++;
+				s++;
+			}
+		}
+		else if (*s == c)
 			count++;
+		if (!*s)
+			return (count);
 		s++;
 	}
 	return (count);
@@ -64,7 +82,25 @@ char	*expand_env_or_status(char *s, t_env_list *env, int state, int i)
 	while (i-- > 0)
 	{
 		while (*tmp && *tmp != '$')
+		{
+			if (*tmp == SINGLE_QUOTE_CHAR)
+			{
+				tmp++;
+				while (*tmp && *tmp != SINGLE_QUOTE_CHAR)
+					tmp++;
+			}
+			else if (*tmp == DOUBLE_QUOTE_CHAR)
+			{
+				tmp++;
+				while (*tmp && *tmp != '$')
+					tmp++;
+			}
+			if (!*tmp)
+				return (s);
+			if (*tmp == '$')
+				break ;
 			tmp++;
+		}
 		if (!*tmp)
 			return (s);
 		if (i > 0 && tmp++)

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:11:44 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:42:37 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 18:28:03 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define COMAND_NOT_FOUND 127
 # define TEMP_BUF_SIZE 32
 # define END -2
+# define SINGLE_QUOTE_CHAR '\''
+# define DOUBLE_QUOTE_CHAR '\"'
 
 typedef int					t_bool;
 extern int					g_interrupt_state;

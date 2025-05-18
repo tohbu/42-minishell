@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/18 17:37:41 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 20:16:51 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,6 @@ char	*handle_meta(char *s, t_token_manager *token)
 	return (s + len);
 }
 
-// char	*handle_single_quote(char *s, t_token_manager *token)
-// {
-// 	char	*start;
-
-// 	start = s++;
-// 	while (*s && *s != '\'')
-// 		s++;
-// 	if (!*s)
-// 		return (NULL);
-// 	token->cur->next = add_list(ft_strndup(start, s - start + 1));
-// 	return (s + 1);
-// }
-
-// char	*handle_double_quote(char *s, t_token_manager *token)
-// {
-// 	char	*start;
-
-// 	start = s++;
-// 	while (*s && *s != '\"')
-// 		s++;
-// 	if (!*s)
-// 		return (NULL);
-// 	token->cur->next = add_list(ft_strndup(start, s - start + 1));
-// 	return (s + 1);
-// }
-
 char	*handle_word(char *s, t_token_manager *token)
 {
 	char	*start;
@@ -61,14 +35,14 @@ char	*handle_word(char *s, t_token_manager *token)
 	start = s;
 	while (*s && !check_space(*s) && !check_meta_word(*s))
 	{
-		if (*s == '\'')
+		if (*s == SINGLE_QUOTE_CHAR)
 		{
-			while (*s && *s != '\'')
+			while (*s && *s != SINGLE_QUOTE_CHAR)
 				s++;
 		}
-		else if (*s == '\"')
+		else if (*s == DOUBLE_QUOTE_CHAR)
 		{
-			while (*s && *s != '\'')
+			while (*s && *s != DOUBLE_QUOTE_CHAR)
 				s++;
 		}
 		if (!*s && ++e_flag)
