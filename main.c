@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 12:42:08 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/19 13:12:50 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_bool	run_lexer_and_heredoc(char *input, t_minishell *my_shell)
 {
 	if (lexer(input, my_shell->token) == ERROR)
 	{
-		printf("invalid input\n");
+		printf("malloc_error\n");
 		free_one_loop_data(my_shell);
 		return (0);
 	}

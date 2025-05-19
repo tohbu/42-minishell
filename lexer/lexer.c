@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 13:01:28 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/19 13:12:30 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_bool	lexer(char *one_line, t_token_manager *token)
 			one_line = handle_meta(one_line, token);
 		else
 			one_line = handle_word(one_line, token, 0);
-		if (!one_line || !token->cur->next)
+		if (!token->cur->next)
 			return (ERROR);
 		token->cur = token->cur->next;
 	}

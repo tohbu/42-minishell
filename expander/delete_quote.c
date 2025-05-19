@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:36:46 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 10:59:37 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/19 14:09:42 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ char	*delete_quote(char *s)
 		result = ft_strndup((s + 1), ft_strlen(s) - 2);
 	free(s);
 	return (result);
+}
+
+char	*skip_quotes(char *s, char quote_char)
+{
+	s++;
+	while (*s && *s != quote_char)
+		s++;
+	return (s);
 }
 
 char	*strjoin_token_list(t_token_list *tokne_list)

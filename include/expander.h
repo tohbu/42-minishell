@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 11:08:30 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/19 14:11:28 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,15 @@ int			ft_getc(int fd);
 char		*heredoc_readline(void);
 // delete_quote.c
 void		delete_quote_com(t_command_list *com);
+char		*skip_quotes(char *s, char quote_char);
 char		*delete_quote(char *s);
 char		*strjoin_token_list(t_token_list *tokne_list);
 char		*delete_quote_sub(char *com, t_token_manager *token_mg);
 // lexer_for_delete_quote.c
-char	*handle_single_quote(char *s, t_token_manager *token);
-char	*handle_double_quote(char *s, t_token_manager *token);
-char	*handle_word_for_expander(char *s, t_token_manager *token);
-t_bool	lexer_for_delete_quote(char *one_line, t_token_manager *token);
-
-
-
+char		*handle_single_quote(char *s, t_token_manager *token);
+char		*handle_double_quote(char *s, t_token_manager *token);
+char		*handle_word_for_expander(char *s, t_token_manager *token);
+t_bool		lexer_for_delete_quote(char *one_line, t_token_manager *token);
 
 // expand_sub.c ok
 int			count_same_char(char *s, char c);
@@ -59,6 +57,7 @@ char		*join_last_status_with_back(char *front, char *back, int state);
 
 char		*join_env_vars_with_back(char *front, char *back, char *key,
 				t_env_list *env);
+char		*result_expand_str(char *s, char *tmp, int state, t_env_list *env);
 char		*expand_env_or_status(char *s, t_env_list *env, int state, int i);
 
 #endif
