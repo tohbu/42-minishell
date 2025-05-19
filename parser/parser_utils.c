@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils2.c                                    :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:35:07 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:36:39 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 12:45:05 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ t_bool	syntax_check(t_token_manager *token, t_tree *t)
 	tmp = token->head->next;
 	while (tmp)
 	{
+		if (tmp->error_flag == UN_CLOSE_QUOTE)
+			return (printf("minishell: syntax error  unclosed quote\n"), 0);
 		if (tmp->error_flag == SYNTAX_ERROR)
 		{
 			if (!tmp->next)

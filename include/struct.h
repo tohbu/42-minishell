@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:11:44 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/18 18:28:03 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 12:34:30 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 # define ERROR -1
 # define TOKEN_END -2
-# define SYNTAX_ERROR 1
+# define SYNTAX_ERROR 2
+# define UN_CLOSE_QUOTE 1
 # define READ_FD 0
 # define WRITE_FD 1
 # define NO_FILE -1

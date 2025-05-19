@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 11:20:44 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/19 13:01:28 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,22 @@ char	*handle_meta(char *s, t_token_manager *token)
 	return (s + len);
 }
 
-char	*handle_word(char *s, t_token_manager *token)
+char	*handle_word(char *s, t_token_manager *token, int e_flag)
 {
 	char	*start;
-	int		e_flag;
 
-	e_flag = 0;
 	start = s;
 	while (*s && !check_space(*s) && !check_meta_word(*s))
 	{
 		if (*s == SINGLE_QUOTE_CHAR)
 		{
+			s++;
 			while (*s && *s != SINGLE_QUOTE_CHAR)
 				s++;
 		}
 		else if (*s == DOUBLE_QUOTE_CHAR)
 		{
+			s++;
 			while (*s && *s != DOUBLE_QUOTE_CHAR)
 				s++;
 		}
@@ -65,7 +65,7 @@ t_bool	lexer(char *one_line, t_token_manager *token)
 		if (check_meta_word(*one_line))
 			one_line = handle_meta(one_line, token);
 		else
-			one_line = handle_word(one_line, token);
+			one_line = handle_word(one_line, token, 0);
 		if (!one_line || !token->cur->next)
 			return (ERROR);
 		token->cur = token->cur->next;

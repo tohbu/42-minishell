@@ -6,7 +6,7 @@
 /*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:10:04 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 11:21:07 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/19 13:02:30 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "struct.h"
 
 // lexer.c
-char			*handle_word(char *s, t_token_manager *token);
+char			*handle_word(char *s, t_token_manager *token, int e_flag);
 char			*handle_meta(char *s, t_token_manager *token);
 t_bool			lexer(char *one_line, t_token_manager *token);
 // lexer_struct.c
