@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:36:46 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/18 20:10:46 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 10:59:37 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,79 +22,6 @@ char	*delete_quote(char *s)
 		result = ft_strndup((s + 1), ft_strlen(s) - 2);
 	free(s);
 	return (result);
-}
-
-char	*delete_quote_for_heredoc(char *s)
-{
-	char	*result;
-
-	if (ft_strcmp(s, "\"\"") == 0 || ft_strcmp(s, "\'\'") == 0)
-		result = ft_calloc(sizeof(char *), 1);
-	else
-		result = ft_strndup((s + 1), ft_strlen(s) - 2);
-	free(s);
-	return (result);
-}
-
-char	*handle_single_quote(char *s, t_token_manager *token)
-{
-	char	*start;
-
-	start = s++;
-	while (*s && *s != '\'')
-		s++;
-	if (!*s)
-		return (NULL);
-	token->cur->next = add_list(ft_strndup(start, s - start + 1));
-	return (s + 1);
-}
-
-char	*handle_double_quote(char *s, t_token_manager *token)
-{
-	char	*start;
-
-	start = s++;
-	while (*s && *s != '\"')
-		s++;
-	if (!*s)
-		return (NULL);
-	token->cur->next = add_list(ft_strndup(start, s - start + 1));
-	return (s + 1);
-}
-
-char	*handle_word_for_expander(char *s, t_token_manager *token)
-{
-	char	*start;
-
-	start = s;
-	while (*s && !check_space(*s) && !check_meta_word(*s) && !check_quote(*s))
-		s++;
-	token->cur->next = add_list(ft_strndup(start, s - start));
-	return (s);
-}
-
-t_bool	lexer_for_delete_quote(char *one_line, t_token_manager *token)
-{
-	while (*one_line)
-	{
-		while (*one_line && check_space(*one_line))
-			one_line++;
-		if (!*one_line)
-			break ;
-		if (check_meta_word(*one_line))
-			one_line = handle_meta(one_line, token);
-		else if (*one_line == '\'')
-			one_line = handle_single_quote(one_line, token);
-		else if (*one_line == '\"')
-			one_line = handle_double_quote(one_line, token);
-		else
-			one_line = handle_word_for_expander(one_line, token);
-		if (!one_line || !token->cur->next)
-			return (ERROR);
-		token->cur = token->cur->next;
-	}
-	token->cur = token->head->next;
-	return (1);
 }
 
 char	*strjoin_token_list(t_token_list *tokne_list)

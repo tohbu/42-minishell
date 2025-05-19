@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:01:48 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 21:30:08 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 10:17:47 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,8 @@ Exit
 int	ft_exit(char **argv, t_env_list *env)
 {
 	long long	exit_status;
-	int			error;
 
 	exit_status = 0;
-	error = 0;
 	if (argv[1])
 	{
 		if (ft_check_args(argv, &exit_status))

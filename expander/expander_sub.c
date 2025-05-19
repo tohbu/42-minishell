@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_sub.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:19:26 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/18 20:26:41 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 10:17:12 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ char	*join_env_vars_with_back(char *front, char *back, char *key,
 char	*expand_env_or_status(char *s, t_env_list *env, int state, int i)
 {
 	char	*tmp;
-	char	*front;
 	int		j;
 
 	tmp = s;
@@ -108,11 +107,10 @@ char	*expand_env_or_status(char *s, t_env_list *env, int state, int i)
 		if (!check_env_format(*(tmp + 1)) && *(tmp + 1) != '?')
 			return (s);
 	}
-	front = ft_strndup(s, (tmp++ - s));
-	if (*tmp == '?')
-		return (join_last_status_with_back(front, ft_strdup(tmp + 1), state));
+	if (*(++tmp) == '?')
+		return (join_last_status_with_back(ft_strndup(s,tmp-s-1), ft_strdup(tmp + 1), state));
 	while (check_env_format(tmp[j]))
 		j++;
-	return (join_env_vars_with_back(front, ft_strdup(tmp + j), ft_strndup(tmp,
+	return (join_env_vars_with_back(ft_strndup(s,tmp-s-1), ft_strdup(tmp + j), ft_strndup(tmp,
 				j), env));
 }

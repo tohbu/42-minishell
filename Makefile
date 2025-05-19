@@ -29,6 +29,7 @@ SRCS		 := main.c \
              $(EXPANDER_DIR)/heredoc.c \
              $(EXPANDER_DIR)/heredoc_readline.c \
              $(EXPANDER_DIR)/delete_quote.c \
+			 $(EXPANDER_DIR)/lexer_for_delete_quote.c \
              $(EXECUTER_DIR)/executer.c \
              $(EXECUTER_DIR)/executer_utils.c \
 			 $(EXECUTER_DIR)/do_command.c\

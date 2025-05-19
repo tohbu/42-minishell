@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:19 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/18 20:16:51 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 10:13:15 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,3 @@ t_bool	lexer(char *one_line, t_token_manager *token)
 	token->cur = token->head->next;
 	return (1);
 }
-
-// else if (*one_line == '\'')
-// 	one_line = handle_single_quote(one_line, token);
-// else if (*one_line == '\"')
-// 	one_line = handle_double_quote(one_line, token);

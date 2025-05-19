@@ -10,5 +10,8 @@
 		"struct.h": "c",
 		"minishell.h": "c",
 		"typeinfo": "c"
-	}
+	},
+	"editor.formatOnSave": true,
+	"files.autoSaveWorkspaceFilesOnly": false,
+	"editor.defaultFormatter": "keyhr.42-c-format"
 }
