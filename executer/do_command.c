@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do_command.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:14:33 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/18 20:39:14 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 11:31:20 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	handle_redirect_and_argv(t_command_list *com, t_minishell *my_shell,
 			tmp = tmp->next;
 		}
 		else
-			ft_argv = join_argv(ft_argv, tmp->s, i++, tmp->token_type);
+			ft_argv = join_argv(ft_argv, tmp->s, i++);
 		tmp = tmp->next;
 	}
 	if (paret_token_type == PIPE && close_all_fd() && is_built_in(com))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 22:10:04 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 15:34:32 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 11:21:07 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@
 # include "struct.h"
 
 // lexer.c
-t_bool			lexer(char *one_line, t_token_manager *token);
 char			*handle_word(char *s, t_token_manager *token);
-char			*handle_single_quote(char *s, t_token_manager *token);
-char			*handle_double_quote(char *s, t_token_manager *token);
 char			*handle_meta(char *s, t_token_manager *token);
+t_bool			lexer(char *one_line, t_token_manager *token);
 // lexer_struct.c
 t_token_list	*add_list(char *s);
 t_token_manager	*init_t_token_manager(void);
