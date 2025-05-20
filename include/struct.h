@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:11:44 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:28:06 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 12:34:30 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@
 
 # define ERROR -1
 # define TOKEN_END -2
-# define SYNTAX_ERROR 1
-# define TREE_END 1
+# define SYNTAX_ERROR 2
+# define UN_CLOSE_QUOTE 1
 # define READ_FD 0
 # define WRITE_FD 1
 # define NO_FILE -1
 # define COMAND_NOT_FOUND 127
 # define TEMP_BUF_SIZE 32
 # define END -2
+# define SINGLE_QUOTE_CHAR '\''
+# define DOUBLE_QUOTE_CHAR '\"'
 
 typedef int					t_bool;
 extern int					g_interrupt_state;
@@ -34,6 +36,8 @@ enum						e_Token_type
 	WORD_IN_SINGLE_QOUTE,
 	WORD_IN_DOUBLE_QOUTE,
 	PIPE,
+	AND,
+	OR,
 	REDIRECT,
 	REDIRECT_IN,
 	REDIRECT_OUT,

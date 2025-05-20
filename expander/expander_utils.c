@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:05:38 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:15:48 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 20:01:00 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_bool	check_env_format(char c)
 	return (0);
 }
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
 
@@ -88,3 +88,31 @@ t_env_list	*ft_get_env(char *s)
 	value = ft_strdup(ft_strchr(s, '=') + 1);
 	return (new_env_node(key, value));
 }
+
+char	*expand_command_str(char *s, t_env_list *env)
+{
+	char	*tmp;
+	int		i;
+	char	*front;
+	char	*back;
+	char	*result;
+
+	tmp = s;
+	i = 0;
+	while (*tmp && *tmp != '$')
+		tmp++;
+	if (!*tmp || !*(tmp + 1))
+		return (s);
+	front = ft_strndup(s, (tmp++ - s));
+	while (check_env_format(tmp[i]))
+		i++;
+	back = ft_strdup(tmp + i);
+	tmp = ft_strndup(tmp, i);
+	result = ft_strjoin_and_free(front, match_env_key(tmp, env));
+	result = ft_strjoin_and_free(result, back);
+	free(tmp);
+	return (result);
+}
+
+
+

@@ -3,85 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 19:34:25 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 21:25:07 by tohbu            ###   ########.fr       */
+/*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
+/*   Updated: 2025/05/19 13:12:50 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-void	print_t_token_list(t_token_list *head)
-{
-	t_token_list	*temp;
+int		g_interrupt_state = 0;
 
-	temp = head;
-	while (temp)
+char	*read_and_validate_input(t_minishell *my_shell)
+{
+	char	*input;
+	char	*prompt;
+
+	prompt = ft_strjoin_and_free(match_env_key("PWD", my_shell->env->next),
+			ft_strdup("$ "));
+	input = readline(prompt);
+	free(prompt);
+	if (!input)
 	{
-		printf("Token_type: %d Token: %s\n", temp->token_type, temp->token);
-		temp = temp->next;
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		free_all(my_shell);
+		exit(0);
 	}
+	if (*input)
+		add_history(input);
+	if (*input == '\0' || check_input_only_space(input))
+	{
+		free(input);
+		return (NULL);
+	}
+	return (input);
 }
 
-void	print_t_command_list(t_command_list *com)
+t_bool	run_lexer_and_heredoc(char *input, t_minishell *my_shell)
 {
-	int				i;
-	t_command_list	*tmp;
-
-	i = 0;
-	if (!com)
+	if (lexer(input, my_shell->token) == ERROR)
 	{
-		printf("com = NULL\n");
-		return ;
+		printf("malloc_error\n");
+		free_one_loop_data(my_shell);
+		return (0);
 	}
-	tmp = com;
-	while (tmp)
+	expand_heredoc(my_shell->token, my_shell);
+	if (!heredoc_check(my_shell->token))
 	{
-		printf("%d:%s	", i++, tmp->s);
-		tmp = tmp->next;
+		free_one_loop_data(my_shell);
+		return (0);
 	}
+	return (1);
 }
 
-void	print_ast(t_tree *t)
+void	parser_and_executer(t_minishell *sh)
 {
-	if (!t)
+	sh->ast = parser_logical_operator(sh->token);
+	if (!syntax_check(sh->token, sh->ast))
+	{
+		sh->state = SYNTAX_ERROR;
+		free_one_loop_data(sh);
 		return ;
-	print_ast(t->left);
-	print_ast(t->right);
-	print_t_command_list(t->head->next);
-	printf("\n");
+	}
+	print_debag(sh);
+	execute_logical_operater_tree(sh->ast, sh);
+	if (sh->pid_list && sh->pid_list->next)
+		wait_pid_list(sh->pid_list, &sh->state);
+	print_debag(sh);
+	free_one_loop_data(sh);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char			*input;
-	t_token_manager	*all;
-	t_tree			*ast;
+	char		*input;
+	t_minishell	*my_shell;
 
-	argc++;
-	argc--;
+	(void)argc;
+	(void)argv;
+	my_shell = init_minishell(envp);
 	while (1)
 	{
-		input = readline("minishell> ");
-		if (strlen(input) > 0)
+		my_shell = setup_data(my_shell);
+		input = read_and_validate_input(my_shell);
+		if (!input)
+			continue ;
+		if (!run_lexer_and_heredoc(input, my_shell))
 		{
-			add_history(input); /* 履歴を保存 */
+			free(input);
+			continue ;
 		}
-		all = (t_token_manager *)malloc(sizeof(t_token_manager));
-		if (!all)
-			return (1);
-		init_t_token_manager(all);
-		if (lexer(input, all) == ERROR)
-		{
-			printf("Error in lexer\n");
-			return (1);
-		}
-		print_t_token_list(all->head->next);
-		// parse;
-		ast = piped_commands(all);
-		// print_ast(ast);
-		syntax_check(all, ast);
+		parser_and_executer(my_shell);
 		free(input);
 	}
+	return (0);
 }

@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   executer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:37:41 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:42:51 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 11:30:37 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	close_all_fd(void)
+int	close_all_fd(void)
 {
 	int	i;
 
 	i = STDERR_FILENO + 1;
 	while (close(i) != -1)
 		i++;
-	return ;
+	return (1);
 }
 
 t_bool	ft_strcmp_built_in(char *s)
 {
-	if (strcmp(s, "echo") == 0 || strcmp(s, "cd") == 0 || strcmp(s, "pwd") == 0
-		|| strcmp(s, "export") == 0)
+	if (ft_strcmp(s, "echo") == 0 || ft_strcmp(s, "cd") == 0 || ft_strcmp(s,
+			"pwd") == 0 || ft_strcmp(s, "export") == 0)
 		return (1);
-	if (strcmp(s, "unset") == 0 || strcmp(s, "env") == 0 || strcmp(s,
+	if (ft_strcmp(s, "unset") == 0 || ft_strcmp(s, "env") == 0 || ft_strcmp(s,
 			"exit") == 0)
 		return (1);
 	return (0);
@@ -49,7 +49,7 @@ t_bool	is_built_in(t_command_list *com)
 	return (0);
 }
 
-char	**vecter_join(char **array, char *s, int size)
+char	**join_argv(char **array, char *s, int size)
 {
 	char	**reslut;
 	int		i;
@@ -67,25 +67,5 @@ char	**vecter_join(char **array, char *s, int size)
 	reslut[i] = NULL;
 	if (array)
 		free(array);
-	return (reslut);
-}
-
-char	**get_path(t_env_list *env)
-{
-	char		**reslut;
-	t_env_list	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		if (strcmp(tmp->key, "PATH") == 0)
-			break ;
-		tmp = tmp->next;
-	}
-	if (!tmp)
-		return (NULL);
-	reslut = ft_split(tmp->value, ':');
-	if (!reslut)
-		return (NULL);
 	return (reslut);
 }

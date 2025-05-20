@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:17:32 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/05 22:21:38 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 18:46:22 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	signal_handle_print_readline(int sig)
 {
-	(void)sig;
+	g_interrupt_state = sig;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();

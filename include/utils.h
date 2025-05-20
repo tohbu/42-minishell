@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:38:53 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/07 14:04:28 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/14 21:42:19 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ void		free_pid_list(t_pid_list *pid);
 void		free_one_loop_data(t_minishell *myshell);
 void		free_all(t_minishell *my_shell);
 void		free_envlist(t_env_list *t);
+void		free_char_arr(char **arr);
 
 // print1.c
 void		print_tab(int n);
-void		print_token(int t, t_command_list *head);
+void		print_token(int t, t_command_list *head, int deep);
 void		t_tree_visualize(t_tree *t, int deep);
 char		*print_type(int token_type);
 void		print_t_token_list(t_token_list *head);
