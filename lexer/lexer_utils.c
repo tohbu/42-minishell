@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 21:49:06 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/08 22:03:06 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/18 17:21:45 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,7 @@ char	*ft_strndup(char *s, size_t n)
 
 int	get_token_type(char *s)
 {
-	if (*s == '\'')
-		return (WORD_IN_SINGLE_QOUTE);
-	else if (*s == '\"')
-		return (WORD_IN_DOUBLE_QOUTE);
-	else if (ft_strcmp(s, "|") == 0)
+	if (ft_strcmp(s, "|") == 0)
 		return (PIPE);
 	else if (ft_strcmp(s, "||") == 0)
 		return (OR);

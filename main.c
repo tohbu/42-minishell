@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 19:01:26 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 13:12:50 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_bool	run_lexer_and_heredoc(char *input, t_minishell *my_shell)
 {
 	if (lexer(input, my_shell->token) == ERROR)
 	{
-		printf("invalid input\n");
+		printf("malloc_error\n");
 		free_one_loop_data(my_shell);
 		return (0);
 	}
@@ -61,6 +61,7 @@ void	parser_and_executer(t_minishell *sh)
 	sh->ast = parser_logical_operator(sh->token);
 	if (!syntax_check(sh->token, sh->ast))
 	{
+		sh->state = SYNTAX_ERROR;
 		free_one_loop_data(sh);
 		return ;
 	}

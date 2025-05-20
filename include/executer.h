@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:44:31 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 19:15:58 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 11:31:00 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,13 @@ void		wait_pid_list(t_pid_list *pid_list, int *sta);
 int			close_all_fd(void);
 t_bool		ft_strcmp_built_in(char *s);
 t_bool		is_built_in(t_command_list *com);
-char		**join_argv(char **array, char *s, int size, int token_type);
-char		*add_quote(char *s, int token_type);
+char		**join_argv(char **array, char *s, int size);
 // executer.c
-char		*join_path(char *dir, char *cmd);
-void		try_execve(char **path, char **argv, t_minishell *my_shell);
-void		handle_redirect_and_argv(t_command_list *com, t_minishell *my_shell,
-				int paret_token_type);
-int			fork_and_exec_command(t_command_list *com, int fd[2],
-				t_minishell *my_shell);
 void		execute_pipeline_tree(t_tree *ast, int parent_fd[2],
 				t_minishell *my_shell);
-void		execute_logical_operater_tree(t_tree *ast, t_minishell *my_shell);
-
+void		handle_logical_operator(t_tree *ast, t_minishell *sh);
+void		execute_single_command(t_tree *ast, t_minishell *sh);
+void		execute_logical_operater_tree(t_tree *ast, t_minishell *sh);
 // do_command.c
 
 char		**get_path(t_env_list *env);

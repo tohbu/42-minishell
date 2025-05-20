@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:37:41 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/15 19:17:27 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 11:30:37 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,7 @@ t_bool	is_built_in(t_command_list *com)
 	return (0);
 }
 
-char	*add_quote(char *s, int token_type)
-{
-	char	*result;
-
-	if (token_type == WORD_IN_DOUBLE_QOUTE)
-	{
-		result = ft_strjoin("\"", s);
-		result = ft_strjoin_and_free(result, ft_strdup("\""));
-		return (result);
-	}
-	if (token_type == WORD_IN_SINGLE_QOUTE)
-	{
-		result = ft_strjoin("\'", s);
-		result = ft_strjoin_and_free(result, ft_strdup("\'"));
-		return (result);
-	}
-	return (NULL);
-}
-
-char	**join_argv(char **array, char *s, int size, int token_type)
+char	**join_argv(char **array, char *s, int size)
 {
 	char	**reslut;
 	int		i;
@@ -82,12 +63,7 @@ char	**join_argv(char **array, char *s, int size, int token_type)
 		reslut[i] = array[i];
 		i++;
 	}
-	if (i != 0 && ft_strcmp(reslut[0], "export") == 0
-		&& (token_type == WORD_IN_DOUBLE_QOUTE
-			|| token_type == WORD_IN_SINGLE_QOUTE))
-		reslut[i++] = add_quote(s, token_type);
-	else
-		reslut[i++] = ft_strdup(s);
+	reslut[i++] = ft_strdup(s);
 	reslut[i] = NULL;
 	if (array)
 		free(array);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:15:01 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:55:12 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/19 11:15:22 by tomoki-kouk      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,19 @@ char	*heredoc(char *eof)
 void	expand_heredoc(t_token_manager *com, t_minishell *my_shell)
 {
 	t_token_list	*tmp;
+	char			*pre;
 
 	tmp = com->head->next;
 	while (tmp)
 	{
 		if (tmp->token_type == HEARDOC)
 		{
-			if (tmp->next->token_type == WORD_IN_DOUBLE_QOUTE
-				|| tmp->next->token_type == WORD_IN_SINGLE_QOUTE)
-			{
-				tmp->next->token = delete_quote_for_heredoc(tmp->next->token);
+			pre = ft_strdup(tmp->next->token);
+			tmp->next->token = delete_quote_sub(tmp->next->token,
+					init_t_token_manager());
+			if (ft_strcmp(pre, tmp->next->token))
 				tmp->next->token_type = WORD_IN_SINGLE_QOUTE;
-			}
+			free(pre);
 			tmp->next->token = heredoc(tmp->next->token);
 			if (g_interrupt_state == SIGINT)
 			{
