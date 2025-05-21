@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:03:08 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/14 21:49:54 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 12:07:01 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "minishell.h"
 # include "struct.h"
 
-// parse_and_execute_builtin.c
+// execute_builtin.c
 int			execute_builtin(char **argv, t_env_list *env);
 char		**split_input(char *line);
 

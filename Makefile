@@ -1,22 +1,22 @@
 
 NAME       := minishell
 
-PARSER_DIR  := ./parser
-LEXER_DIR   := ./lexer
-EXPANDER_DIR := ./expander
-EXECUTER_DIR := ./executer
-INCLUDE_DIRS := ./include
-BUILT_IN_DIRS := ./built_in
-UTILS_DIRS := ./utils
+PARSER_DIR  := ./src/parser
+LEXER_DIR   := ./src/lexer
+EXPANDER_DIR := ./src/expander
+EXECUTER_DIR := ./src/executer
+INCLUDE_DIRS := ./src/include
+BUILT_IN_DIRS := ./src/built_in
+UTILS_DIRS := ./src/utils
 
 CC      := cc
-CFLAGS  := -Wall -Wextra -Werror  $(addprefix -I, $(INCLUDE_DIRS))
+CFLAGS  := -Wall -Wextra -Werror -g  -Iinclude
 
-LIBFT_DIR := ./libft
+LIBFT_DIR := ./src/libft
 LIBFT     := libft.a
 
 
-SRCS		 := main.c \
+SRCS		 := ./src/main.c \
              $(PARSER_DIR)/parser.c \
              $(PARSER_DIR)/parser_struct.c \
 			 $(PARSER_DIR)/parser_utils.c \
@@ -52,7 +52,7 @@ SRCS		 := main.c \
              $(BUILT_IN_DIRS)/command_unset.c \
              $(BUILT_IN_DIRS)/free.c \
              $(BUILT_IN_DIRS)/ft_setenv.c \
-             $(BUILT_IN_DIRS)/parse_and_execute_builtin.c \
+             $(BUILT_IN_DIRS)/execute_builtin.c \
              $(BUILT_IN_DIRS)/utilis.c
 
 OBJS      := $(SRCS:.c=.o)
