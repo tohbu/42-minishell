@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 13:50:12 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 14:45:32 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	parser_and_executer(t_minishell *sh)
 	execute_logical_operater_tree(sh->ast, sh);
 	if (sh->pid_list && sh->pid_list->next)
 		wait_pid_list(sh->pid_list, &sh->state);
+	print_debag(sh);
 	free_one_loop_data(sh);
 }
 

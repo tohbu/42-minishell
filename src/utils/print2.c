@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:59:55 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:29 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 14:56:29 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	print_env_list(t_env_list *t)
 
 void	print_debag(t_minishell *my_shell)
 {
-	printf("\n-------------------debug----------------\n");
-	print_t_token_list(my_shell->token->head->next);
+	printf("-------------------debug----------------");
+	// print_t_token_list(my_shell->token->head->next);
+	t_tree_visualize(my_shell->ast, 0);
 	printf("\n");
 }

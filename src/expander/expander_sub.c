@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:19:26 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:29 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 15:14:13 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@ char	*result_expand_str(char *s, char *tmp, int state, t_env_list *env)
 {
 	int	j;
 
+	// if (*(tmp + 1) == SINGLE_QUOTE_CHAR || *(tmp + 1) == DOUBLE_QUOTE_CHAR)
+	// {
+	// 	tmp++;
+	// 	return (ft_strjoin_and_free(ft_strndup(s, tmp - s - 1),
+	// 			ft_strdup(tmp)));
+	// }
 	if (*(++tmp) == '?')
 	{
 		return (join_last_status_with_back(ft_strndup(s, tmp - s - 1),
