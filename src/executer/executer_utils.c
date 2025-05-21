@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:37:41 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:29 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 14:36:56 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,19 @@ char	**join_argv(char **array, char *s, int size)
 	if (array)
 		free(array);
 	return (reslut);
+}
+
+void	print_execve_error(char *cmd, char **path)
+{
+	if (!path)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:36:46 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:29 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 14:11:48 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*strjoin_token_list(t_token_list *tokne_list)
 	t_token_list	*tmp;
 
 	tmp = tokne_list;
+	if (!tokne_list)
+		return (ft_calloc(sizeof(char *), 1));
 	result = ft_strdup(tmp->token);
 	while (tmp->next)
 	{

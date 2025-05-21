@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:44:31 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 11:31:00 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/21 14:35:26 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int			close_all_fd(void);
 t_bool		ft_strcmp_built_in(char *s);
 t_bool		is_built_in(t_command_list *com);
 char		**join_argv(char **array, char *s, int size);
+void		print_execve_error(char *cmd, char **path);
 // executer.c
 void		execute_pipeline_tree(t_tree *ast, int parent_fd[2],
 				t_minishell *my_shell);

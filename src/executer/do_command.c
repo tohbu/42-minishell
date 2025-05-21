@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:14:33 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:29 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 14:39:50 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,7 @@ void	try_execve(char **path, char **argv, t_minishell *my_shell)
 		execve(path[i], argv, NULL);
 		i++;
 	}
-	ft_putstr_fd(argv[0], STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-	free_char_arr(argv);
+	print_execve_error(argv[0], path);
 	free_all(my_shell);
 	exit(COMAND_NOT_FOUND);
 	return ;
