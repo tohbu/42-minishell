@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_sub.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:19:26 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 14:11:45 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/21 11:35:40 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	count_same_char(char *s, char c)
 	}
 	return (count);
 }
+
 char	*join_last_status_with_back(char *front, char *back, int state)
 {
 	char	*status;
@@ -99,36 +100,3 @@ char	*expand_env_or_status(char *s, t_env_list *env, int state, int i)
 	}
 	return (result_expand_str(s, tmp, state, env));
 }
-
-// char	*expand_env_or_status(char *s, t_env_list *env, int state, int i)
-// {
-// 	char	*tmp;
-// 	int		j;
-
-// 	tmp = s;
-// 	j = 0;
-// 	while (i-- > 0)
-// 	{
-// 		while (*tmp && *tmp != '$')
-// 		{
-// 			if (*tmp == SINGLE_QUOTE_CHAR)
-// 				tmp = skip_quotes(tmp, SINGLE_QUOTE_CHAR);
-// 			if (!*tmp || *tmp == '$')
-// 				break ;
-// 			tmp++;
-// 		}
-// 		if (!*tmp)
-// 			return (s);
-// 		if (i > 0 && tmp++)
-// 			continue ;
-// 		if (!check_env_format(*(tmp + 1)) && *(tmp + 1) != '?')
-// 			return (s);
-// 	}
-// 	if (*(++tmp) == '?')
-// 		return (join_last_status_with_back(ft_strndup(s, tmp - s - 1),
-// 				ft_strdup(tmp + 1), state));
-// 	while (check_env_format(tmp[j]))
-// 		j++;
-// 	return (join_env_vars_with_back(ft_strndup(s, tmp - s - 1), ft_strdup(tmp
-// 				+ j), ft_strndup(tmp, j), env));
-// }

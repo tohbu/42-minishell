@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:37:11 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 21:33:10 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 11:33:33 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	p_builtin_error_no_minishell(const char *cmd, const char *msg)
 
 char	*extract_key(const char *arg)
 {
-	int i;
-	char *key;
+	int		i;
+	char	*key;
 
 	i = 0;
 	while (arg[i] && arg[i] != '=')

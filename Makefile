@@ -9,8 +9,8 @@ INCLUDE_DIRS := ./include
 BUILT_IN_DIRS := ./built_in
 UTILS_DIRS := ./utils
 
-CC      := clang
-CFLAGS  := -Wall -Wextra -Werror -g $(addprefix -I, $(INCLUDE_DIRS))
+CC      := cc
+CFLAGS  := -Wall -Wextra -Werror  $(addprefix -I, $(INCLUDE_DIRS))
 
 LIBFT_DIR := ./libft
 LIBFT     := libft.a

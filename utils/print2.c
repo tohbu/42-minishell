@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:59:55 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 11:23:41 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/21 11:34:09 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,5 @@ void	print_debag(t_minishell *my_shell)
 {
 	printf("\n-------------------debug----------------\n");
 	print_t_token_list(my_shell->token->head->next);
-	// t_tree_visualize(my_shell->ast, 0);
 	printf("\n");
-	// print_pid_list(my_shell->pid_list);
 }

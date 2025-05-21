@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:01:48 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/19 10:17:47 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/21 11:29:30 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,15 @@ static int	ft_check_args(char **argv, long long *exit_status)
 	error = 0;
 	if (!is_numeric(argv[1]))
 	{
-		// p_builtin_error("exit", "numeric argument required");
-		// write(STDERR_FILENO, "exit: ", 6);
 		p_exit_custum_error(argv[1], "numeric argument required");
+		close_all_fd();
 		exit(255);
 	}
 	*exit_status = ft_atoll(argv[1], &error);
 	if (error)
 	{
 		p_exit_custum_error(argv[1], "numeric argument required");
+		close_all_fd();
 		exit(255);
 	}
 	if (argv[2])
@@ -120,6 +120,7 @@ int	ft_exit(char **argv, t_env_list *env)
 	free_args(argv);
 	free_env(env);
 	env = NULL;
+	close_all_fd();
 	exit(exit_status % 256);
 	return (0);
 }
