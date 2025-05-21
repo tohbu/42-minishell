@@ -36,10 +36,16 @@ int			ft_exit(char **argv, t_env_list *env);
 int			ft_cd(char **argv, t_env_list *env);
 
 // command_export.c
-int			is_valid_identifier(const char *arg);
+// int			is_valid_identifier(const char *arg);
 int			ft_export(char **argv, t_env_list *env);
 
 // command_export_utilis.c
+int			is_valid_identifier(const char *arg);
+char		*remove_surrounding_quates(const char *str);
+void		handle_export_arg(const char *arg, t_env_list *env);
+int			print_export_list(t_env_list *env);
+
+// command_export_env_list.c
 char		**convert_env_list_to_sorted_array(t_env_list *env);
 
 // command_unset.c

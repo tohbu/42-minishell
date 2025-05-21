@@ -12,78 +12,48 @@
 
 #include "../include/builtin.h"
 
-int	is_valid_identifier(const char *arg)
-{
-	int	i;
-
-	i = 0;
-	if (!ft_isalpha(arg[0]) && (arg[0] != '_'))
-		return (0);
-	while (arg[i] && arg[i] != '=')
-	{
-		if (!ft_isalnum(arg[i]) && (arg[i] != '_'))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-char	*remove_surrounding_quates(const char *str)
-{
-	size_t	len;
-
-	len = ft_strlen(str);
-	if (len >= 2 && str[0] == '"' && str[len - 1] == '"')
-		return (ft_substr(str, 1, len - 2));
-	return (ft_strdup(str));
-}
-
-static void	handle_export_arg(const char *arg, t_env_list *env)
+static char	*get_export_key(char *arg)
 {
 	char	*equal_sign;
-	char	*key;
-	char	*value;
-	char	*clean_value;
 
 	equal_sign = ft_strchr(arg, '=');
-	if (!equal_sign)
-		ft_setenv(env, arg, "");
+	if (equal_sign)
+		return (ft_substr(arg, 0, equal_sign - arg));
 	else
-	{
-		key = ft_substr(arg, 0, equal_sign - arg);
-		value = ft_strdup(equal_sign + 1);
-		clean_value = remove_surrounding_quates(value);
-		ft_setenv(env, key, clean_value);
-		free(clean_value);
-		free(key);
-		free(value);
-	}
+		return (ft_strdup(arg));
 }
 
-static int	print_export_list(t_env_list *env)
+static int	is_invalid_identifier(char *key, char *arg)
 {
-	char	**sorted;
-	int		i;
-
-	sorted = convert_env_list_to_sorted_array(env);
-	i = 0;
-	while (sorted[i])
+	if (!is_valid_identifier(key))
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putendl_fd(sorted[i], 1);
-		free(sorted[i]);
-		i++;
+		ft_putstr_fd("minishell: export: '", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
+		return (1);
 	}
-	free(sorted);
 	return (0);
+}
+
+static int	process_export_arg(char *arg, t_env_list *env)
+{
+	char	*key;
+	int		ret;
+
+	key = get_export_key(arg);
+	if (!key)
+		return (1);
+	ret = is_invalid_identifier(key, arg);
+	if (!ret)
+		handle_export_arg(arg, env);
+	free(key);
+	return (ret);
 }
 
 int	ft_export(char **argv, t_env_list *env)
 {
-	int		i;
-	int		ret;
-	char	*key;
-	char	*equal_sign;
+	int	i;
+	int	ret;
 
 	ret = 0;
 	if (!argv[1])
@@ -91,21 +61,8 @@ int	ft_export(char **argv, t_env_list *env)
 	i = 1;
 	while (argv[i])
 	{
-		equal_sign = ft_strchr(argv[i], '=');
-		if (equal_sign)
-			key = ft_substr(argv[i], 0, equal_sign - argv[i]);
-		else
-			key = ft_strdup(argv[i]);
-		if (!is_valid_identifier(key))
-		{
-			ft_putstr_fd("minishell: export: '", 2);
-			ft_putstr_fd(argv[i], 2);
-			ft_putendl_fd("': not a valid identifier", 2);
+		if (process_export_arg(argv[i], env))
 			ret = 1;
-		}
-		else
-			handle_export_arg(argv[i], env);
-		free(key);
 		i++;
 	}
 	return (ret);

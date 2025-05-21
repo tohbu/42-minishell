@@ -47,6 +47,7 @@ SRCS		 := main.c \
              $(BUILT_IN_DIRS)/command_exit.c \
              $(BUILT_IN_DIRS)/command_export.c \
              $(BUILT_IN_DIRS)/command_export_utilis.c \
+             $(BUILT_IN_DIRS)/command_export_env_list.c \
              $(BUILT_IN_DIRS)/command_pwd.c \
              $(BUILT_IN_DIRS)/command_unset.c \
              $(BUILT_IN_DIRS)/free.c \

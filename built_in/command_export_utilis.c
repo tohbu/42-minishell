@@ -3,109 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   command_export_utilis.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
+/*   By: rseki <rseki@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 17:40:16 by rseki             #+#    #+#             */
-/*   Updated: 2025/05/14 21:30:15 by tohbu            ###   ########.fr       */
+/*   Created: 2025/05/21 11:44:56 by rseki             #+#    #+#             */
+/*   Updated: 2025/05/21 12:00:05 by rseki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtin.h"
 
-// 1. Count the environment list
-static int	env_list_size(t_env_list *env)
+int	is_valid_identifier(const char *arg)
 {
-	int			count;
-	t_env_list	*tmp;
-
-	count = 0;
-	tmp = env->next;
-	while (tmp)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	return (count);
-}
-
-// 2. Convert to "KEY=\ "VALUE\"" string
-static char	*format_export_entry(t_env_list *node)
-{
-	char	*formatted;
-	char	*tmp;
-
-	if (!node->value)
-		return (ft_strdup(node->key));
-	formatted = ft_strjoin(node->key, "=\"");
-	if (!formatted)
-		return (NULL);
-	tmp = ft_strjoin(formatted, node->value);
-	free(formatted);
-	if (!tmp)
-		return (NULL);
-	formatted = ft_strjoin(tmp, "\"");
-	free(tmp);
-	if (!formatted)
-		return (NULL);
-	return (formatted);
-}
-
-// 3. Convert to array
-static char	**env_list_to_array(t_env_list *env)
-{
-	int			size;
-	char		**array;
-	t_env_list	*tmp;
-	int			i;
-
-	size = env_list_size(env);
-	array = malloc(sizeof(char *) * (size + 1));
-	if (!array)
-		return (NULL);
-	tmp = env->next;
-	i = 0;
-	while (tmp)
-	{
-		array[i++] = format_export_entry(tmp);
-		tmp = tmp->next;
-	}
-	array[i] = NULL;
-	return (array);
-}
-
-// 4. Sort the array
-static void	sort_string_array(char **array)
-{
-	int		i;
-	int		j;
-	char	*tmp;
+	int	i;
 
 	i = 0;
-	while (array[i])
+	if (!ft_isalpha(arg[0]) && (arg[0] != '_'))
+		return (0);
+	while (arg[i] && arg[i] != '=')
 	{
-		j = i + 1;
-		while (array[j])
-		{
-			if (ft_strcmp(array[i], array[j]) > 0)
-			{
-				tmp = array[i];
-				array[i] = array[j];
-				array[j] = tmp;
-			}
-			j++;
-		}
+		if (!ft_isalnum(arg[i]) && (arg[i] != '_'))
+			return (0);
 		i++;
 	}
+	return (1);
 }
 
-// 5. combine into convert_env_list_to_sorted_array
-char	**convert_env_list_to_sorted_array(t_env_list *env)
+char	*remove_surrounding_quates(const char *str)
 {
-	char	**array;
+	size_t	len;
 
-	array = env_list_to_array(env);
-	if (!array)
-		return (NULL);
-	sort_string_array(array);
-	return (array);
+	len = ft_strlen(str);
+	if (len >= 2 && str[0] == '"' && str[len - 1] == '"')
+		return (ft_substr(str, 1, len - 2));
+	return (ft_strdup(str));
+}
+
+void	handle_export_arg(const char *arg, t_env_list *env)
+{
+	char	*equal_sign;
+	char	*key;
+	char	*value;
+	char	*clean_value;
+
+	equal_sign = ft_strchr(arg, '=');
+	if (!equal_sign)
+		ft_setenv(env, arg, "");
+	else
+	{
+		key = ft_substr(arg, 0, equal_sign - arg);
+		value = ft_strdup(equal_sign + 1);
+		clean_value = remove_surrounding_quates(value);
+		ft_setenv(env, key, clean_value);
+		free(clean_value);
+		free(key);
+		free(value);
+	}
+}
+
+int	print_export_list(t_env_list *env)
+{
+	char	**sorted;
+	int		i;
+
+	sorted = convert_env_list_to_sorted_array(env);
+	i = 0;
+	while (sorted[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putendl_fd(sorted[i], 1);
+		free(sorted[i]);
+		i++;
+	}
+	free(sorted);
+	return (0);
 }
