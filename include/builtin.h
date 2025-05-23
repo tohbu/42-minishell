@@ -16,7 +16,7 @@
 # include "struct.h"
 
 // execute_builtin.c
-int			execute_builtin(char **argv, t_env_list *env);
+int         execute_builtin(char **argv, t_env_list *env, t_minishell *myshell);
 char		**split_input(char *line);
 
 // command_echo.c
@@ -30,7 +30,7 @@ int			ft_pwd(char **argv, t_env_list *env);
 int			ft_env(char **argv, t_env_list *env);
 
 // command_exit.c
-int			ft_exit(char **argv, t_env_list *env);
+int         ft_exit(char **argv, t_env_list *env, t_minishell *myshell);
 
 // command_cd.c
 int			ft_cd(char **argv, t_env_list *env);
@@ -70,7 +70,5 @@ void		free_env(t_env_list *env);
 // ft_setenv.c
 int			ft_setenv(t_env_list *env, const char *key, char *value);
 
-// main.c
-char		*ft_strndup(char *s, size_t n);
 
 #endif

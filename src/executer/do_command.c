@@ -92,9 +92,9 @@ void	handle_redirect_and_argv(t_command_list *com, t_minishell *my_shell,
 		tmp = tmp->next;
 	}
 	if (paret_token_type == PIPE && close_all_fd() && is_built_in(com))
-		exit(execute_builtin(ft_argv, my_shell->env->next));
+		exit(execute_builtin(ft_argv, my_shell->env->next, my_shell));
 	else if (is_built_in(com))
-		my_shell->state = execute_builtin(ft_argv, my_shell->env->next);
+		my_shell->state = execute_builtin(ft_argv, my_shell->env->next, my_shell);
 	else
 		try_execve(get_path(my_shell->env->next), ft_argv, my_shell);
 }

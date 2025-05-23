@@ -76,7 +76,7 @@ static int	ft_check_args(char **argv, long long *exit_status)
 	{
 		p_exit_custum_error(argv[1], "numeric argument required");
 		close_all_fd();
-		exit(255);
+		exit(2);
 	}
 	*exit_status = ft_atoll(argv[1], &error);
 	if (error)
@@ -105,22 +105,24 @@ Exit
 5 Clean up env and any global resources
 6 exit with (exit_status % 256)
 */
-int	ft_exit(char **argv, t_env_list *env)
+int	ft_exit(char **argv, t_env_list *env, t_minishell *myshell)
 {
 	long long	exit_status;
 
 	exit_status = 0;
+	printf("myshell->state: %d\n", myshell->state);
 	if (argv[1])
 	{
 		if (ft_check_args(argv, &exit_status))
 			return (1);
 	}
 	if (!argv[1])
-		exit_status = 0;
+		exit_status = myshell->state;
 	free_args(argv);
 	free_env(env);
 	env = NULL;
 	close_all_fd();
+	write(2, "exit\n", 5);
 	exit(exit_status % 256);
 	return (0);
 }
