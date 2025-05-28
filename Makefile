@@ -35,6 +35,7 @@ SRCS		 := ./src/main.c \
 			 $(EXECUTER_DIR)/do_command.c\
              $(EXECUTER_DIR)/pid_list.c \
              $(EXECUTER_DIR)/fd_manage.c \
+			 $(EXECUTER_DIR)/make_envp.c \
              $(UTILS_DIRS)/free1.c \
              $(UTILS_DIRS)/free2.c \
              $(UTILS_DIRS)/print1.c \

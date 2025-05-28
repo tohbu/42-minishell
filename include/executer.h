@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:44:31 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 14:35:26 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/28 19:06:33 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,7 @@ void		handle_redirect_and_argv(t_command_list *com, t_minishell *my_shell,
 				int paret_token_type);
 int			fork_and_exec_command(t_command_list *com, int fd[2],
 				t_minishell *my_shell);
+
+char		**make_envp(t_env_list *env);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 22:05:38 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:29 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/28 19:13:07 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,6 @@ t_bool	check_env_format(char c)
 	return (0);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	int	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (-1);
-	while (s1[i] == s2[i])
-	{
-		if (s1[i] == '\0' && s2[i] == '\0')
-			return (0);
-		i++;
-	}
-	return (s1[i] - s2[i]);
-}
-
 t_env_list	*new_env_node(char *in_key, char *in_value)
 {
 	t_env_list	*new;
@@ -87,4 +71,28 @@ t_env_list	*ft_get_env(char *s)
 	key = ft_strndup(s, ft_strchr(s, '=') - s);
 	value = ft_strdup(ft_strchr(s, '=') + 1);
 	return (new_env_node(key, value));
+}
+
+int	count_same_char(char *s, char c)
+{
+	int	count;
+	int	double_quote;
+
+	count = 0;
+	double_quote = 0;
+	if (!s)
+		return (0);
+	while (*s)
+	{
+		if (*s == DOUBLE_QUOTE_CHAR)
+			double_quote++;
+		if (*s == SINGLE_QUOTE_CHAR && (double_quote % 2 == 0))
+			s = skip_quotes(s, SINGLE_QUOTE_CHAR);
+		else if (*s == c)
+			count++;
+		if (!*s)
+			return (count);
+		s++;
+	}
+	return (count);
 }
