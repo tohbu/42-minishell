@@ -9,7 +9,9 @@
 		"signal.h": "c",
 		"struct.h": "c",
 		"minishell.h": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"executer.h": "c",
+		"builtin.h": "c"
 	},
 	"editor.formatOnSave": true,
 	"files.autoSaveWorkspaceFilesOnly": false,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomoki-koukoukyo <tomoki-koukoukyo@stud    +#+  +:+       +#+        */
+/*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:49:42 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/19 14:11:28 by tomoki-kouk      ###   ########.fr       */
+/*   Updated: 2025/05/28 19:14:24 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 // expander_utils.c ok
 char		*ft_strjoin_and_free(char *s1, char *s2);
 t_bool		check_env_format(char c);
-int			ft_strcmp(const char *s1, const char *s2);
 t_env_list	*new_env_node(char *in_key, char *in_value);
 t_env_list	*ft_get_env(char *s);
+int			count_same_char(char *s, char c);
+
 // expander.c ok
 char		*match_env_key(char *search, t_env_list *env);
 t_env_list	*get_envp_to_struct(char *envp[]); // dumy あり;
@@ -52,9 +53,8 @@ char		*handle_word_for_expander(char *s, t_token_manager *token);
 t_bool		lexer_for_delete_quote(char *one_line, t_token_manager *token);
 
 // expand_sub.c ok
-int			count_same_char(char *s, char c);
 char		*join_last_status_with_back(char *front, char *back, int state);
-
+char		*scan_until_dollar(char *tmp, int *quote);
 char		*join_env_vars_with_back(char *front, char *back, char *key,
 				t_env_list *env);
 char		*result_expand_str(char *s, char *tmp, int state, t_env_list *env);

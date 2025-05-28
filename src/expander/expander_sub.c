@@ -6,31 +6,11 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:19:26 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:13:29 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/28 19:13:15 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	count_same_char(char *s, char c)
-{
-	int	count;
-
-	count = 0;
-	if (!s)
-		return (0);
-	while (*s)
-	{
-		if (*s == SINGLE_QUOTE_CHAR)
-			s = skip_quotes(s, SINGLE_QUOTE_CHAR);
-		else if (*s == c)
-			count++;
-		if (!*s)
-			return (count);
-		s++;
-	}
-	return (count);
-}
 
 char	*join_last_status_with_back(char *front, char *back, int state)
 {
@@ -73,21 +53,31 @@ char	*result_expand_str(char *s, char *tmp, int state, t_env_list *env)
 				+ j), ft_strndup(tmp, j), env));
 }
 
+char	*scan_until_dollar(char *tmp, int *quote)
+{
+	while (*tmp && *tmp != '$')
+	{
+		if (*tmp == DOUBLE_QUOTE_CHAR)
+			(*quote)++;
+		if (*tmp == SINGLE_QUOTE_CHAR && (*quote % 2 == 0))
+			tmp = skip_quotes(tmp, SINGLE_QUOTE_CHAR);
+		if (!*tmp || *tmp == '$')
+			break ;
+		tmp++;
+	}
+	return (tmp);
+}
+
 char	*expand_env_or_status(char *s, t_env_list *env, int state, int i)
 {
 	char	*tmp;
+	int		quote;
 
 	tmp = s;
+	quote = 0;
 	while (i-- > 0)
 	{
-		while (*tmp && *tmp != '$')
-		{
-			if (*tmp == SINGLE_QUOTE_CHAR)
-				tmp = skip_quotes(tmp, SINGLE_QUOTE_CHAR);
-			if (!*tmp || *tmp == '$')
-				break ;
-			tmp++;
-		}
+		tmp = scan_until_dollar(tmp, &quote);
 		if (!*tmp)
 			return (s);
 		if (i > 0)

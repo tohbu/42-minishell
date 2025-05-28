@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 19:30:30 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 13:50:12 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/28 15:21:45 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*read_and_validate_input(t_minishell *my_shell)
 	free(prompt);
 	if (!input)
 	{
+		if (g_interrupt_state != 0)
+			my_shell->state = g_interrupt_state + 128;
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 		state = my_shell->state;
 		free_all(my_shell);

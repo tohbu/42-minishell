@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:14:33 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 14:39:50 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/28 19:06:44 by tohbu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ void	try_execve(char **path, char **argv, t_minishell *my_shell)
 {
 	int		i;
 	char	*tmp;
+	char	**envp;
 
 	i = 0;
 	if (argv == NULL)
 		exit(0);
+	envp = make_envp(my_shell->env->next);
 	if (ft_strchr(argv[0], '/'))
-		execve(argv[0], argv, NULL);
+		execve(argv[0], argv, envp);
 	i = 0;
 	while (path && path[i])
 	{
@@ -61,7 +63,7 @@ void	try_execve(char **path, char **argv, t_minishell *my_shell)
 			return ;
 		free(path[i]);
 		path[i] = tmp;
-		execve(path[i], argv, NULL);
+		execve(path[i], argv, envp);
 		i++;
 	}
 	print_execve_error(argv[0], path);
@@ -94,7 +96,8 @@ void	handle_redirect_and_argv(t_command_list *com, t_minishell *my_shell,
 	if (paret_token_type == PIPE && close_all_fd() && is_built_in(com))
 		exit(execute_builtin(ft_argv, my_shell->env->next, my_shell));
 	else if (is_built_in(com))
-		my_shell->state = execute_builtin(ft_argv, my_shell->env->next, my_shell);
+		my_shell->state = execute_builtin(ft_argv, my_shell->env->next,
+				my_shell);
 	else
 		try_execve(get_path(my_shell->env->next), ft_argv, my_shell);
 }
