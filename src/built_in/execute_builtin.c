@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	execute_builtin(char **argv, t_env_list *env)
+int	execute_builtin(char **argv, t_env_list *env, t_minishell *myshell)
 {
 	int	result;
 
@@ -25,7 +25,7 @@ int	execute_builtin(char **argv, t_env_list *env)
 	else if (ft_strcmp_builtin(argv[0], "env") == 0)
 		result = (ft_env(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "exit") == 0)
-		result = (ft_exit(argv, env));
+		result = (ft_exit(argv, env, myshell));
 	else if (ft_strcmp_builtin(argv[0], "cd") == 0)
 		result = (ft_cd(argv, env));
 	else if (ft_strcmp_builtin(argv[0], "export") == 0)

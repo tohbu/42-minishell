@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:03:08 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/21 12:07:01 by tohbu            ###   ########.fr       */
+/*   Updated: 2025/05/23 13:51:25 by rseki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,19 @@
 # include "struct.h"
 
 // execute_builtin.c
-int			execute_builtin(char **argv, t_env_list *env);
-char		**split_input(char *line);
+int			execute_builtin(char **argv, t_env_list *env, t_minishell *myshell);
 
 // command_echo.c
 int			ft_echo(char **args, t_env_list *env);
 
 // command_pwd.c
-void		Getcwd(char *buf, size_t size);
 int			ft_pwd(char **argv, t_env_list *env);
 
 // command_env.c
 int			ft_env(char **argv, t_env_list *env);
 
 // command_exit.c
-int			ft_exit(char **argv, t_env_list *env);
+int			ft_exit(char **argv, t_env_list *env, t_minishell *myshell);
 
 // command_cd.c
 int			ft_cd(char **argv, t_env_list *env);
@@ -60,7 +58,6 @@ char		*extract_key(const char *arg);
 
 // env.c
 char		*match_env_key(char *search, t_env_list *env);
-char		*expand_command_str(char *s, t_env_list *env);
 t_env_list	*get_envp_to_struct(char *envp[]);
 
 // free.c
@@ -69,8 +66,5 @@ void		free_env(t_env_list *env);
 
 // ft_setenv.c
 int			ft_setenv(t_env_list *env, const char *key, char *value);
-
-// main.c
-char		*ft_strndup(char *s, size_t n);
 
 #endif
