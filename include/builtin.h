@@ -6,7 +6,7 @@
 /*   By: tohbu <tohbu@student.42.jp>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:03:08 by tohbu             #+#    #+#             */
-/*   Updated: 2025/05/23 13:51:25 by rseki            ###   ########.fr       */
+/*   Updated: 2025/05/29 14:56:27 by rseki            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ int			ft_exit(char **argv, t_env_list *env, t_minishell *myshell);
 
 // command_cd.c
 int			ft_cd(char **argv, t_env_list *env);
+
+// command_cd_utilis.c
+void		p_cd_error(const char *arg);
+void		p_cd_costum_error(const char *msg);
+char		*get_old_pwd(t_env_list *env);
+char		*get_home_path(t_env_list *env);
+int			change_dir_to_home(char *home, char *old, t_env_list **env);
 
 // command_export.c
 // int			is_valid_identifier(const char *arg);

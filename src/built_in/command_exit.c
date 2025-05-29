@@ -110,7 +110,6 @@ int	ft_exit(char **argv, t_env_list *env, t_minishell *myshell)
 	long long	exit_status;
 
 	exit_status = 0;
-	printf("myshell->state: %d\n", myshell->state);
 	if (argv[1])
 	{
 		if (ft_check_args(argv, &exit_status))
