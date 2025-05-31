@@ -50,6 +50,7 @@ static int	change_dir(const char *dir, t_env_list *env, \
 	char	*path;
 	char	*fallback;
 
+	fallback = NULL;
 	*oldpwd = getcwd(NULL, 0);
 	if (!*oldpwd)
 	{
@@ -63,7 +64,8 @@ static int	change_dir(const char *dir, t_env_list *env, \
 	if (chdir(path) != 0)
 		return (p_cd_error(dir), free(*oldpwd), free(path), free(fallback), 1);
 	free(path);
-	free(fallback);
+	if (fallback)
+		free(fallback);
 	*newpwd = getcwd(NULL, 0);
 	if (!*newpwd)
 		*newpwd = ft_strdup(dir);
