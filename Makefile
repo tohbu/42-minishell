@@ -43,6 +43,7 @@ SRCS		 := ./src/main.c \
              $(UTILS_DIRS)/init_minishell.c \
              $(UTILS_DIRS)/signal.c \
              $(BUILT_IN_DIRS)/command_cd.c \
+             $(BUILT_IN_DIRS)/command_cd_utilis.c \
              $(BUILT_IN_DIRS)/command_echo.c \
              $(BUILT_IN_DIRS)/command_env.c \
              $(BUILT_IN_DIRS)/command_exit.c \
